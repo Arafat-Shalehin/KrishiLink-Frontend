@@ -1,7 +1,8 @@
 import { createBrowserRouter } from "react-router";
 import HomeLayOut from "../Layouts/HomeLayOut";
 import App from "../App";
-import ErrorPage from "../Components/ErrorPage";
+import ErrorPage from "../Pages/ErrorPage";
+import AllCropsPage from "../Pages/AllCropsPage";
 
 const router = createBrowserRouter([
   {
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <App/>
+      },
+      {
+        path: '/all-crops',
+        element: <AllCropsPage/>
       }
     ]
   },

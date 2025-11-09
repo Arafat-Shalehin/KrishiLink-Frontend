@@ -40,6 +40,16 @@ const heroData = [
 const Hero = () => {
   const [slideIndex, setSlideIndex] = useState(0);
 
+  // Simple fade-up variant
+  const childVariants = {
+    hidden: { opacity: 0, y: -30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeInOut" },
+    },
+  };
+
   const nextSlide = useCallback(() => {
     setSlideIndex((prevIndex) =>
       prevIndex < heroData.length - 1 ? prevIndex + 1 : 0
@@ -53,7 +63,7 @@ const Hero = () => {
 
   return (
     <section className="relative h-screen flex items-center justify-start overflow-hidden">
-      {/* Background image with smooth fade transition */}
+      {/* Background image with smooth fade */}
       <AnimatePresence mode="wait">
         <motion.div
           key={heroData[slideIndex].image}
@@ -81,18 +91,22 @@ const Hero = () => {
             exit="exit"
             variants={{
               visible: {
-                transition: { staggerChildren: 0.15 },
+                transition: {
+                  staggerChildren: 0.3, 
+                  delayChildren: 0.6,
+                },
               },
               hidden: {},
-              exit: { opacity: 0, y: -30, transition: { duration: 0.6 } },
+              exit: {
+                opacity: 0,
+                y: -30,
+                transition: { duration: 0.6, ease: "easeInOut" },
+              },
             }}
           >
             {/* HEADER */}
             <motion.h1
-              variants={{
-                hidden: { opacity: 0, y: 30 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
-              }}
+              variants={childVariants}
               className="text-4xl md:text-6xl font-extrabold leading-tight drop-shadow-lg"
             >
               {heroData[slideIndex].text}
@@ -100,10 +114,7 @@ const Hero = () => {
 
             {/* SUBTEXT */}
             <motion.p
-              variants={{
-                hidden: { opacity: 0, y: 30 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
-              }}
+              variants={childVariants}
               className="mt-4 text-lg md:text-xl text-gray-100/90 max-w-xl leading-relaxed"
             >
               {heroData[slideIndex].subtext}
@@ -112,10 +123,7 @@ const Hero = () => {
             {/* BUTTON */}
             <motion.a
               href="#"
-              variants={{
-                hidden: { opacity: 0, y: 30 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
-              }}
+              variants={childVariants}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="inline-flex items-center mt-8 bg-white text-green-900 font-semibold text-lg md:text-xl rounded-full px-6 py-3 gap-2 shadow-md hover:bg-green-100 transition"
