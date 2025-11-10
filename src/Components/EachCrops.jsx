@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router";
 
 const EachCrops = ({ crops }) => {
   // console.log(crops);
@@ -29,16 +30,14 @@ const EachCrops = ({ crops }) => {
       {/* Image */}
       <div>
         <img
-          className="w-50 h-50 object-cover rounded-lg hover:scale-125 transition-all ease-in-out"
+          className="w-50 h-50 object-cover rounded-lg hover:scale-125 transition-transform ease-in-out"
           src={crops.image}
           alt={crops.name}
         />
       </div>
 
       {/* Text */}
-      <div
-        className="space-y-2 md:space-y-3 text-left"
-      >
+      <div className="space-y-2 md:space-y-3 text-left">
         {[
           crops.name,
           `Type: ${crops.type}`,
@@ -61,17 +60,21 @@ const EachCrops = ({ crops }) => {
           </motion.p>
         ))}
 
-        <motion.button
-          initial={{ opacity: 0, x: 40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ delay: 0.45, duration: 0.5 }}
-          className="bg-linear-to-r from-green-700 to-green-400 
+        <Link
+        to={`/crops-details/${crops._id}/${crops.type}`}
+        >
+          <motion.button
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ delay: 0.45, duration: 0.5 }}
+            className="bg-linear-to-r from-green-700 to-green-400 
           text-white lg:px-6 px-4 py-2 rounded font-semibold 
           hover:scale-105 hover:shadow-lg transition-all duration-300"
-        >
-          View Details
-        </motion.button>
+          >
+            View Details
+          </motion.button>
+        </Link>
       </div>
     </motion.div>
   );

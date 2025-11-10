@@ -6,6 +6,8 @@ import AllCropsPage from "../Pages/AllCropsPage";
 import AuthLayout from "../Layouts/AuthLayOut";
 import Login from "../Pages/Login";
 import Register from "../Pages/Register";
+import MyProfile from "../Pages/MyProfile";
+import CropsDetails from "../Components/CropsDetails";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +22,14 @@ const router = createBrowserRouter([
       {
         path: '/all-crops',
         element: <AllCropsPage/>
+      },
+      {
+        path: 'my-profile',
+        element: <MyProfile/>
+      },
+      {
+        path: 'crops-details/:id/:type',
+        element: <CropsDetails/>
       }
     ]
   },
