@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 
 const EachCrops = ({ crops }) => {
-  console.log(crops);
+  // console.log(crops);
   const textVariants = {
     hidden: { opacity: 0, x: 40 },
     visible: (i) => ({
