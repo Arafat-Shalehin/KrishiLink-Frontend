@@ -166,11 +166,15 @@ const CropsDetails = () => {
               modules={[Scrollbar]}
               className="mySwiper"
             >
-              {sameType.map((crops) => (
-                <SwiperSlide key={crops._id}>
-                  <EachCrops crops={crops} />
-                </SwiperSlide>
-              ))}
+              {sameType.length > 0 ? (
+                sameType.map((crops) => (
+                  <SwiperSlide key={crops._id}>
+                    <EachCrops crops={crops} />
+                  </SwiperSlide>
+                ))
+              ) : (
+                <h1 className="font-semibold text-xl">There are no product of this type.</h1>
+              )}
             </Swiper>
           </div>
         )}
