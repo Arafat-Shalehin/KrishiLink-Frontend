@@ -9,6 +9,7 @@ import Register from "../Pages/Register";
 import MyProfile from "../Pages/MyProfile";
 import CropsDetails from "../Components/CropsDetails";
 import NewsDetails from "../Pages/NewsDetails";
+import AddCrops from "../Pages/AddCrops";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "/news/:id", 
         element: <NewsDetails />
+      },
+      {
+        path: "/add-crops",
+        element: <AddCrops/>
       }
     ]
   },

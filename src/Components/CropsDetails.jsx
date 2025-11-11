@@ -236,7 +236,7 @@ const CropsDetails = () => {
         </div>
       )}
 
-      {/* interested Prople */}
+      {/* Interested Prople */}
       <div className="mt-20">
         <h1 className="font-semibold md:text-3xl text-2xl text-gray-900/70">
           People who are interested in this product
@@ -259,9 +259,9 @@ const CropsDetails = () => {
                       <th className="py-3 px-4 font-medium">Wants to buy</th>
                       <th className="py-3 px-4 font-medium">Quantity</th>
                       <th className="py-3 px-4 font-medium">Status</th>
-                      <th className="py-3 px-4 font-medium text-center">
+                      {/* <th className="py-3 px-4 font-medium text-center">
                         Actions
-                      </th>
+                      </th> */}
                     </tr>
                   </thead>
                   <tbody>
@@ -297,14 +297,14 @@ const CropsDetails = () => {
                         </td>
 
                         {/* Actions */}
-                        <td className="py-3 px-4 text-center">
+                        {/* <td className="py-3 px-4 text-center">
                           <button
                             // onClick={() => handleDeleteBid(bid._id)}
                             className="ml-2 px-3 py-1.5 rounded-md text-sm font-medium border border-red-400 text-red-500 hover:bg-red-50 transition"
                           >
                             Remove Interest
                           </button>
-                        </td>
+                        </td> */}
                       </tr>
                     ))}
                   </tbody>
