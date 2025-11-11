@@ -6,3 +6,18 @@
 *{
     font-family: "Montserrat", sans-serif;
 }
+
+@keyframes scrollHorizontal {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.333%);
+  }
+}
+
+.animate-scroll-horizontal {
+  animation: scrollHorizontal 35s linear infinite;
+  display: flex;
+  width: max-content;
+}
