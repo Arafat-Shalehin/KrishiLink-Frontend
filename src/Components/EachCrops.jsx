@@ -30,7 +30,7 @@ const EachCrops = ({ crops }) => {
       {/* Image */}
       <div>
         <img
-          className="w-50 h-50 object-cover rounded-lg hover:scale-125 transition-transform ease-in-out"
+          className="w-50 h-50 object-cover rounded-lg hover:scale-115 transition-transform duration-500"
           src={crops.image}
           alt={crops.name}
         />

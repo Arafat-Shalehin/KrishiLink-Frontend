@@ -36,8 +36,8 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="h-[54vh] mt-10 bg-green-50 flex items-center justify-center p-5">
-      <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md">
+    <div className="h-[54vh] bg-green-50 flex items-center justify-center p-5">
+      <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md mt-18">
         <div className="flex flex-col items-center">
           <img
             src={

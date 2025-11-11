@@ -28,85 +28,73 @@ const Navbar = () => {
 
   const links = [
     <>
-      <li>
-        <NavLink
-          to="/"
-          className={({ isActive }) =>
-            isActive
-              ? "bg-green-500 text-white rounded-md px-3 py-1"
-              : "text-black md:text-white"
-          }
-        >
-          Home
-        </NavLink>
-      </li>
+      <NavLink
+        to="/"
+        className={({ isActive }) =>
+          isActive
+            ? "bg-green-500 text-white rounded-md px-3 py-1"
+            : "text-black md:text-white"
+        }
+      >
+        Home
+      </NavLink>
 
-      <li>
-        <NavLink
-          to="/all-crops"
-          className={({ isActive }) =>
-            isActive
-              ? "bg-green-500 text-white rounded-md px-3 py-1"
-              : "text-black md:text-white"
-          }
-        >
-          All Crops
-        </NavLink>
-      </li>
+      <NavLink
+        to="/all-crops"
+        className={({ isActive }) =>
+          isActive
+            ? "bg-green-500 text-white rounded-md px-3 py-1"
+            : "text-black md:text-white"
+        }
+      >
+        All Crops
+      </NavLink>
 
       {user && (
         <>
-          <li>
-            <NavLink
-              to="/my-profile"
-              className={({ isActive }) =>
-                isActive
-                  ? "bg-green-500 text-white rounded-md px-3 py-1"
-                  : "text-black md:text-white"
-              }
-            >
-              Profile
-            </NavLink>
-          </li>
+          <NavLink
+            to="/my-profile"
+            className={({ isActive }) =>
+              isActive
+                ? "bg-green-500 text-white rounded-md px-3 py-1"
+                : "text-black md:text-white"
+            }
+          >
+            Profile
+          </NavLink>
 
-          <li>
-            <NavLink
-              to="/addCrops"
-              className={({ isActive }) =>
-                isActive
-                  ? "bg-green-500 text-white rounded-md px-3 py-1"
-                  : "text-black md:text-white"
-              }
-            >
-              Add Crops
-            </NavLink>
-          </li>
+          <NavLink
+            to="/addCrops"
+            className={({ isActive }) =>
+              isActive
+                ? "bg-green-500 text-white rounded-md px-3 py-1"
+                : "text-black md:text-white"
+            }
+          >
+            Add Crops
+          </NavLink>
 
-          <li>
-            <NavLink
-              to="/my-posts"
-              className={({ isActive }) =>
-                isActive
-                  ? "bg-green-500 text-white rounded-md px-3 py-1"
-                  : "text-black md:text-white"
-              }
-            >
-              My Posts
-            </NavLink>
-          </li>
+          <NavLink
+            to="/my-posts"
+            className={({ isActive }) =>
+              isActive
+                ? "bg-green-500 text-white rounded-md px-3 py-1"
+                : "text-black md:text-white"
+            }
+          >
+            My Posts
+          </NavLink>
 
-          <li>
-            <NavLink
-              to="/my-interest"
-              className={({ isActive }) =>
-                isActive
-                  ? "bg-green-500 text-white rounded-md px-3 py-1"
-                  : "text-black md:text-white"
-              }
-            >
-              My Interests
-            </NavLink>
-          </li>
+          <NavLink
+            to="/my-interest"
+            className={({ isActive }) =>
+              isActive
+                ? "bg-green-500 text-white rounded-md px-3 py-1"
+                : "text-black md:text-white"
+            }
+          >
+            My Interests
+          </NavLink>
         </>
       )}
     </>,
@@ -137,7 +125,9 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content bg-base-100 
             rounded-box z-1 mt-3 w-52 p-2 shadow text-white"
           >
-            {links}
+            {links.map((link, index) => (
+              <li key={index}>{link}</li>
+            ))}
           </ul>
         </div>
 
@@ -153,7 +143,9 @@ const Navbar = () => {
 
       <div className="navbar-center hidden md:flex items-center md:pl-22 lg:pl-7">
         <ul className="menu menu-horizontal px-1 gap-3 font-semibold">
-          {links}
+          {links.map((link, index) => (
+            <li key={index} className="flex flex-row items-center">{link}</li>
+          ))}
         </ul>
       </div>
 
