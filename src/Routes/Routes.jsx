@@ -10,6 +10,7 @@ import MyProfile from "../Pages/MyProfile";
 import CropsDetails from "../Components/CropsDetails";
 import NewsDetails from "../Pages/NewsDetails";
 import AddCrops from "../Pages/AddCrops";
+import MyPostPage from "../Pages/MyPostPage";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: "/add-crops",
         element: <AddCrops/>
+      },
+      {
+        path: "/my-posts",
+        element: <MyPostPage/>
       }
     ]
   },

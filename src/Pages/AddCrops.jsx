@@ -42,7 +42,7 @@ const AddCrops = () => {
       setLoading(true);
       await instance.post("/allCrops", dataToSend);
       toast.success("Crop added successfully!");
-      navigate("/");
+      navigate("/my-posts");
     } catch (error) {
       console.error(error);
       toast.error("Failed to add crop. Try again!");
