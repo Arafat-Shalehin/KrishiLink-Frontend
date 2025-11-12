@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { useEffect } from "react";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import useAxios from "../Hooks/useAxios";
 import Loader from "./Loader";
 import { motion } from "framer-motion";
@@ -19,8 +19,10 @@ const CropsDetails = () => {
   // console.log(id, type);
   const instance = useAxios();
   const { user } = useContext(AuthContext);
-  console.log(user);
+  // console.log(user);
   const [crops, setCrops] = useState([]);
+  const [allCrops, setAllCrops] = useState([]);
+  const [interestCrops, setInterestCrops] = useState(0);
   const [sameType, setSameType] = useState([]);
   const [loading, setLoading] = useState(false);
   const [typeLoading, setTypeLoading] = useState(false);
@@ -30,13 +32,15 @@ const CropsDetails = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [interestData, setInterestData] = useState([]);
 
-  // ID wise fetch
+  // All fetch id wise filter
   useEffect(() => {
     const fetchCrop = async () => {
       setLoading(true);
       try {
-        const res = await instance.get(`/allCrops/${id}`);
-        setCrops(res.data);
+        const res = await instance.get(`/allCrops`);
+        setAllCrops(res.data);
+        const filterCrop = res.data.find((crop) => crop._id === id);
+        setCrops(filterCrop);
       } catch (error) {
         console.error(error);
       } finally {
@@ -69,6 +73,21 @@ const CropsDetails = () => {
     fetchAllCrops();
   }, [instance, type, id]);
 
+  // Manage Received interest
+  useEffect(() => {
+    const userCrop = allCrops.filter(
+      (crop) => crop?.owner?.ownerEmail === user?.email
+    );
+    // console.log(userCrop);
+
+    const totalInterests = userCrop.reduce(
+      (acc, crop) => acc + (crop.interests?.length || 0),
+      0
+    );
+
+    setInterestCrops(totalInterests);
+  }, [allCrops, user?.email]);
+
   // Form price
   useEffect(() => {
     if (crops?.pricePerUnit) {
@@ -81,17 +100,17 @@ const CropsDetails = () => {
     setInterestData(crops?.interests || []);
   }, [crops]);
 
-  console.log(crops);
-  console.log(interestData);
+  // console.log(crops);
+  // console.log(interestData);
 
   // Identifying user and owner
   const userName = user?.displayName;
   const userEmail = user?.email;
-  console.log({ userName, userEmail });
+  // console.log({ userName, userEmail });
 
-  const cropOwnerName = crops?.owner?.ownerName;
+  // const cropOwnerName = crops?.owner?.ownerName;
   const cropOwnerEmail = crops?.owner?.ownerEmail;
-  console.log({ cropOwnerName, cropOwnerEmail });
+  // console.log({ cropOwnerName, cropOwnerEmail });
 
   // Handle Interest Function
   const handleInterestSubmit = async () => {
@@ -140,7 +159,7 @@ const CropsDetails = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 mt-15">
-      <h1 className="font-bold text-4xl text-center mb-5 text-lime-500">
+      <h1 className="font-bold text-4xl text-center mb-5 text-green-700/50">
         Product Details
       </h1>
       {loading ? (
@@ -210,12 +229,24 @@ const CropsDetails = () => {
               </p>
             </div>
 
+            {userEmail === cropOwnerEmail && (
+              <div className="mt-6 border-t pt-4">
+                <h1 className="font-semibold text-gray-700">
+                  Amount of product received interest: {interestCrops}
+                </h1>
+              </div>
+            )}
+
             {/* Button Section */}
             <div className="mt-6 flex gap-3">
-              {userName === cropOwnerName && userEmail === cropOwnerEmail ? (
-                <button className="flex-1 px-5 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition">
-                  Manage received interests
-                </button>
+              {userEmail === cropOwnerEmail ? (
+                <>
+                  <Link to="/receiveInterest">
+                    <button className="flex-1 px-5 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition">
+                      Manage received interests
+                    </button>
+                  </Link>
+                </>
               ) : (
                 <button
                   onClick={() => setShowForm(true)}

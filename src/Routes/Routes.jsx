@@ -12,6 +12,7 @@ import NewsDetails from "../Pages/NewsDetails";
 import AddCrops from "../Pages/AddCrops";
 import MyPostPage from "../Pages/MyPostPage";
 import MyInterest from "../Pages/MyInterest";
+import ReceivedInterests from "../Components/ReceivedInterests";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: "/my-interest",
         element: <MyInterest/>
+      },
+      {
+        path: "/receiveInterest",
+        element: <ReceivedInterests/>
       }
     ]
   },
