@@ -11,6 +11,7 @@ import CropsDetails from "../Components/CropsDetails";
 import NewsDetails from "../Pages/NewsDetails";
 import AddCrops from "../Pages/AddCrops";
 import MyPostPage from "../Pages/MyPostPage";
+import MyInterest from "../Pages/MyInterest";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
       {
         path: "/my-posts",
         element: <MyPostPage/>
+      },
+      {
+        path: "/my-interest",
+        element: <MyInterest/>
       }
     ]
   },

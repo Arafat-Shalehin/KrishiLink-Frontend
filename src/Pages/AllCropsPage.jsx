@@ -34,7 +34,7 @@ const AllCropsPage = () => {
 
   return (
     <div className="mt-30">
-      <h1 className="font-bold text-4xl text-center mb-5 text-lime-500">
+      <h1 className="font-bold text-4xl text-center mb-5 text-green-700">
         All Crops
       </h1>
       <div className="flex justify-between">

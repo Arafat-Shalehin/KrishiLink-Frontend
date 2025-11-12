@@ -1,22 +1,24 @@
-import React from 'react';
-import { Outlet } from 'react-router';
-import Footer from '../components/Footer';
-import Navbar from '../Components/Navbar';
+import React from "react";
+import { Outlet, useNavigation } from "react-router";
+import Navbar from "../Components/Navbar";
+import Loader from "../Components/Loader";
+import Footer from "../Components/Footer";
 
 const AuthLayout = () => {
-    return (
-        <div className='min-h-screen'>
-            <header>
-                <Navbar/>
-            </header>
-            <main className='w-11/12 mx-auto py-6'>
-                <Outlet></Outlet>
-            </main>
-            <footer>
-                <Footer></Footer>
-            </footer>
-        </div>
-    );
+  const navigation = useNavigation();
+  return (
+    <div className="min-h-screen">
+      <header>
+        <Navbar />
+      </header>
+      <main className="w-11/12 mx-auto py-6">
+        {navigation.state === "loading" ? <Loader /> : <Outlet></Outlet>}
+      </main>
+      <footer>
+        <Footer></Footer>
+      </footer>
+    </div>
+  );
 };
 
 export default AuthLayout;

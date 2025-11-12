@@ -1,10 +1,15 @@
 import React from "react";
+import { useContext } from "react";
 import { FaYoutube } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { FaInstagramSquare } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
+import { AuthContext } from "../Context/AuthProvider";
+import { href, Link } from "react-router";
 
 export default function Footer() {
+  const { user } = useContext(AuthContext);
+
   const year = new Date().getFullYear();
 
   return (
@@ -53,17 +58,21 @@ export default function Footer() {
           </p>
           <div className="flex flex-wrap gap-2">
             <a
-              href="/explore"
+              href="/all-crops"
               className="inline-flex items-center justify-center rounded-full bg-linear-to-b from-emerald-500 to-emerald-600 px-4 py-2 font-semibold text-white shadow-lg shadow-emerald-500/20 hover:from-emerald-500 hover:to-emerald-700 transition"
             >
               Explore Crops
             </a>
-            <a
-              href="/post"
+            <Link
+              to={
+                user && user?.email
+                  ? ("/add-crops")
+                  : ("/auth/login")
+              }
               className="inline-flex items-center justify-center rounded-full border border-emerald-200 dark:border-emerald-800 bg-white/70 dark:bg-emerald-900/40 px-4 py-2 font-semibold text-emerald-900 dark:text-emerald-50 hover:bg-emerald-100/70 dark:hover:bg-emerald-900/60 transition"
             >
               Post your crop
-            </a>
+            </Link>
           </div>
         </section>
 
