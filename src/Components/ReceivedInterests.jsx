@@ -35,6 +35,7 @@ const ReceivedInterests = () => {
             message: interest.message,
             status: interest.status,
             interestId: interest._id,
+            cropQuantity: crop.quantity,
           }))
         );
 
@@ -64,7 +65,13 @@ const ReceivedInterests = () => {
       setReceivedInterests((prev) =>
         prev.map((interest) =>
           interest.interestId === interestId
-            ? { ...interest, status: newStatus }
+            ? {
+                ...interest,
+                status: newStatus,
+                ...(newStatus === "accepted" && res.data.newQuantity
+                  ? { cropQuantity: res.data.newQuantity }
+                  : {}),
+              }
             : interest
         )
       );

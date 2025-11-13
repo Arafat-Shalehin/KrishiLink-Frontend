@@ -92,7 +92,7 @@ const Hero = () => {
             variants={{
               visible: {
                 transition: {
-                  staggerChildren: 0.3, 
+                  staggerChildren: 0.3,
                   delayChildren: 0.6,
                 },
               },
@@ -122,7 +122,13 @@ const Hero = () => {
 
             {/* BUTTON */}
             <motion.a
-              href="#"
+              href={
+                heroData[slideIndex].cta === "Explore Posts"
+                  ? "/all-crops"
+                  : heroData[slideIndex].cta === "Start Posting"
+                  ? "/add-crops"
+                  : "/about"
+              }
               variants={childVariants}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

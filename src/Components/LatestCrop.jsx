@@ -38,8 +38,10 @@ const LatestCrop = () => {
       )}
       <Link to="/all-crops">
         <button
-          className="border border-green-400 font-semibold text-lg px-8 
-          lg:px-13 py-2 rounded text-green-600/90 mt-10 hover:bg-green-300/20 transition-colors"
+          className="border border-green-400 font-semibold 
+          text-lg lg:px-12 px-7 py-1.5 rounded 
+          text-green-600/90 mt-10 hover:bg-green-300/20 
+          transition-colors"
         >
           View All
         </button>

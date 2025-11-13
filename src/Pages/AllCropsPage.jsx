@@ -37,9 +37,9 @@ const AllCropsPage = () => {
       <h1 className="font-bold text-4xl text-center mb-5 text-green-700">
         All Crops
       </h1>
-      <div className="flex justify-between">
-        <div></div>
-        <div className="pr-5 md:w-[20%] mt-5">
+      <div className="flex justify-between items-center">
+        <div><h1 className="pl-5 text-gray-500 font-semibold md:text-xl text-lg">Total Product: {searchApps.length}</h1></div>
+        <div className="pr-5 w-[40%] md:w-[20%] mt-5">
           <label className="input w-full">
             <svg
               className="h-[1em] opacity-50"

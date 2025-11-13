@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import CounterCard from "./CounterCard";
+import { Link } from "react-router";
 
 const stats = [
   { number: 12000, label: "Farmers Connected" },
@@ -12,7 +13,6 @@ const OurMissionImpact = () => {
   return (
     <section className="mt-10 py-20 bg-linear-to-b from-green-50 to-white overflow-hidden">
       <div className="container mx-auto px-6 lg:px-16 flex flex-col-reverse lg:flex-row items-center gap-12">
-
         {/* Text Section */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -36,9 +36,14 @@ const OurMissionImpact = () => {
             for the next generation.
           </p>
 
-          <button className="mt-4 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl shadow-lg transition duration-300">
+          <Link
+            to="/about"
+            className="bg-linear-to-r from-green-700 to-green-400 
+          text-white lg:px-6 px-4 py-3 rounded font-semibold 
+          hover:scale-105 hover:shadow-lg transition-all duration-300"
+          >
             Learn More
-          </button>
+          </Link>
         </motion.div>
 
         {/* Image Section */}

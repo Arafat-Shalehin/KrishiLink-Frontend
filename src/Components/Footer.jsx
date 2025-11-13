@@ -59,17 +59,15 @@ export default function Footer() {
           <div className="flex flex-wrap gap-2">
             <a
               href="/all-crops"
-              className="inline-flex items-center justify-center rounded-full bg-linear-to-b from-emerald-500 to-emerald-600 px-4 py-2 font-semibold text-white shadow-lg shadow-emerald-500/20 hover:from-emerald-500 hover:to-emerald-700 transition"
+              className="bg-linear-to-r from-green-700 to-green-400 
+          text-white lg:px-6 px-4 py-2 rounded font-semibold 
+          hover:scale-105 hover:shadow-lg transition-all duration-300"
             >
               Explore Crops
             </a>
             <Link
-              to={
-                user && user?.email
-                  ? ("/add-crops")
-                  : ("/auth/login")
-              }
-              className="inline-flex items-center justify-center rounded-full border border-emerald-200 dark:border-emerald-800 bg-white/70 dark:bg-emerald-900/40 px-4 py-2 font-semibold text-emerald-900 dark:text-emerald-50 hover:bg-emerald-100/70 dark:hover:bg-emerald-900/60 transition"
+              to={user && user?.email ? "/add-crops" : "/auth/login"}
+              className="inline-flex items-center justify-center rounded border border-emerald-200 dark:border-emerald-800 bg-white/70 dark:bg-emerald-900/40 px-4 py-2 font-semibold text-emerald-900 dark:text-emerald-50 hover:bg-emerald-100/70 dark:hover:bg-emerald-900/60 transition"
             >
               Post your crop
             </Link>

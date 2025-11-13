@@ -14,6 +14,7 @@ import MyPostPage from "../Pages/MyPostPage";
 import MyInterest from "../Pages/MyInterest";
 import ReceivedInterests from "../Components/ReceivedInterests";
 import PrivateRoute from "./PrivateRoute";
+import About from "../Pages/About";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: "/all-crops",
         element: <AllCropsPage />,
+      },
+      {
+        path: "/about",
+        element: <About />,
       },
       {
         path: "my-profile",

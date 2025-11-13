@@ -141,7 +141,7 @@ const Navbar = () => {
         </Link>
       </div>
 
-      <div className={`navbar-center hidden md:flex items-center ${user && 'md:pl-22 lg:pl-7'}`}>
+      <div className={`navbar-center hidden md:flex items-center ${user && 'md:pl-15 lg:pl-7'}`}>
         <ul className="menu menu-horizontal px-1 gap-3 font-semibold">
           {links.map((link, index) => (
             <li key={index} className="flex flex-row items-center gap-3">
