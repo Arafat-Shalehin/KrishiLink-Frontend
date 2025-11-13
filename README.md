@@ -1,6 +1,6 @@
  # 🌾 KrishiLink - Crop Trading Platform
 
-### Live Site URL: [https://KrishiLink-client.vercel.app](https://KrishiLink-client.vercel.app)
+### Live Site URL: [https://krishilink-a8922.web.app](https://krishilink-a8922.web.app)
 
 KrishiLink is a modern agricultural trading platform designed to connect **farmers** and **buyers** directly.  
 It empowers farmers to post their crops for sale, receive buyer interests, and manage deals easily — all in one place.

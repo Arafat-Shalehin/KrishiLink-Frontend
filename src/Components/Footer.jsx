@@ -5,7 +5,7 @@ import { FaLinkedin } from "react-icons/fa";
 import { FaInstagramSquare } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { AuthContext } from "../Context/AuthProvider";
-import { href, Link } from "react-router";
+import { Link } from "react-router";
 
 export default function Footer() {
   const { user } = useContext(AuthContext);

@@ -100,7 +100,7 @@ const Navbar = () => {
     </>,
   ];
   return (
-    <div className="navbar z-5 glass-card fixed top-0 text-white bg-green-700/30 justify-between">
+    <div className="navbar z-5 glass-card fixed top-0 text-white bg-green-700/60 justify-between">
       <div className="navbar-start px-3">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost md:hidden">

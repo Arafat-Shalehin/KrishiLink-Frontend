@@ -53,7 +53,7 @@ const AddCrops = () => {
 
   return (
     <motion.div
-      className="max-w-4xl mx-auto mt-30 mb-15 p-8 bg-white rounded-2xl shadow-lg"
+      className="max-w-4xl mx-auto mt-30 mb-15 p-8 rounded-2xl shadow-lg"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
