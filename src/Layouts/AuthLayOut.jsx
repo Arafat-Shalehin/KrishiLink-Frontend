@@ -3,11 +3,13 @@ import { Outlet, useNavigation } from "react-router";
 import Navbar from "../Components/Navbar";
 import Loader from "../Components/Loader";
 import Footer from "../Components/Footer";
+import ScrollToTop from "../Components/ScrollToTop";
 
 const AuthLayout = () => {
   const navigation = useNavigation();
   return (
     <div className="min-h-screen">
+      <ScrollToTop/>
       <header>
         <Navbar />
       </header>
