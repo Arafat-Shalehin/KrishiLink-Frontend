@@ -13,65 +13,86 @@ import AddCrops from "../Pages/AddCrops";
 import MyPostPage from "../Pages/MyPostPage";
 import MyInterest from "../Pages/MyInterest";
 import ReceivedInterests from "../Components/ReceivedInterests";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomeLayOut/>,
-    errorElement: <ErrorPage/>,
+    element: <HomeLayOut />,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
-        element: <App/>
+        element: <App />,
       },
       {
-        path: '/all-crops',
-        element: <AllCropsPage/>
+        path: "/all-crops",
+        element: <AllCropsPage />,
       },
       {
-        path: 'my-profile',
-        element: <MyProfile/>
+        path: "my-profile",
+        element: (
+          <PrivateRoute>
+            <MyProfile />
+          </PrivateRoute>
+        ),
       },
       {
-        path: 'crops-details/:id/:type',
-        element: <CropsDetails/>
+        path: "crops-details/:id/:type",
+        element: (
+          <PrivateRoute>
+            <CropsDetails />
+          </PrivateRoute>
+        ),
       },
       {
-        path: "/news/:id", 
-        element: <NewsDetails />
+        path: "/news/:id",
+        element: <NewsDetails />,
       },
       {
         path: "/add-crops",
-        element: <AddCrops/>
+        element: (
+          <PrivateRoute>
+            <AddCrops />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/my-posts",
-        element: <MyPostPage/>
+        element: (
+          <PrivateRoute>
+            <MyPostPage />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/my-interest",
-        element: <MyInterest/>
+        element: (
+          <PrivateRoute>
+            <MyInterest />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/receiveInterest",
-        element: <ReceivedInterests/>
-      }
-    ]
+        element: <ReceivedInterests />,
+      },
+    ],
   },
   {
-        path: '/auth',
-        element: <AuthLayout/>,
-        children: [
-            {
-                path: '/auth/login',
-                element: <Login/>
-            },
-            {
-                path: '/auth/register',
-                element: <Register/>
-            }
-        ]
-    }
+    path: "/auth",
+    element: <AuthLayout />,
+    children: [
+      {
+        path: "/auth/login",
+        element: <Login />,
+      },
+      {
+        path: "/auth/register",
+        element: <Register />,
+      },
+    ],
+  },
 ]);
 
 export default router;

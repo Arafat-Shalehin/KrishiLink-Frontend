@@ -147,7 +147,7 @@ const ReceivedInterests = () => {
                           "accepted"
                         )
                       }
-                      className="bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600 disabled:bg-gray-300"
+                      className="border bg-green-200 border-green-500 text-black px-3 py-1 rounded hover:bg-green-600 hover:text-white duration-300 disabled:bg-gray-300"
                     >
                       {loadingInterestId === interest.interestId
                         ? "..."
@@ -166,7 +166,7 @@ const ReceivedInterests = () => {
                           "rejected"
                         )
                       }
-                      className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 disabled:bg-gray-300"
+                      className="bg-red-200 border border-red-500 text-black px-3 py-1 rounded hover:bg-red-600 hover:text-white duration-300 disabled:bg-gray-300"
                     >
                       {loadingInterestId === interest.interestId
                         ? "..."

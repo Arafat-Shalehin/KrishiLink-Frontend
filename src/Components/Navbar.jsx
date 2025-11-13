@@ -131,9 +131,9 @@ const Navbar = () => {
           </ul>
         </div>
 
-        <Link to="/" className="flex items-center gap-1 text-xl font-bold">
+        <Link to="/" className="flex items-center gap-1 md:text-xl text-lg font-bold">
           <img
-            className="w-10 md:w-13 lg:w-15 rounded-full md:mr-1 ml-2 sm:ml-0"
+            className="w-9 md:w-13 lg:w-15 rounded-full md:mr-1 ml-2 sm:ml-0"
             src={projectLogo}
             alt="Logo Pic"
           />
@@ -141,10 +141,12 @@ const Navbar = () => {
         </Link>
       </div>
 
-      <div className="navbar-center hidden md:flex items-center md:pl-22 lg:pl-7">
+      <div className={`navbar-center hidden md:flex items-center ${user && 'md:pl-22 lg:pl-7'}`}>
         <ul className="menu menu-horizontal px-1 gap-3 font-semibold">
           {links.map((link, index) => (
-            <li key={index} className="flex flex-row items-center">{link}</li>
+            <li key={index} className="flex flex-row items-center gap-3">
+              {link}
+            </li>
           ))}
         </ul>
       </div>
@@ -163,7 +165,7 @@ const Navbar = () => {
                   referrerPolicy="no-referrer"
                   src={
                     user.photoURL ||
-                    "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                    "https://static.vecteezy.com/system/resources/previews/007/296/447/non_2x/user-icon-in-flat-style-person-icon-client-symbol-vector.jpg"
                   }
                 />
               </div>
@@ -179,13 +181,6 @@ const Navbar = () => {
                 </li>
                 <li className="text-xs text-black">Email: {user.email}</li>
               </div>
-
-              {/* <input
-                onChange={(e)=> handleTheme(e.target.checked)}
-                type="checkbox"
-                defaultChecked={localStorage.getItem('theme') === "dark"}
-                className="toggle"/> */}
-
               <li>
                 <button
                   onClick={handleLogout}
@@ -198,13 +193,22 @@ const Navbar = () => {
             </ul>
           </div>
         ) : (
-          <Link
-            to={"/auth/login"}
-            className="btn shadow-none border-none rounded-lg 
-          bg-green-400 text-white text-lg hover:scale-115 transition"
-          >
-            <IoLogIn size={20} /> Login
-          </Link>
+          <div className="flex items-center md:gap-5 gap-2">
+            <Link
+              to={"/auth/login"}
+              className="btn shadow-none border-none rounded md:py-6
+          bg-green-400 text-white md:text-lg hover:scale-115 transition duration-300"
+            >
+              <IoLogIn size={20} /> Login
+            </Link>
+            <Link
+              to={"/auth/register"}
+              className="border border-green-400 md:font-semibold md:text-lg md:px-8 px-3
+          lg:px-13 py-2 rounded text-white hover:bg-green-800 hover:border-none transition-colors duration-400"
+            >
+              Register
+            </Link>
+          </div>
         )}
       </div>
     </div>

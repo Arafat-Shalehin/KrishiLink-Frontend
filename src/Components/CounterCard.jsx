@@ -11,8 +11,8 @@ const CounterCard = ({ number, label }) => {
 
     let start = 0;
     const end = number;
-    const duration = 2000; // 2 seconds
-    const increment = end / (duration / 20); // every 20ms
+    const duration = 2000;
+    const increment = end / (duration / 20); 
 
     const counter = setInterval(() => {
       start += increment;

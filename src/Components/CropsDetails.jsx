@@ -13,6 +13,7 @@ import "swiper/css/scrollbar";
 import { Scrollbar } from "swiper/modules";
 import { AuthContext } from "../Context/AuthProvider";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const CropsDetails = () => {
   const { id, type } = useParams();
@@ -123,36 +124,49 @@ const CropsDetails = () => {
       message,
     };
 
-    try {
-      const res = await instance.post(
-        `/allCrops/${crops._id}/interests`,
-        interestData
-      );
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+    });
+    if (result.isConfirmed) {
+      try {
+        const res = await instance.post(
+          `/allCrops/${crops._id}/interests`,
+          interestData
+        );
 
-      if (res.data.success) {
-        toast.success("Interest submitted successfully!");
-        setShowForm(false);
-        setQuantity(1);
-        setMessage("");
-        setInterestData((prev) => [
-          ...prev,
-          {
-            userEmail,
-            userName,
-            quantity,
-            message,
-            status: "pending",
-          },
-        ]);
-      } else {
-        toast.error(res.data.message || "Submission failed, Try again later.");
-      }
-    } catch (error) {
-      if (error.response?.data?.message?.includes("already sent")) {
-        toast.error("You’ve already sent an interest for this crop.");
-        setShowForm(false);
-      } else {
-        toast.error("Error submitting interest.");
+        if (res.data.success) {
+          toast.success("Interest submitted successfully!");
+          setShowForm(false);
+          setQuantity(1);
+          setMessage("");
+          setInterestData((prev) => [
+            ...prev,
+            {
+              userEmail,
+              userName,
+              quantity,
+              message,
+              status: "pending",
+            },
+          ]);
+        } else {
+          toast.error(
+            res.data.message || "Submission failed, Try again later."
+          );
+        }
+      } catch (error) {
+        if (error.response?.data?.message?.includes("already sent")) {
+          toast.error("You’ve already sent an interest for this crop.");
+          setShowForm(false);
+        } else {
+          toast.error("Error submitting interest.");
+        }
       }
     }
   };
@@ -313,14 +327,14 @@ const CropsDetails = () => {
                           </div>
                         </td>
 
-                        {/* interest Price */}
+                        {/* interest */}
                         <td className="py-3 px-4 font-semibold">
-                          ${interest.quantity}
+                          {interest.quantity} {crops.unit}
                         </td>
 
                         {/* Status */}
                         <td className="py-3 px-4 font-semibold">
-                          ${interest.status}
+                          {interest.status}
                         </td>
                       </tr>
                     ))}

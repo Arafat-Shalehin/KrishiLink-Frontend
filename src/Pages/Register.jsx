@@ -1,10 +1,10 @@
-import React, { use, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router";
 import { AuthContext } from "../Context/AuthProvider";
 import { toast } from "react-toastify";
 
 const Register = () => {
-  const { createUser, setUser } = use(AuthContext);
+  const { createUser, setUser, updateUser } = useContext(AuthContext);
 
   const [show, setShow] = useState(false);
 
@@ -12,6 +12,7 @@ const Register = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+  // console.log(location);
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -38,17 +39,27 @@ const Register = () => {
 
     createUser(email, password)
       .then((result) => {
-        // Signed up
+        console.log(result);
         const user = result.user;
+        console.log(user);
 
-        setUser({ ...user, displayName: name, photoURL: image });
-        toast.success("SignUp Successful.");
-        navigate(`${location.state ? location.state : "/"}`);
+        updateUser({
+          displayName: name,
+          photoURL: image,
+        })
+          .then(() => {
+            setUser({ ...result.user, displayName: name, photoURL: image });
+            toast.success("SignUp Successful!");
+            navigate(location.state ? location.state : "/");
+          })
+          .catch((error) => {
+            console.error("Profile update failed:", error);
+            setError("Failed to update profile.");
+          });
       })
       .catch((error) => {
-        const errorMessage = error.message;
-        console.log(errorMessage);
-        setError("Something is not right, Please try again later.");
+        console.error("Signup failed:", error);
+        setError("Something is not right, please try again later.");
       });
   };
 

@@ -22,7 +22,7 @@ const partners = [
   {
     id: 4,
     name: "World Bank",
-    logo: "https://www.un.org/sites/un2.un.org/files/field/image/world-bank-logo_0.jpg",
+    logo: "https://crystalpng.com/wp-content/uploads/2025/08/world-bank-logo.png",
     bg: "bg-gray-50",
   },
   {
@@ -34,49 +34,49 @@ const partners = [
   {
     id: 6,
     name: "BADC",
-    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7chXeXrt1ixKhphoMg-ZrG7jm_h-DP9X9SQ&s",
+    logo: "https://images.seeklogo.com/logo-png/40/1/badc-logo-png_seeklogo-408076.png",
     bg: "bg-emerald-50",
   },
   {
     id: 7,
     name: "IFAD",
-    logo: "https://www.iita.org/wp-content/uploads/2021/05/IFAD-1024x703.png",
+    logo: "https://hub.unido.org/sites/default/files/logos/ifad_0.png",
     bg: "bg-lime-50",
   },
   {
     id: 8,
     name: "AgriTech BD",
-    logo: "https://dcassetcdn.com/design_img/2394044/578653/578653_12508156_2394044_9ad445c8_image.jpg",
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4BSdv1z2yKWSRsrHZG-ARWr3kURfxpEPGaQ&s",
     bg: "bg-green-50",
   },
   {
     id: 9,
     name: "Krishi Hub",
-    logo: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,fit=crop,q=95/mxBXDEbMKQirPEN2/3dpng-A1a52o3lRZh8JE51.png",
+    logo: "https://img.freepik.com/premium-vector/agro-farm-green-logo-template_624194-931.jpg?semt=ais_hybrid&w=740&q=80",
     bg: "bg-yellow-50",
   },
   {
     id: 10,
     name: "FarmLink Global",
-    logo: "https://farmlink.eu/wp-content/uploads/2019/06/Destacada_FarmLink-1.jpg",
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6SttKBXfcbND1nwya1Wx4lny4KOakJfypmQ&s",
     bg: "bg-green-100",
   },
   {
     id: 11,
     name: "BARI",
-    logo: "https://images.seeklogo.com/logo-png/48/2/ssc-bari-logo-png_seeklogo-486473.png",
+    logo: "https://images-platform.99static.com/2ILFyC2qxM58EeK6_q2lwEEigKk=/500x500/top/smart/99designs-contests-attachments/23/23331/attachment_23331960",
     bg: "bg-red-50",
   },
   {
     id: 12,
-    name: "ACI Agri",
-    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMXva6N_hKnH9yF6IvztbOyprGrSAghS-O_g&s",
+    name: "ACI Agri",//
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQW-vQuwdfwNYz42gstmadBclOqpXpgbwoo1g&s",
     bg: "bg-white-50",
   },
 ];
 
 const PartnerShips = () => {
-  const scrollingPartners = [...partners, ...partners, ...partners]; // duplicate thrice for smooth loop
+  const scrollingPartners = [...partners, ...partners, ...partners];
 
   return (
     <section className="py-10 bg-white relative overflow-hidden">
@@ -95,15 +95,14 @@ const PartnerShips = () => {
           {scrollingPartners.map((partner, index) => (
             <div
               key={`${partner.id}-${index}`}
-              className={`shrink-0 min-w-[180px] min-h-[120px] md:min-w-[220px] 
-                lg:min-w-[260px] ${partner.bg} mx-3 flex items-center 
-                justify-center rounded-xl shadow-md hover:scale-105 
-                transition-transform duration-300`}
+              className={`shrink-0 ${partner.bg} mx-3 flex items-center 
+                justify-center rounded-full shadow-md hover:scale-105 
+                transition-transform duration-300 my-3`}
             >
               <img
                 src={partner.logo}
                 alt={partner.name}
-                className="max-h-16 md:max-h-20 object-contain rounded-full"
+                className="w-30 lg:w-45 object-contain rounded-full"
               />
             </div>
           ))}
