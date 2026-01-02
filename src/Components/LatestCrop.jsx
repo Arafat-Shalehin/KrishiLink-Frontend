@@ -1,52 +1,105 @@
 import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { Link } from "react-router";
 import useAxios from "../Hooks/useAxios";
 import EachCrops from "./EachCrops";
 import Loader from "./Loader";
+import LatestCropSkeleton from "./LatestCropSkeleton";
 
 const LatestCrop = () => {
   const [sixCrops, setSixCrops] = useState([]);
   const [loading, setLoading] = useState(false);
   const instance = useAxios();
 
+  const sectionVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
   useEffect(() => {
+    let mounted = true;
     setLoading(true);
+
     instance
       .get("/sixCrops")
       .then((res) => {
+        if (!mounted) return;
         setSixCrops(res.data);
-        setLoading(false);
       })
       .catch((error) => {
         console.error(error);
+      })
+      .finally(() => {
+        if (!mounted) return;
+        setLoading(false);
       });
+
+    return () => {
+      mounted = false;
+    };
   }, [instance]);
 
   return (
-    <div className="text-center my-8">
-      <h1 className="text-green-900/60 text-4xl font-bold mb-10">
-        Latest Crop Post
-      </h1>
-      {loading ? (
-        <Loader />
-      ) : (
-        <div className="w-[95%] grid grid-cols-2 md:grid-cols-3 mx-auto gap-5">
-          {sixCrops.map((crops) => {
-            return <EachCrops key={crops._id} crops={crops}></EachCrops>;
-          })}
+    <motion.section
+      className="bg-[var(--color-bg)] py-10 sm:py-12"
+      variants={sectionVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.25 }}
+    >
+      <div className="mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="text-sm font-semibold tracking-wide text-[var(--color-secondary)]">
+            Fresh arrivals
+          </p>
+
+          <h1 className="mt-2 text-3xl font-bold tracking-tight text-[var(--color-text)] sm:text-4xl">
+            Latest Crop Posts
+          </h1>
+
+          <div className="mx-auto mt-4 h-1 w-20 rounded-full bg-[var(--color-accent)]" />
+
+          <p className="mt-4 text-sm leading-6 text-[var(--color-muted)]">
+            Browse newly listed crops from farmers and explore the best deals.
+          </p>
         </div>
-      )}
-      <Link to="/all-crops">
-        <button
-          className="border border-green-400 font-semibold 
-          text-lg lg:px-12 px-7 py-1.5 rounded 
-          text-green-600/90 mt-10 hover:bg-green-300/20 
-          transition-colors"
-        >
-          View All
-        </button>
-      </Link>
-    </div>
+
+        {/* Content */}
+        <div className="mt-10">
+          {loading ? (
+            <LatestCropSkeleton count={6} />
+          ) : (
+            <div className="grid gap-2 md:gap-5 grid-cols-2 lg:grid-cols-3 lg:mx-12">
+              {sixCrops.map((crops) => (
+                <EachCrops key={crops._id} crops={crops} />
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Footer CTA */}
+        <div className="mt-10 flex justify-center">
+          <Link to="/all-crops">
+            <button
+              className={[
+                "inline-flex items-center justify-center rounded-full border px-7 py-2.5 text-sm font-semibold transition-colors",
+                "border-[var(--color-secondary)] text-[var(--color-secondary)]",
+                "hover:bg-[color-mix(in_srgb,var(--color-secondary)_12%,transparent)]",
+                "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+              ].join(" ")}
+            >
+              View All
+            </button>
+          </Link>
+        </div>
+      </div>
+    </motion.section>
   );
 };
 

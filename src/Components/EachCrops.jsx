@@ -3,29 +3,36 @@ import { Link } from "react-router";
 
 const EachCrops = ({ crops }) => {
   // console.log(crops);
-  const textVariants = {
-    hidden: { opacity: 0, x: 40 },
-    visible: (i) => ({
+  const cardVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
       opacity: 1,
-      x: 0,
+      y: 0,
       transition: {
-        delay: i * 0.15,
         duration: 0.5,
         ease: "easeOut",
+        when: "beforeChildren",
+        staggerChildren: 0.1,
       },
-    }),
+    },
   };
+
+  // const textVariants = {
+  //   hidden: { opacity: 0, x: 30 },
+  //   visible: {
+  //     opacity: 1,
+  //     x: 0,
+  //     transition: { duration: 0.4, ease: "easeOut" },
+  //   },
+  // };
 
   return (
     <motion.div
       className="flex flex-col md:flex-row items-center justify-evenly 
-      border border-gray-200 rounded-2xl overflow-hidden shadow-md 
+      border border-[var(--color-border)] rounded-2xl overflow-hidden shadow-md 
       hover:shadow-lg transition-all duration-300 
-      bg-white hover:-translate-y-1 p-4 md:p-6 gap-5 lg:gap-0"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      bg-[var(--color-surface)] hover:-translate-y-1 p-4 md:p-6 gap-5 lg:gap-0"
+      variants={cardVariants}
     >
       {/* Image */}
       <div>
@@ -38,42 +45,27 @@ const EachCrops = ({ crops }) => {
 
       {/* Text */}
       <div className="space-y-2 md:space-y-3 text-left">
-        {[
-          crops.name,
-          `Type: ${crops.type}`,
-          `Price: ${crops.pricePerUnit}/Kg`,
-        ].map((text, i) => (
-          <motion.p
-            key={i}
-            custom={i}
-            variants={textVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className={`line-clamp-1 ${
-              i === 0
-                ? "text-2xl font-bold text-gray-800"
-                : "text-lg font-semibold text-gray-600"
-            }`}
-          >
-            {text}
-          </motion.p>
-        ))}
+        <p className="text-xl font-bold text-[var(--color-text)]">
+          {crops.name}
+        </p>
 
-        <Link
-        to={`/crops-details/${crops._id}/${crops.type}`}
-        >
-          <motion.button
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ delay: 0.45, duration: 0.5 }}
-            className="bg-linear-to-r from-green-700 to-green-400 
-          text-white lg:px-6 px-4 py-2 rounded font-semibold 
-          hover:scale-105 hover:shadow-lg transition-all duration-300"
+        <p className="text-lg font-semibold text-[var(--color-muted)]">
+          <span className="text-[var(--color-secondary)]">Type:</span>{" "}
+          {crops.type}
+        </p>
+
+        <p className="text-lg font-semibold text-[var(--color-muted)]">
+          <span className="text-[var(--color-secondary)]">Price:</span>{" "}
+          {crops.pricePerUnit}/Kg
+        </p>
+
+        <Link to={`/crops-details/${crops._id}/${crops.type}`}>
+          <button
+            className="bg-[var(--color-primary)] text-white px-4 py-2 rounded font-semibold
+            hover:brightness-95 transition hover:cursor-pointer"
           >
             View Details
-          </motion.button>
+          </button>
         </Link>
       </div>
     </motion.div>
