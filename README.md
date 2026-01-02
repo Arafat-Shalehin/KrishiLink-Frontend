@@ -22,4 +22,23 @@ It empowers farmers to post their crops for sale, receive buyer interests, and m
 - **Frontend:** React.js, React Router, Tailwind CSS, Framer Motion  
 - **State & Auth:** Context API, Firebase Authentication  
 - **HTTP Requests:** Axios  
-- **Notifications:** React Toastify  
+- **Notifications:** React Toastify
+
+---
+
+## 🔧 Installation & Setup
+
+### Go step by step  
+```bash
+git clone
+cd krishilink-frontend
+npm install
+Create a .env.local file and add your Firebase + Backend credentials:
+VITE_api_url=<YOUR_BACKEND_URL>
+VITE_api_key=<FIREBASE_API_KEY>
+VITE_auth_domain=<FIREBASE_AUTH_DOMAIN>
+VITE_project_id=<FIREBASE_PROJECT_ID>
+VITE_storage_bucket=<FIREBASE_STORAGE_BUCKET>
+VITE_messaging_sender_id=<FIREBASE_SENDER_ID>
+VITE_app_id=<FIREBASE_APP_ID>
+npm run dev
