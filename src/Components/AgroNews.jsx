@@ -54,7 +54,7 @@ const news = [
 
 const AgroNews = () => {
   return (
-    <section className="py-16 sm:py-20 bg-[var(--color-bg)]" id="agro-news">
+    <section className="bg-[var(--color-bg)]" id="agro-news">
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12 sm:mb-14">

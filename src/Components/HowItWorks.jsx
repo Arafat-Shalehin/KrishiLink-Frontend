@@ -49,7 +49,7 @@ const steps = [
 
 const HowItWorks = () => {
   return (
-    <section className="py-14 sm:py-16 bg-[var(--color-bg)]" id="how-it-works">
+    <section className="bg-[var(--color-bg)]" id="how-it-works">
       <div className="max-w-7xl mx-auto text-center px-4">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--color-text)] mb-12">
           How It Works

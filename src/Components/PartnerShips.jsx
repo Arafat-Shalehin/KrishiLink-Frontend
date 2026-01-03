@@ -80,7 +80,7 @@ const PartnerShips = () => {
 
   return (
     <section
-      className="py-10 bg-[var(--color-bg)] relative overflow-hidden"
+      className="bg-[var(--color-bg)] relative overflow-hidden"
       id="partnerships"
     >
       <div className="text-center mb-10 px-4">

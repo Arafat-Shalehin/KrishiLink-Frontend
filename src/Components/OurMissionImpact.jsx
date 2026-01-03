@@ -11,7 +11,7 @@ const stats = [
 
 const OurMissionImpact = () => {
   return (
-    <section className="py-20 bg-gradient-to-b from-[var(--color-bg)] to-[var(--color-surface)] overflow-hidden">
+    <section className="bg-gradient-to-b from-[var(--color-bg)] to-[var(--color-surface)] overflow-hidden">
       <div className="container mx-auto px-6 lg:px-16 flex flex-col-reverse lg:flex-row items-center gap-12">
         {/* Text Section */}
         <motion.div

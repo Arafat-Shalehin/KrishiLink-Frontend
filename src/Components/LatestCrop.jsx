@@ -46,7 +46,7 @@ const LatestCrop = () => {
 
   return (
     <motion.section
-      className="bg-[var(--color-bg)] py-10 sm:py-12"
+      className="bg-[var(--color-bg)]"
       variants={sectionVariants}
       initial="hidden"
       whileInView="visible"
@@ -88,7 +88,7 @@ const LatestCrop = () => {
           <Link to="/all-crops">
             <button
               className={[
-                "inline-flex items-center justify-center rounded-full border px-7 py-2.5 text-sm font-semibold transition-colors",
+                "text-sm sm:text-lg lg:text-xl inline-flex items-center justify-center rounded-full border px-10 py-3 font-semibold transition-colors",
                 "border-[var(--color-secondary)] text-[var(--color-secondary)]",
                 "hover:bg-[color-mix(in_srgb,var(--color-secondary)_12%,transparent)]",
                 "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",

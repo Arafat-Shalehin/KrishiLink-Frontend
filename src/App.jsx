@@ -8,7 +8,7 @@ import OurMissionImpact from './Components/OurMissionImpact'
 
 function App() {
   return (
-    <div>
+    <div className='*:py-10 md:*:py-20'>
       <Hero/>
       <LatestCrop/>
       <HowItWorks/>
