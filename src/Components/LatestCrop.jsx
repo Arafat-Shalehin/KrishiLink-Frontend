@@ -3,8 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router";
 import useAxios from "../Hooks/useAxios";
 import EachCrops from "./EachCrops";
-import Loader from "./Loader";
-import LatestCropSkeleton from "./LatestCropSkeleton";
+import LatestCropSkeleton from "./Skeleton/LatestCropSkeleton";
 
 const LatestCrop = () => {
   const [sixCrops, setSixCrops] = useState([]);

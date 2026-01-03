@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../Context/AuthProvider";
 import useAxios from "../Hooks/useAxios";
-import Loader from "../Components/Loader";
 import EachCrops from "../Components/EachCrops";
-import AllCropsPageSkeleton from "../Components/AllCropsPageSkeleton";
+import AllCropsPageSkeleton from "../Components/Skeleton/AllCropsPageSkeleton";
 // import { motion } from "framer-motion";
 
 const AllCropsPage = () => {

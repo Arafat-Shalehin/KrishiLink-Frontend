@@ -6,21 +6,20 @@ import Loader from "./Loader";
 import { motion } from "framer-motion";
 import EachCrops from "./EachCrops";
 import { Swiper, SwiperSlide } from "swiper/react";
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/scrollbar";
-// import required modules
 import { Scrollbar } from "swiper/modules";
 import { AuthContext } from "../Context/AuthProvider";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import CropsDetailsSkeleton from "./Skeleton/CropsDetailsSkeleton";
+import SimilarProductsSkeleton from "./Skeleton/SimilarProductsSkeleton";
 
 const CropsDetails = () => {
   const { id, type } = useParams();
-  // console.log(id, type);
   const instance = useAxios();
   const { user } = useContext(AuthContext);
-  // console.log(user);
+
   const [crops, setCrops] = useState([]);
   const [allCrops, setAllCrops] = useState([]);
   const [interestCrops, setInterestCrops] = useState(0);
@@ -58,8 +57,6 @@ const CropsDetails = () => {
       setTypeLoading(true);
       try {
         const res = await instance.get(`/allCrops`);
-
-        // Filter after fetching
         const sT = res.data.filter(
           (crop) => crop.type === type && crop._id !== id
         );
@@ -79,7 +76,6 @@ const CropsDetails = () => {
     const userCrop = allCrops.filter(
       (crop) => crop?.owner?.ownerEmail === user?.email
     );
-    // console.log(userCrop);
 
     const totalInterests = userCrop.reduce(
       (acc, crop) => acc + (crop.interests?.length || 0),
@@ -101,17 +97,10 @@ const CropsDetails = () => {
     setInterestData(crops?.interests || []);
   }, [crops]);
 
-  // console.log(crops);
-  // console.log(interestData);
-
-  // Identifying user and owner
   const userName = user?.displayName;
   const userEmail = user?.email;
-  // console.log({ userName, userEmail });
 
-  // const cropOwnerName = crops?.owner?.ownerName;
   const cropOwnerEmail = crops?.owner?.ownerEmail;
-  // console.log({ cropOwnerName, cropOwnerEmail });
 
   // Handle Interest Function
   const handleInterestSubmit = async () => {
@@ -133,6 +122,7 @@ const CropsDetails = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes",
     });
+
     if (result.isConfirmed) {
       try {
         const res = await instance.post(
@@ -171,278 +161,323 @@ const CropsDetails = () => {
     }
   };
 
+  const statusClass = (status) => {
+    const s = String(status || "").toLowerCase();
+    if (s === "accepted")
+      return "text-[var(--color-primary)] bg-[color-mix(in_srgb,var(--color-primary)_10%,transparent)] border-[color-mix(in_srgb,var(--color-primary)_25%,transparent)]";
+    if (s === "rejected")
+      return "text-red-600 bg-red-50 dark:text-red-300 dark:bg-red-900/20 border-red-200 dark:border-red-900/40";
+    return "text-[var(--color-secondary)] bg-[color-mix(in_srgb,var(--color-accent)_14%,transparent)] border-[color-mix(in_srgb,var(--color-accent)_30%,transparent)]";
+  };
+
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 mt-15">
-      <h1 className="font-bold text-4xl text-center mb-5 text-green-700/50">
-        Product Details
-      </h1>
-      {loading ? (
-        <Loader />
-      ) : (
-        <div className="bg-white shadow-xl rounded-2xl overflow-hidden flex flex-col md:flex-row transition-all hover:shadow-2xl">
-          {/* Image Section */}
-          <motion.div
-            className="md:w-1/2"
-            initial={{ opacity: 0, x: -80 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <img
-              src={crops.image}
-              alt={crops.name}
-              className="h-full w-full object-cover md:rounded-l-2xl"
-            />
-          </motion.div>
+    <div className="bg-[var(--color-bg)] text-[var(--color-text)]">
+      <div className="max-w-7xl mx-auto px-4 py-10">
+        <h1 className="font-bold text-2xl sm:text-3xl md:text-4xl text-center mb-6 text-[var(--color-text)]">
+          Product <span className="text-[var(--color-primary)]">Details</span>
+        </h1>
 
-          {/* Details Section */}
-          <div className="md:w-1/2 p-6 flex flex-col justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-green-700 mb-2">
-                {crops.name}
-              </h1>
-              <p className="text-gray-600 mb-4">{crops.description}</p>
+        {loading ? (
+          <CropsDetailsSkeleton interestRows={4} />
+        ) : (
+          <div className="mt-10 bg-[var(--color-surface)] border border-[var(--color-border)] shadow-xl rounded-2xl overflow-hidden flex flex-col md:flex-row transition-all hover:shadow-2xl">
+            {/* Image Section */}
+            <motion.div
+              className="md:w-1/2 bg-[var(--color-bg)]"
+              initial={{ opacity: 0, x: -80 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+              <img
+                src={crops.image}
+                alt={crops.name}
+                className="h-full w-full object-cover md:rounded-l-2xl"
+              />
+            </motion.div>
 
-              <div className="space-y-2">
-                <p>
-                  <span className="font-semibold text-gray-800">Type: </span>
-                  {crops.type}
-                </p>
-                <p>
-                  <span className="font-semibold text-gray-800">Price: </span>
-                  <span className="text-green-700 font-semibold">
-                    {crops.pricePerUnit} BDT/{crops.unit}
+            {/* Details Section */}
+            <div className="md:w-1/2 p-6 flex flex-col justify-between">
+              <div>
+                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-[var(--color-text)] mb-2">
+                  <span className="text-[var(--color-primary)]">
+                    {crops.name}
                   </span>
-                </p>
-                <p>
-                  <span className="font-semibold text-gray-800">
-                    Quantity:{" "}
-                  </span>
-                  {crops.quantity} {crops.unit}
-                </p>
-                <p>
-                  <span className="font-semibold text-gray-800">
-                    Location:{" "}
-                  </span>
-                  {crops.location}
-                </p>
-              </div>
-            </div>
-
-            {/* Owner Info */}
-            <div className="mt-6 border-t pt-4">
-              <h2 className="text-lg font-semibold text-gray-800 mb-2">
-                Owner Information
-              </h2>
-              <p>
-                <span className="font-medium">Name: </span>
-                {crops.owner?.ownerName}
-              </p>
-              <p>
-                <span className="font-medium">Email: </span>
-                {crops.owner?.ownerEmail}
-              </p>
-            </div>
-
-            {userEmail === cropOwnerEmail && (
-              <div className="mt-6 border-t pt-4">
-                <h1 className="font-semibold text-gray-700">
-                  Amount of product received interest: {interestCrops}
                 </h1>
-              </div>
-            )}
 
-            {/* Button Section */}
-            <div className="mt-6 flex gap-3">
-              {userEmail === cropOwnerEmail ? (
-                <>
-                  <Link to="/receiveInterest">
-                    <button className="flex-1 px-5 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition">
+                <p className="text-[var(--color-muted)] text-sm sm:text-base mb-4 leading-relaxed">
+                  {crops.description}
+                </p>
+
+                <div className="space-y-2 text-sm sm:text-base">
+                  <p className="text-[var(--color-text)]">
+                    <span className="font-semibold text-[var(--color-secondary)]">
+                      Type:
+                    </span>{" "}
+                    <span className="text-[var(--color-text)]/90">
+                      {crops.type}
+                    </span>
+                  </p>
+
+                  <p className="text-[var(--color-text)]">
+                    <span className="font-semibold text-[var(--color-secondary)]">
+                      Price:
+                    </span>{" "}
+                    <span className="text-[var(--color-primary)] font-semibold">
+                      {crops.pricePerUnit} BDT/{crops.unit}
+                    </span>
+                  </p>
+
+                  <p className="text-[var(--color-text)]">
+                    <span className="font-semibold text-[var(--color-secondary)]">
+                      Quantity:
+                    </span>{" "}
+                    <span className="text-[var(--color-text)]/90">
+                      {crops.quantity} {crops.unit}
+                    </span>
+                  </p>
+
+                  <p className="text-[var(--color-text)]">
+                    <span className="font-semibold text-[var(--color-secondary)]">
+                      Location:
+                    </span>{" "}
+                    <span className="text-[var(--color-text)]/90">
+                      {crops.location}
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+              {/* Owner Info */}
+              <div className="mt-6 border-t border-[var(--color-border)] pt-4">
+                <h2 className="text-base sm:text-lg font-semibold text-[var(--color-text)] mb-2">
+                  Owner Information
+                </h2>
+                <p className="text-sm sm:text-base text-[var(--color-text)]/90">
+                  <span className="font-medium text-[var(--color-secondary)]">
+                    Name:
+                  </span>{" "}
+                  {crops.owner?.ownerName}
+                </p>
+                <p className="text-sm sm:text-base text-[var(--color-text)]/90">
+                  <span className="font-medium text-[var(--color-secondary)]">
+                    Email:
+                  </span>{" "}
+                  {crops.owner?.ownerEmail}
+                </p>
+              </div>
+
+              {userEmail === cropOwnerEmail && (
+                <div className="mt-6 border-t border-[var(--color-border)] pt-4">
+                  <h1 className="font-semibold text-sm sm:text-base text-[var(--color-muted)]">
+                    Amount of product received interest:{" "}
+                    <span className="text-[var(--color-text)]">
+                      {interestCrops}
+                    </span>
+                  </h1>
+                </div>
+              )}
+
+              {/* Button Section */}
+              <div className="mt-6 flex flex-col sm:flex-row gap-3">
+                {userEmail === cropOwnerEmail ? (
+                  <Link to="/receiveInterest" className="flex-1">
+                    <button className="w-full px-5 py-2.5 bg-[var(--color-primary)] text-white font-semibold rounded-lg hover:brightness-95 transition">
                       Manage received interests
                     </button>
                   </Link>
-                </>
-              ) : (
+                ) : (
+                  <button
+                    onClick={() => setShowForm(true)}
+                    className="flex-1 px-5 py-2.5 bg-[var(--color-primary)] text-white font-semibold rounded-lg hover:brightness-95 transition"
+                  >
+                    Show Interest
+                  </button>
+                )}
+
                 <button
-                  onClick={() => setShowForm(true)}
-                  className="flex-1 px-5 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition"
+                  onClick={() => window.history.back()}
+                  className="flex-1 px-5 py-2.5 border border-[var(--color-secondary)] text-[var(--color-secondary)] font-semibold rounded-lg hover:bg-[color-mix(in_srgb,var(--color-secondary)_10%,transparent)] transition"
                 >
-                  Show Interest
+                  Back
                 </button>
-              )}
-
-              <button
-                onClick={() => window.history.back()}
-                className="flex-1 px-5 py-2 border border-green-600 text-green-600 font-semibold rounded-lg hover:bg-green-50 transition"
-              >
-                Back
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Interested Prople */}
-      <div className="mt-20">
-        <h1 className="font-semibold md:text-3xl text-2xl text-gray-900/70">
-          People who are interested in this product
-        </h1>
-        {loading ? (
-          <Loader />
-        ) : (
-          <>
-            {interestData.length === 0 ? (
-              <h1 className="text-center mt-20 text-lg">
-                No one has shown any interest yet!
-              </h1>
-            ) : (
-              <div className="w-full mx-auto my-10 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <table className="min-w-full md:px-15 text-left text-sm text-gray-700">
-                  <thead className="bg-gray-50 border-b border-[#E9E9E9]">
-                    <tr>
-                      <th className="py-3 px-4 font-medium">SL No</th>
-                      <th className="py-3 px-4 font-medium">Wants to buy</th>
-                      <th className="py-3 px-4 font-medium">Quantity</th>
-                      <th className="py-3 px-4 font-medium">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {interestData.map((interest, index) => (
-                      <tr
-                        key={index}
-                        className="border-b border-[#E9E9E9] hover:bg-gray-50 transition"
-                      >
-                        <td className="py-3 px-4">{index + 1}</td>
-
-                        {/* Buyers Info */}
-                        <td className="py-3 px-4">
-                          <div className="flex items-center gap-3">
-                            <div>
-                              <p className="font-semibold text-gray-800">
-                                {interest.userName}
-                              </p>
-                              <p className="text-xs text-gray-500">
-                                {interest.userEmail}
-                              </p>
-                            </div>
-                          </div>
-                        </td>
-
-                        {/* interest */}
-                        <td className="py-3 px-4 font-semibold">
-                          {interest.quantity} {crops.unit}
-                        </td>
-
-                        {/* Status */}
-                        <td className="py-3 px-4 font-semibold">
-                          {interest.status}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
               </div>
-            )}
-          </>
+            </div>
+          </div>
         )}
-      </div>
 
-      {/* Similar Type of Products */}
-      <div className="mt-20">
-        <h1 className="font-bold text-4xl text-gray-400">
-          Similar types of products
-        </h1>
-        {typeLoading ? (
-          <Loader />
-        ) : (
-          <div className="mt-5 mb-5">
-            <Swiper
-              lazy="true"
-              slidesPerView={2}
-              spaceBetween={20}
-              scrollbar={{
-                hide: true,
-              }}
-              modules={[Scrollbar]}
-              className="mySwiper"
-            >
-              {sameType.length > 0 ? (
-                sameType.map((crops) => (
-                  <SwiperSlide key={crops._id}>
-                    <EachCrops crops={crops} />
-                  </SwiperSlide>
-                ))
+        {/* Interested People */}
+        <div className="mt-16 sm:mt-20">
+          <h1 className="font-semibold text-xl sm:text-2xl md:text-3xl text-[var(--color-text)]">
+            People who are interested in this product
+          </h1>
+
+          {loading ? (
+            <Loader />
+          ) : (
+            <>
+              {interestData.length === 0 ? (
+                <div className="mt-8 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-10 text-center">
+                  <h1 className="text-base sm:text-lg text-[var(--color-muted)] font-semibold">
+                    No one has shown any interest yet!
+                  </h1>
+                </div>
               ) : (
-                <h1 className="font-semibold text-xl">
-                  There are no product of this type.
-                </h1>
+                <div className="w-full mx-auto my-8 bg-[var(--color-surface)] rounded-2xl shadow-sm border border-[var(--color-border)] overflow-hidden">
+                  <table className="min-w-full text-left text-sm">
+                    <thead className="bg-[var(--color-bg)] border-b border-[var(--color-border)]">
+                      <tr className="text-[var(--color-text)]">
+                        <th className="py-3 px-4 font-semibold">SL No</th>
+                        <th className="py-3 px-4 font-semibold">
+                          Wants to buy
+                        </th>
+                        <th className="py-3 px-4 font-semibold">Quantity</th>
+                        <th className="py-3 px-4 font-semibold">Status</th>
+                      </tr>
+                    </thead>
+
+                    <tbody className="text-[var(--color-text)]/90">
+                      {interestData.map((interest, index) => (
+                        <tr
+                          key={index}
+                          className="border-b border-[var(--color-border)] hover:bg-[color-mix(in_srgb,var(--color-primary)_6%,transparent)] transition"
+                        >
+                          <td className="py-3 px-4">{index + 1}</td>
+
+                          <td className="py-3 px-4">
+                            <div className="flex items-center gap-3">
+                              <div>
+                                <p className="font-semibold text-[var(--color-text)]">
+                                  {interest.userName}
+                                </p>
+                                <p className="text-xs text-[var(--color-muted)]">
+                                  {interest.userEmail}
+                                </p>
+                              </div>
+                            </div>
+                          </td>
+
+                          <td className="py-3 px-4 font-semibold">
+                            {interest.quantity} {crops.unit}
+                          </td>
+
+                          <td className="py-3 px-4">
+                            <span
+                              className={[
+                                "inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold capitalize",
+                                statusClass(interest.status),
+                              ].join(" ")}
+                            >
+                              {interest.status}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               )}
-            </Swiper>
+            </>
+          )}
+        </div>
+
+        {/* Similar Type of Products */}
+        <div className="mt-16 sm:mt-20">
+          <h1 className="font-bold text-2xl sm:text-3xl md:text-4xl text-[var(--color-text)]/80">
+            Similar types of products
+          </h1>
+
+          {typeLoading ? (
+            <SimilarProductsSkeleton count={4} />
+          ) : (
+            <div className="mt-5 mb-5">
+              <Swiper
+                lazy="true"
+                slidesPerView={2}
+                spaceBetween={20}
+                scrollbar={{ hide: true }}
+                modules={[Scrollbar]}
+                className="mySwiper"
+              >
+                {sameType.length > 0 ? (
+                  sameType.map((crops) => (
+                    <SwiperSlide key={crops._id}>
+                      <EachCrops crops={crops} />
+                    </SwiperSlide>
+                  ))
+                ) : (
+                  <h1 className="font-semibold text-base sm:text-lg text-[var(--color-muted)]">
+                    There are no product of this type.
+                  </h1>
+                )}
+              </Swiper>
+            </div>
+          )}
+        </div>
+
+        {/* Interest Form Modal */}
+        {showForm && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+            <div className="bg-[var(--color-surface)] border border-[var(--color-border)] p-6 rounded-2xl shadow-lg w-full max-w-md relative">
+              <h2 className="text-xl sm:text-2xl font-semibold text-[var(--color-text)] mb-4">
+                Express Your Interest
+              </h2>
+
+              {/* Quantity Field */}
+              <label className="block mb-3">
+                <span className="text-[var(--color-muted)] font-medium text-sm sm:text-base">
+                  Quantity ({crops.unit})
+                </span>
+                <input
+                  type="text"
+                  defaultValue={quantity}
+                  onChange={(e) => setQuantity(Number(e.target.value))}
+                  className="mt-1 w-full border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] rounded-lg px-3 py-2 focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/20"
+                />
+              </label>
+
+              {/* Message Field */}
+              <label className="block mb-3">
+                <span className="text-[var(--color-muted)] font-medium text-sm sm:text-base">
+                  Message
+                </span>
+                <textarea
+                  rows="3"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  className="mt-1 w-full border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] rounded-lg px-3 py-2 focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/20"
+                  placeholder="Example: Interested in buying 100kg..."
+                ></textarea>
+              </label>
+
+              {/* Auto-calculated Price */}
+              <div className="mb-4">
+                <p className="text-[var(--color-muted)] font-medium text-sm sm:text-base">
+                  Total Price:{" "}
+                  <span className="text-[var(--color-primary)] font-semibold">
+                    {totalPrice.toLocaleString()} BDT
+                  </span>
+                </p>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex justify-end gap-3 mt-6">
+                <button
+                  onClick={() => setShowForm(false)}
+                  className="px-4 py-2 border border-[var(--color-border)] text-[var(--color-text)] rounded-lg hover:bg-[var(--color-bg)] transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => handleInterestSubmit()}
+                  className="px-4 py-2 bg-[var(--color-primary)] hover:brightness-95 text-white rounded-lg font-semibold transition"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </div>
-
-      {/* Interest Form Modal */}
-      {showForm && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-xl shadow-lg w-[90%] md:w-[450px] relative">
-            <h2 className="text-2xl font-semibold text-green-700 mb-4">
-              Express Your Interest
-            </h2>
-
-            {/* Quantity Field */}
-            <label className="block mb-3">
-              <span className="text-gray-700 font-medium">
-                Quantity ({crops.unit})
-              </span>
-              <input
-                type="text"
-                // min="1"
-                defaultValue={quantity}
-                onChange={(e) => setQuantity(Number(e.target.value))}
-                className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
-            </label>
-
-            {/* Message Field */}
-            <label className="block mb-3">
-              <span className="text-gray-700 font-medium">Message</span>
-              <textarea
-                rows="3"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-                placeholder="Example: Interested in buying 100kg..."
-              ></textarea>
-            </label>
-
-            {/* Auto-calculated Price */}
-            <div className="mb-4">
-              <p className="text-gray-700 font-medium">
-                Total Price:{" "}
-                <span className="text-green-600 font-semibold">
-                  {totalPrice.toLocaleString()} BDT
-                </span>
-              </p>
-            </div>
-
-            {/* Buttons */}
-            <div className="flex justify-end gap-3 mt-6">
-              <button
-                onClick={() => setShowForm(false)}
-                className="px-4 py-2 border border-gray-400 rounded-lg hover:bg-gray-100"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => handleInterestSubmit()}
-                className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold"
-              >
-                Submit
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

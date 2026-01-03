@@ -48,7 +48,6 @@ const Navbar = () => {
 
   const authedLinks = user
     ? [
-        { to: "/my-profile", label: "Profile" },
         { to: "/add-crops", label: "Add Crops" },
         { to: "/my-posts", label: "My Posts" },
         { to: "/my-interest", label: "My Interests" },

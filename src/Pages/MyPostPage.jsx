@@ -4,8 +4,8 @@ import useAxios from "../Hooks/useAxios";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
 import { Pencil, Trash2 } from "lucide-react";
-import Loader from "../Components/Loader";
 import Swal from "sweetalert2";
+import MyPostPageSkeleton from "../Components/Skeleton/MyPostPageSkeleton";
 
 const MyPostPage = () => {
   const { user } = useContext(AuthContext);
@@ -102,171 +102,215 @@ const MyPostPage = () => {
   };
 
   if (loading) {
-    return <Loader />;
+    return <MyPostPageSkeleton rows={6} />;
   }
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
-      <h2 className="mt-20 text-3xl font-bold mb-8 text-green-700 text-center">
-        My Posts
-      </h2>
+    <section className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <h2 className="mt-10 text-2xl sm:text-3xl font-bold mb-8 text-center text-[var(--color-text)]">
+          My <span className="text-[var(--color-primary)]">Posts</span>
+        </h2>
 
-      {/* Table */}
-      <div className="overflow-x-auto bg-white shadow-xl rounded-2xl p-4">
-        <table className="min-w-full text-sm text-left">
-          <thead>
-            <tr className="bg-green-100 text-green-800">
-              <th className="py-3 px-4">Image</th>
-              <th className="py-3 px-4">Name</th>
-              <th className="py-3 px-4">Type</th>
-              <th className="py-3 px-4">Price</th>
-              <th className="py-3 px-4">Quantity</th>
-              <th className="py-3 px-4">Location</th>
-              <th className="py-3 px-4 text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {myCrops.length === 0 ? (
-              <tr>
-                <td
-                  colSpan="7"
-                  className="py-6 text-center text-lg text-gray-500"
-                >
-                  No posts found.
-                </td>
+        {/* Table */}
+        <div className="overflow-x-auto bg-[var(--color-surface)] border border-[var(--color-border)] shadow-xl rounded-2xl p-4">
+          <table className="min-w-full text-sm text-left">
+            <thead>
+              <tr className="bg-[color-mix(in_srgb,var(--color-primary)_12%,var(--color-bg))] text-[var(--color-text)]">
+                <th className="py-3 px-4 font-semibold">Image</th>
+                <th className="py-3 px-4 font-semibold">Name</th>
+                <th className="py-3 px-4 font-semibold">Type</th>
+                <th className="py-3 px-4 font-semibold">Price</th>
+                <th className="py-3 px-4 font-semibold">Quantity</th>
+                <th className="py-3 px-4 font-semibold">Location</th>
+                <th className="py-3 px-4 font-semibold text-center">Actions</th>
               </tr>
-            ) : (
-              myCrops.map((crop) => (
-                <tr
-                  key={crop._id}
-                  className="border-b hover:bg-green-50 transition-all duration-200"
-                >
-                  <td className="py-2 px-4">
-                    <img
-                      src={crop.image}
-                      alt={crop.name}
-                      className="w-16 h-16 object-cover rounded-xl"
-                    />
-                  </td>
-                  <td className="py-2 px-4">{crop.name}</td>
-                  <td className="py-2 px-4">{crop.type}</td>
-                  <td className="py-2 px-4">
-                    {crop.pricePerUnit} / {crop.unit}
-                  </td>
-                  <td className="py-2 px-4">{crop.quantity}</td>
-                  <td className="py-2 px-4">{crop.location}</td>
-                  <td className="py-2 px-4 flex items-center justify-center gap-3 mt-4">
-                    <button
-                      onClick={() => handleEdit(crop)}
-                      className="p-2 bg-green-100 text-green-700 rounded-full hover:scale-110 transition"
-                    >
-                      <Pencil size={16} />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(crop._id)}
-                      className="p-2 bg-red-100 text-red-700 rounded-full hover:scale-110 transition"
-                    >
-                      <Trash2 size={16} />
-                    </button>
+            </thead>
+
+            <tbody>
+              {myCrops.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan="7"
+                    className="py-10 text-center text-base text-[var(--color-muted)]"
+                  >
+                    No posts found.
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+              ) : (
+                myCrops.map((crop) => (
+                  <tr
+                    key={crop._id}
+                    className="border-b border-[var(--color-border)] hover:bg-[color-mix(in_srgb,var(--color-primary)_6%,transparent)] transition-all duration-200"
+                  >
+                    <td className="py-2 px-4">
+                      <img
+                        src={crop.image}
+                        alt={crop.name}
+                        className="w-16 h-16 object-cover rounded-xl border border-[var(--color-border)]"
+                      />
+                    </td>
 
-      {/* Edit Modal */}
-      <AnimatePresence>
-        {showModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/30 bg-opacity-10 flex items-center justify-center z-50"
-          >
+                    <td className="py-2 px-4 font-semibold text-[var(--color-text)]">
+                      {crop.name}
+                    </td>
+
+                    <td className="py-2 px-4 text-[var(--color-muted)]">
+                      {crop.type}
+                    </td>
+
+                    <td className="py-2 px-4 text-[var(--color-text)]/90">
+                      <span className="font-semibold text-[var(--color-primary)]">
+                        {crop.pricePerUnit}
+                      </span>{" "}
+                      / {crop.unit}
+                    </td>
+
+                    <td className="py-2 px-4 text-[var(--color-text)]/90">
+                      {crop.quantity}
+                    </td>
+
+                    <td className="py-2 px-4 text-[var(--color-text)]/90">
+                      {crop.location}
+                    </td>
+
+                    <td className="py-2 px-4">
+                      <div className="flex items-center justify-center gap-3">
+                        <button
+                          onClick={() => handleEdit(crop)}
+                          className="p-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-primary)] hover:bg-[color-mix(in_srgb,var(--color-primary)_10%,transparent)] hover:scale-105 transition"
+                          aria-label="Edit crop"
+                          title="Edit"
+                        >
+                          <Pencil size={16} />
+                        </button>
+
+                        <button
+                          onClick={() => handleDelete(crop._id)}
+                          className="p-2 rounded-full border border-red-200 dark:border-red-900/40 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 hover:scale-105 transition"
+                          aria-label="Delete crop"
+                          title="Delete"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Edit Modal */}
+        <AnimatePresence>
+          {showModal && (
             <motion.div
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.8 }}
-              className="bg-white rounded-2xl p-8 w-full max-w-lg shadow-2xl"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4"
             >
-              <h3 className="text-2xl font-bold mb-4 text-green-700 text-center">
-                Edit Crop
-              </h3>
-              <form onSubmit={handleSave} className="space-y-3">
-                <input
-                  name="name"
-                  defaultValue={selectedCrop.name}
-                  className="w-full border rounded-lg p-2"
-                  required
-                />
-                <input
-                  name="type"
-                  defaultValue={selectedCrop.type}
-                  className="w-full border rounded-lg p-2"
-                  required
-                />
-                <input
-                  name="pricePerUnit"
-                  type="number"
-                  defaultValue={selectedCrop.pricePerUnit}
-                  className="w-full border rounded-lg p-2"
-                  required
-                />
-                <input
-                  name="unit"
-                  defaultValue={selectedCrop.unit}
-                  className="w-full border rounded-lg p-2"
-                  required
-                />
-                <input
-                  name="quantity"
-                  type="number"
-                  defaultValue={selectedCrop.quantity}
-                  className="w-full border rounded-lg p-2"
-                  required
-                />
-                <input
-                  name="location"
-                  defaultValue={selectedCrop.location}
-                  className="w-full border rounded-lg p-2"
-                  required
-                />
-                <input
-                  name="image"
-                  defaultValue={selectedCrop.image}
-                  className="w-full border rounded-lg p-2"
-                  required
-                />
-                <textarea
-                  name="description"
-                  defaultValue={selectedCrop.description}
-                  className="w-full border rounded-lg p-2"
-                  required
-                />
+              <motion.div
+                initial={{ scale: 0.92, y: 10 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.92, y: 10 }}
+                className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl p-6 sm:p-8 w-full max-w-lg shadow-2xl"
+              >
+                <h3 className="text-xl sm:text-2xl font-bold mb-4 text-center text-[var(--color-text)]">
+                  Edit <span className="text-[var(--color-primary)]">Crop</span>
+                </h3>
 
-                <div className="flex justify-end gap-4 mt-4">
-                  <button
-                    type="button"
-                    onClick={() => setShowModal(false)}
-                    className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
-                  >
-                    Save
-                  </button>
-                </div>
-              </form>
+                <form onSubmit={handleSave} className="space-y-3">
+                  <input
+                    name="name"
+                    defaultValue={selectedCrop.name}
+                    className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-sm sm:text-base text-[var(--color-text)] focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/20"
+                    required
+                    placeholder="Crop name"
+                  />
+
+                  <input
+                    name="type"
+                    defaultValue={selectedCrop.type}
+                    className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-sm sm:text-base text-[var(--color-text)] focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/20"
+                    required
+                    placeholder="Type"
+                  />
+
+                  <input
+                    name="pricePerUnit"
+                    type="number"
+                    defaultValue={selectedCrop.pricePerUnit}
+                    className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-sm sm:text-base text-[var(--color-text)] focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/20"
+                    required
+                    placeholder="Price per unit"
+                  />
+
+                  <input
+                    name="unit"
+                    defaultValue={selectedCrop.unit}
+                    className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-sm sm:text-base text-[var(--color-text)] focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/20"
+                    required
+                    placeholder="Unit"
+                  />
+
+                  <input
+                    name="quantity"
+                    type="number"
+                    defaultValue={selectedCrop.quantity}
+                    className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-sm sm:text-base text-[var(--color-text)] focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/20"
+                    required
+                    placeholder="Quantity"
+                  />
+
+                  <input
+                    name="location"
+                    defaultValue={selectedCrop.location}
+                    className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-sm sm:text-base text-[var(--color-text)] focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/20"
+                    required
+                    placeholder="Location"
+                  />
+
+                  <input
+                    name="image"
+                    defaultValue={selectedCrop.image}
+                    className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-sm sm:text-base text-[var(--color-text)] focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/20"
+                    required
+                    placeholder="Image URL"
+                  />
+
+                  <textarea
+                    name="description"
+                    defaultValue={selectedCrop.description}
+                    className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-sm sm:text-base text-[var(--color-text)] focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/20"
+                    required
+                    placeholder="Description"
+                    rows={3}
+                  />
+
+                  <div className="flex flex-col sm:flex-row justify-end gap-3 mt-4">
+                    <button
+                      type="button"
+                      onClick={() => setShowModal(false)}
+                      className="px-4 py-2.5 rounded-xl border border-[var(--color-secondary)] text-[var(--color-secondary)] hover:bg-[color-mix(in_srgb,var(--color-secondary)_10%,transparent)] transition"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-4 py-2.5 rounded-xl bg-[var(--color-primary)] text-white font-semibold hover:brightness-95 transition"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </form>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+          )}
+        </AnimatePresence>
+      </div>
+    </section>
   );
 };
 
