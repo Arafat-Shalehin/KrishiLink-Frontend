@@ -7,6 +7,7 @@ import { HiMenu, HiX } from "react-icons/hi";
 import projectLogo from "../Assets/unnamed.webp";
 import { AuthContext } from "../Context/AuthProvider";
 import { toast } from "react-toastify";
+import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
   const { user, dltUser } = useContext(AuthContext);
@@ -61,9 +62,9 @@ const Navbar = () => {
         "bg-[color-mix(in_srgb,var(--color-bg)_86%,transparent)]",
       ].join(" ")}
     >
-      <nav className="flex h-16 items-center px-4 sm:px-6 lg:px-8 text-[var(--color-text)]">
+      <nav className="h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8 text-[var(--color-text)]">
         {/* LEFT: logo + mobile toggle */}
-        <div className="flex flex-1 items-center gap-3">
+        <div className="flex items-center gap-3">
           {/* Mobile menu button */}
           <button
             type="button"
@@ -91,11 +92,11 @@ const Navbar = () => {
             onClick={() => setMobileOpen(false)}
           >
             <img
-              className="h-9 w-9 rounded-full object-cover ring-2 ring-[color-mix(in_srgb,var(--color-primary)_28%,transparent)]"
+              className="h-5 w-5 md:h-9 md:w-9 rounded-full object-cover ring-2 ring-[color-mix(in_srgb,var(--color-primary)_28%,transparent)]"
               src={projectLogo}
               alt="KrishiLink logo"
             />
-            <span className="text-lg font-semibold tracking-tight sm:text-xl">
+            <span className="text-sm md:text-lg font-semibold tracking-tight sm:text-xl">
               <span className="text-[var(--color-primary)]">Krishi</span>
               <span className="text-[var(--color-text)]">Link</span>
               <span className="ml-1 align-super text-xs text-[var(--color-accent)]">
@@ -123,9 +124,12 @@ const Navbar = () => {
         </div>
 
         {/* RIGHT: auth / profile */}
-        <div className="flex flex-1 items-center justify-end gap-3">
+        <div className="flex items-center gap-3">
           {!user ? (
             <div className="flex items-center gap-2 sm:gap-3">
+              <div className="hidden md:flex">
+                <ThemeToggle />
+              </div>
               <Link
                 to="/auth/login"
                 className={[
@@ -189,6 +193,9 @@ const Navbar = () => {
                   </p>
                 </li>
 
+                <ThemeToggle />
+                <div className="border my-2 border-gray-100" />
+
                 <li>
                   <Link
                     to="/my-profile"
@@ -230,6 +237,12 @@ const Navbar = () => {
             style={{ overflow: "hidden" }}
           >
             <div className="mx-auto max-w-7xl px-4 pb-4 pt-3 sm:px-6">
+              {!user && (
+                <>
+                  <ThemeToggle />
+                  <div className="border border-gray-100 my-2" />
+                </>
+              )}
               <nav className="flex flex-col gap-1">
                 {mainLinks.map((link) => (
                   <NavLink

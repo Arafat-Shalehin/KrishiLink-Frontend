@@ -13,7 +13,7 @@ const AuthLayout = () => {
       <header>
         <Navbar />
       </header>
-      <main className="w-11/12 mx-auto py-6">
+      <main>
         {navigation.state === "loading" ? <Loader /> : <Outlet></Outlet>}
       </main>
       <footer>
