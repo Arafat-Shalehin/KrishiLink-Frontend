@@ -10,7 +10,7 @@ const partners = [
   {
     id: 2,
     name: "BRAC",
-    logo: "https://brac.net/images/downloads/brac-logo.jpg",
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnAVg4PpvXmg_cbRQ29qEf8vOi6ZpMG4vRsA&s",
     bg: "bg-pink-50",
   },
   {
@@ -69,7 +69,7 @@ const partners = [
   },
   {
     id: 12,
-    name: "ACI Agri",//
+    name: "ACI Agri", //
     logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQW-vQuwdfwNYz42gstmadBclOqpXpgbwoo1g&s",
     bg: "bg-white-50",
   },
@@ -79,12 +79,15 @@ const PartnerShips = () => {
   const scrollingPartners = [...partners, ...partners, ...partners];
 
   return (
-    <section className="py-10 bg-white relative overflow-hidden">
-      <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
+    <section
+      className="py-10 bg-[var(--color-bg)] relative overflow-hidden"
+      id="partnerships"
+    >
+      <div className="text-center mb-10 px-4">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--color-text)] mb-2">
           Our Trusted Partners
         </h2>
-        <p className="text-gray-500">
+        <p className="text-[var(--color-muted)] text-sm sm:text-base">
           Collaborating with leading organizations to empower farmers worldwide
         </p>
       </div>
@@ -95,9 +98,10 @@ const PartnerShips = () => {
           {scrollingPartners.map((partner, index) => (
             <div
               key={`${partner.id}-${index}`}
-              className={`shrink-0 ${partner.bg} mx-3 flex items-center 
-                justify-center rounded-full shadow-md hover:scale-105 
-                transition-transform duration-300 my-3`}
+              className={`shrink-0 mx-3 flex items-center justify-center 
+                rounded-full shadow-md hover:scale-105 transition-transform duration-300 my-3
+                bg-[var(--color-surface)] border border-[var(--color-border)]
+                hover:border-[var(--color-accent)]`}
             >
               <img
                 src={partner.logo}

@@ -6,20 +6,27 @@ import { FaInstagramSquare } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { AuthContext } from "../Context/AuthProvider";
 import { Link } from "react-router";
+import Swal from "sweetalert2";
 
 export default function Footer() {
   const { user } = useContext(AuthContext);
 
   const year = new Date().getFullYear();
 
+  const handleSub = (e) => {
+    e.preventDefault();
+    Swal.fire("success", "Thank you for subscribing.", "success");
+    e.target.email.value = "";
+  };
+
   return (
     <footer
       role="contentinfo"
-      className="border-t border-emerald-100 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-50"
+      className="border-t border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-text)]"
     >
       {/* Top gradient bar */}
       <div
-        className="h-1 w-full bg-linear-to-r from-emerald-500 via-amber-400 to-lime-600"
+        className="h-1 w-full bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-accent)] to-[var(--color-secondary)]"
         aria-hidden="true"
       />
 
@@ -31,7 +38,7 @@ export default function Footer() {
             aria-label="KrishiLink home"
             className="inline-flex items-center gap-3 w-fit no-underline"
           >
-            <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-300 bg-emerald-100/60 dark:bg-emerald-900/40">
+            <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-border)] text-[var(--color-primary)] bg-[color-mix(in_srgb,var(--color-primary)_12%,var(--color-surface))]">
               {/* Leaf mark */}
               <svg
                 width="22"
@@ -53,21 +60,24 @@ export default function Footer() {
               KrishiLink
             </span>
           </a>
-          <p className="text-emerald-700 dark:text-emerald-300">
+
+          <p className="text-[var(--color-muted)]">
             Farmer’s Growth & Connection Platform
           </p>
+
           <div className="flex flex-wrap gap-2">
             <a
               href="/all-crops"
-              className="bg-linear-to-r from-green-700 to-green-400 
-          text-white lg:px-6 px-4 py-2 rounded font-semibold 
-          hover:scale-105 hover:shadow-lg transition-all duration-300"
+              className="bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)]
+              text-white lg:px-6 px-4 py-2 rounded font-semibold
+              hover:brightness-95 hover:scale-105 hover:shadow-lg transition-all duration-300"
             >
               Explore Crops
             </a>
+
             <Link
               to={user && user?.email ? "/add-crops" : "/auth/login"}
-              className="inline-flex items-center justify-center rounded border border-emerald-200 dark:border-emerald-800 bg-white/70 dark:bg-emerald-900/40 px-4 py-2 font-semibold text-emerald-900 dark:text-emerald-50 hover:bg-emerald-100/70 dark:hover:bg-emerald-900/60 transition"
+              className="inline-flex items-center justify-center rounded border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2 font-semibold text-[var(--color-text)] hover:bg-[color-mix(in_srgb,var(--color-primary)_10%,var(--color-surface))] transition"
             >
               Post your crop
             </Link>
@@ -77,16 +87,16 @@ export default function Footer() {
         {/* Link Grid */}
         <nav
           aria-label="Footer"
-          className="grid gap-6 rounded-2xl border border-emerald-100 dark:border-emerald-800 bg-white dark:bg-emerald-900/40 p-5 sm:p-6 lg:p-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+          className="grid gap-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:p-6 lg:p-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
         >
           <div>
-            <h3 className="text-xs uppercase tracking-widest text-emerald-600 dark:text-emerald-300 mb-3">
+            <h3 className="text-xs uppercase tracking-widest text-[var(--color-secondary)] mb-3">
               Explore
             </h3>
-            <ul className="space-y-2">
+            <ul className="space-y-2 text-sm">
               <li>
                 <a
-                  className="hover:underline underline-offset-4 decoration-emerald-500"
+                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
                   href="/explore"
                 >
                   Browse crop posts
@@ -94,7 +104,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  className="hover:underline underline-offset-4 decoration-emerald-500"
+                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
                   href="/connect"
                 >
                   Connect & collaborate
@@ -102,7 +112,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  className="hover:underline underline-offset-4 decoration-emerald-500"
+                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
                   href="/stories"
                 >
                   Success stories
@@ -110,7 +120,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  className="hover:underline underline-offset-4 decoration-emerald-500"
+                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
                   href="/trends"
                 >
                   Seasonal trends
@@ -120,13 +130,13 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-xs uppercase tracking-widest text-emerald-600 dark:text-emerald-300 mb-3">
+            <h3 className="text-xs uppercase tracking-widest text-[var(--color-secondary)] mb-3">
               For Users
             </h3>
-            <ul className="space-y-2">
+            <ul className="space-y-2 text-sm">
               <li>
                 <a
-                  className="hover:underline underline-offset-4 decoration-emerald-500"
+                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
                   href="/farmers"
                 >
                   For Farmers
@@ -134,7 +144,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  className="hover:underline underline-offset-4 decoration-emerald-500"
+                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
                   href="/traders"
                 >
                   For Traders
@@ -142,7 +152,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  className="hover:underline underline-offset-4 decoration-emerald-500"
+                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
                   href="/consumers"
                 >
                   For Consumers
@@ -150,7 +160,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  className="hover:underline underline-offset-4 decoration-emerald-500"
+                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
                   href="/guides/get-started"
                 >
                   Getting started
@@ -160,13 +170,13 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-xs uppercase tracking-widest text-emerald-600 dark:text-emerald-300 mb-3">
+            <h3 className="text-xs uppercase tracking-widest text-[var(--color-secondary)] mb-3">
               Resources
             </h3>
-            <ul className="space-y-2">
+            <ul className="space-y-2 text-sm">
               <li>
                 <a
-                  className="hover:underline underline-offset-4 decoration-emerald-500"
+                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
                   href="/guidelines"
                 >
                   Community guidelines
@@ -174,7 +184,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  className="hover:underline underline-offset-4 decoration-emerald-500"
+                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
                   href="/safety"
                 >
                   Safety & quality tips
@@ -182,7 +192,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  className="hover:underline underline-offset-4 decoration-emerald-500"
+                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
                   href="/faq"
                 >
                   FAQs
@@ -190,7 +200,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  className="hover:underline underline-offset-4 decoration-emerald-500"
+                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
                   href="/help"
                 >
                   Help center
@@ -200,13 +210,13 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-xs uppercase tracking-widest text-emerald-600 dark:text-emerald-300 mb-3">
+            <h3 className="text-xs uppercase tracking-widest text-[var(--color-secondary)] mb-3">
               Contact
             </h3>
-            <ul className="space-y-2">
+            <ul className="space-y-2 text-sm">
               <li>
                 <a
-                  className="hover:underline underline-offset-4 decoration-emerald-500"
+                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
                   href="mailto:hello@krishilink.app"
                 >
                   hello@krishilink.app
@@ -214,7 +224,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  className="hover:underline underline-offset-4 decoration-emerald-500"
+                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
                   href="/partnerships"
                 >
                   Partnerships
@@ -222,7 +232,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  className="hover:underline underline-offset-4 decoration-emerald-500"
+                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
                   href="/report"
                 >
                   Report an issue
@@ -239,7 +249,7 @@ export default function Footer() {
                 href="/"
                 aria-label="X (Twitter)"
                 title="X"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-300 hover:bg-emerald-100/60 dark:hover:bg-emerald-900/40 transition"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-primary)] hover:bg-[color-mix(in_srgb,var(--color-primary)_12%,var(--color-surface))] transition"
               >
                 <FaSquareXTwitter />
               </a>
@@ -247,7 +257,7 @@ export default function Footer() {
                 href="/"
                 aria-label="Instagram"
                 title="Instagram"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-300 hover:bg-emerald-100/60 dark:hover:bg-emerald-900/40 transition"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-primary)] hover:bg-[color-mix(in_srgb,var(--color-primary)_12%,var(--color-surface))] transition"
               >
                 <FaInstagramSquare />
               </a>
@@ -255,7 +265,7 @@ export default function Footer() {
                 href="/"
                 aria-label="LinkedIn"
                 title="LinkedIn"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-300 hover:bg-emerald-100/60 dark:hover:bg-emerald-900/40 transition"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-primary)] hover:bg-[color-mix(in_srgb,var(--color-primary)_12%,var(--color-surface))] transition"
               >
                 <FaLinkedin />
               </a>
@@ -263,7 +273,7 @@ export default function Footer() {
                 href="/"
                 aria-label="YouTube"
                 title="YouTube"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-300 hover:bg-emerald-100/60 dark:hover:bg-emerald-900/40 transition"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-primary)] hover:bg-[color-mix(in_srgb,var(--color-primary)_12%,var(--color-surface))] transition"
               >
                 <FaYoutube />
               </a>
@@ -273,39 +283,45 @@ export default function Footer() {
 
         {/* Newsletter */}
         <section aria-label="Get updates" className="grid gap-2 pt-6">
-          <h4 className="text-base font-semibold">
+          <h4 className="text-base font-semibold text-[var(--color-text)]">
             Get harvest updates & tips
           </h4>
+
           <form
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={handleSub}
             className="flex flex-wrap gap-2"
             method="post"
           >
             <label htmlFor="kl-news-email" className="sr-only">
               Email address
             </label>
+
             <input
               id="kl-news-email"
               name="email"
               type="email"
               required
               placeholder="your@email.com"
-              className="flex-1 min-w-[220px] rounded-full border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-emerald-900/40 px-4 py-2 text-emerald-900 dark:text-emerald-50 placeholder-emerald-700/70 dark:placeholder-emerald-300/60 focus:outline-none focus:ring-4 focus:ring-emerald-300/60 dark:focus:ring-emerald-700/50"
+              className="flex-1 min-w-[220px] rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2 text-[var(--color-text)] placeholder-[var(--color-muted)] focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/20"
             />
+
             <button
               type="submit"
-              className="inline-flex items-center justify-center rounded-full bg-linear-to-b from-amber-400 to-amber-500 px-4 py-2 font-semibold text-amber-950 hover:to-amber-600 transition"
+              className="inline-flex items-center 
+              justify-center rounded-full 
+              bg-[var(--color-accent)] px-4 py-2 
+              font-semibold text-[var(--color-text)] 
+              hover:brightness-95 transition hover:cursor-pointer"
             >
               Subscribe
             </button>
           </form>
-          <p className="text-sm text-emerald-700 dark:text-emerald-300">
+
+          <p className="text-sm text-[var(--color-muted)]">
             No spam. Seasonal insights and platform updates.
           </p>
-          <span
-            className="text-emerald-700 dark:text-emerald-300 
-          text-sm text-center mt-4"
-          >
+
+          <span className="text-[var(--color-muted)] text-sm text-center mt-4">
             Copyright © {year} All right reserved by KrishiLink
           </span>
         </section>

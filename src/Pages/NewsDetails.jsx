@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 const mockNews = [
   {
@@ -123,23 +124,38 @@ const NewsDetails = () => {
   const [article, setArticle] = useState(null);
 
   useEffect(() => {
-    // Since working with little data i am showing details like this, and obviously working
-    // with a lot of data would require me to me fetch apis.
     const found = mockNews.find((item) => item.id == id);
     setArticle(found);
   }, [id]);
 
+  function handleShare() {
+    const shareData = {
+      title: document.title,
+      text: "Check out this article",
+      url: window.location.href,
+    };
+
+    if (navigator.share) {
+      navigator.share(shareData).catch(() => {
+        // User cancelled — no action needed
+      });
+    } else {
+      navigator.clipboard.writeText(shareData.url);
+      Swal.fire("success", "Link copied to clipboard", "success");
+    }
+  }
+
   if (!article) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-500">Loading news details...</p>
+      <div className="min-h-screen flex items-center justify-center bg-[var(--color-bg)]">
+        <p className="text-[var(--color-muted)]">Loading news details...</p>
       </div>
     );
   }
 
   return (
     <motion.section
-      className="py-20 bg-gray-50"
+      className="py-16 sm:py-20 bg-[var(--color-bg)]"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
@@ -148,13 +164,13 @@ const NewsDetails = () => {
         {/* Back Link */}
         <Link
           onClick={() => window.history.back()}
-          className="inline-flex items-center text-green-700 font-medium hover:underline mb-6"
+          className="inline-flex items-center text-[var(--color-primary)] font-medium hover:underline mb-6"
         >
           ← Back to News
         </Link>
 
         {/* Hero Image */}
-        <div className="rounded-2xl overflow-hidden shadow-lg mb-10">
+        <div className="rounded-2xl overflow-hidden shadow-lg mb-10 border border-[var(--color-border)] bg-[var(--color-surface)]">
           <img
             src={article.img}
             alt={article.title}
@@ -164,27 +180,32 @@ const NewsDetails = () => {
 
         {/* Article Header */}
         <div className="mb-8">
-          <span className="bg-green-700 text-white text-xs px-3 py-1 rounded-full">
+          <span className="bg-[var(--color-primary)] text-white text-xs px-3 py-1 rounded-full">
             {article.category}
           </span>
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mt-3">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--color-text)] mt-3">
             {article.title}
           </h1>
-          <p className="text-sm text-gray-500 mt-2">
-            By <span className="text-green-700">{article.author}</span> •{" "}
-            {article.date}
+          <p className="text-sm text-[var(--color-muted)] mt-2">
+            By{" "}
+            <span className="text-[var(--color-secondary)]">
+              {article.author}
+            </span>{" "}
+            • {article.date}
           </p>
         </div>
 
         {/* Article Content */}
-        <div className="text-gray-700 leading-relaxed whitespace-pre-line text-[15px] md:text-base">
+        <div className="text-[var(--color-text)]/90 leading-relaxed whitespace-pre-line text-sm sm:text-[15px] md:text-base">
           {article.content}
         </div>
 
         {/* Footer */}
-        <div className="mt-12 border-t pt-6 text-sm text-gray-500 flex justify-between">
+        <div className="mt-12 border-t border-[var(--color-border)] pt-6 text-sm text-[var(--color-muted)] flex justify-between">
           <p>© {new Date().getFullYear()} KrishiLink News</p>
-          <p>Share this article 🔗</p>
+          <button onClick={handleShare} className="share-btn hover:cursor-pointer">
+            Share this article 🔗
+          </button>
         </div>
       </div>
     </motion.section>
