@@ -8,9 +8,12 @@ import projectLogo from "../Assets/unnamed.webp";
 import { AuthContext } from "../Context/AuthProvider";
 import { toast } from "react-toastify";
 import ThemeToggle from "./ThemeToggle";
+import useAuthProfile from "../Hooks/useAuthProfile";
 
 const Navbar = () => {
   const { user, dltUser } = useContext(AuthContext);
+  const { dbUser, loading: profileLoading, error } = useAuthProfile(user);
+  // console.log("DB user: ",dbUser);
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
 

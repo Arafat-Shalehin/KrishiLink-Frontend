@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router";
-import useAxios from "../Hooks/useAxios";
 import Loader from "./Loader";
 import { motion } from "framer-motion";
 import EachCrops from "./EachCrops";
@@ -14,10 +13,11 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import CropsDetailsSkeleton from "./Skeleton/CropsDetailsSkeleton";
 import SimilarProductsSkeleton from "./Skeleton/SimilarProductsSkeleton";
+import useAxiosSecure from "../Hooks/useAxios";
 
 const CropsDetails = () => {
   const { id, type } = useParams();
-  const instance = useAxios();
+  const instance = useAxiosSecure();
   const { user } = useContext(AuthContext);
 
   const [crops, setCrops] = useState([]);

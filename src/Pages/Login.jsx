@@ -3,10 +3,13 @@ import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../Context/AuthProvider";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "react-toastify";
+import { syncUserToBackend } from "../utils/syncUserToBackend";
+import useAxiosSecure from "../Hooks/useAxios";
+import { getMeOrSync } from "../utils/getMeOrSync";
 
 const Login = () => {
   const { loginUser, googleLogin } = useContext(AuthContext);
-
+  const instance = useAxiosSecure();
   const [error, setError] = useState(""); // human-friendly message
   const [show, setShow] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -56,9 +59,19 @@ const Login = () => {
 
     try {
       setSubmitting(true);
-      await loginUser(email, password);
+
+      const result = await loginUser(email, password);
       toast.success("Login successful.");
-      navigate(`${location.state ? location.state : "/"}`);
+
+      // ✅ read user profile (role/status) without rewriting every time
+      try {
+        await getMeOrSync(instance, result.user);
+      } catch (profileErr) {
+        console.error("Loading profile failed:", profileErr);
+        toast.error("Logged in, but failed to load profile.");
+      }
+
+      navigate(location.state ? location.state : "/");
     } catch (err) {
       console.log(err?.code);
       setError(firebaseErrorMessage(err?.code));
@@ -69,11 +82,21 @@ const Login = () => {
 
   const handleGoogleLogin = async () => {
     setError("");
+
     try {
       setGoogleSubmitting(true);
-      await googleLogin();
+
+      const result = await googleLogin(); // ✅ capture result
       toast.success("Sign in successful.");
-      navigate(`${location.state ? location.state : "/"}`);
+
+      try {
+        await syncUserToBackend(result.user, instance);
+      } catch (syncErr) {
+        console.error("User sync failed:", syncErr);
+        toast.error("Signed in, but failed to sync profile. Try again later.");
+      }
+
+      navigate(location.state ? location.state : "/");
     } catch (err) {
       console.log(err?.code);
       setError(firebaseErrorMessage(err?.code));
@@ -83,13 +106,17 @@ const Login = () => {
   };
 
   return (
-    <section className="min-h-[calc(100vh-64px)] 
+    <section
+      className="min-h-[calc(100vh-64px)] 
     bg-[var(--color-bg)] flex items-center 
-    justify-center px-4 py-10">
+    justify-center px-4 py-10"
+    >
       <div className="w-full max-w-md">
-        <div className="rounded-2xl border 
+        <div
+          className="rounded-2xl border 
         border-[var(--color-border)] 
-        bg-[var(--color-surface)] shadow-xl">
+        bg-[var(--color-surface)] shadow-xl"
+        >
           {/* Header */}
           <div className="px-6 pt-8 text-center">
             <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text)]">

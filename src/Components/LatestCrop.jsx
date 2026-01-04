@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router";
-import useAxios from "../Hooks/useAxios";
 import EachCrops from "./EachCrops";
 import LatestCropSkeleton from "./Skeleton/LatestCropSkeleton";
+import useAxiosSecure from "../Hooks/useAxios";
 
 const LatestCrop = () => {
   const [sixCrops, setSixCrops] = useState([]);
   const [loading, setLoading] = useState(false);
-  const instance = useAxios();
+  const [error, setError] = useState(false);
+  const instance = useAxiosSecure();
 
   const sectionVariants = {
     hidden: {},
@@ -23,6 +24,7 @@ const LatestCrop = () => {
   useEffect(() => {
     let mounted = true;
     setLoading(true);
+    setError(false);
 
     instance
       .get("/sixCrops")
@@ -32,6 +34,8 @@ const LatestCrop = () => {
       })
       .catch((error) => {
         console.error(error);
+        if (!mounted) return;
+        setError(true);
       })
       .finally(() => {
         if (!mounted) return;
@@ -42,6 +46,8 @@ const LatestCrop = () => {
       mounted = false;
     };
   }, [instance]);
+  
+  // console.log(sixCrops);
 
   return (
     <motion.section
@@ -51,7 +57,7 @@ const LatestCrop = () => {
       whileInView="visible"
       viewport={{ once: true, amount: 0.25 }}
     >
-      <div className="mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto pt-10 px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mx-auto max-w-2xl text-center">
           <p className="text-sm font-semibold tracking-wide text-[var(--color-secondary)]">
@@ -78,6 +84,39 @@ const LatestCrop = () => {
               {sixCrops.map((crops) => (
                 <EachCrops key={crops._id} crops={crops} />
               ))}
+            </div>
+          )}
+          {/* Error State */}
+          {!loading && error && (
+            <div className="mx-auto max-w-xl rounded-2xl border border-red-200 bg-red-50 p-8 text-center">
+              <h3 className="text-lg font-semibold text-red-600">
+                Unable to load latest crops
+              </h3>
+              <p className="mt-2 text-sm text-red-500">
+                Something went wrong while fetching the latest listings. Please
+                try again later.
+              </p>
+            </div>
+          )}
+
+          {/* Empty State */}
+          {!loading && !error && sixCrops.length === 0 && (
+            <div className="mx-auto max-w-xl rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-8 text-center">
+              <h3 className="text-lg font-semibold text-[var(--color-text)]">
+                No new crops available yet
+              </h3>
+              <p className="mt-2 text-sm text-[var(--color-muted)]">
+                Farmers haven’t posted any new crops recently. Please check back
+                soon or explore all available listings.
+              </p>
+
+              <div className="mt-6">
+                <Link to="/all-crops">
+                  <button className="rounded-full border border-[var(--color-secondary)] px-6 py-2 text-sm font-semibold text-[var(--color-secondary)] transition hover:bg-[color-mix(in_srgb,var(--color-secondary)_12%,transparent)]">
+                    Browse all crops
+                  </button>
+                </Link>
+              </div>
             </div>
           )}
         </div>

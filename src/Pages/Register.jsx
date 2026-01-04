@@ -2,9 +2,12 @@ import React, { useContext, useMemo, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router";
 import { AuthContext } from "../Context/AuthProvider";
 import { toast } from "react-toastify";
+import { syncUserToBackend } from "../utils/syncUserToBackend";
+import useAxiosSecure from "../Hooks/useAxios";
 
 const Register = () => {
   const { createUser, setUser, updateUser } = useContext(AuthContext);
+  const instance = useAxiosSecure();
 
   const [show, setShow] = useState(false);
   const [error, setError] = useState(""); // human-friendly message
@@ -57,9 +60,10 @@ const Register = () => {
     setError("");
 
     const form = e.target;
-    const name = form.name.value;
-    const image = form.image.value;
-    const email = form.email.value;
+
+    const name = form.name.value.trim();
+    const image = form.image.value.trim();
+    const email = form.email.value.trim();
     const password = form.password.value;
 
     const validationError = validate({ name, email, password, acceptedTerms });
@@ -71,25 +75,40 @@ const Register = () => {
     try {
       setSubmitting(true);
 
+      // 1) Create Firebase account
       const result = await createUser(email, password);
 
+      // 2) Update Firebase profile (name/photo)
       try {
         await updateUser({
           displayName: name,
-          photoURL: image,
+          photoURL: image || undefined, // avoid saving empty string
         });
 
-        // Keep your state sync
-        setUser({ ...result.user, displayName: name, photoURL: image });
-
-        toast.success("Sign up successful!");
-        navigate(location.state ? location.state : "/");
-      } catch (err) {
-        console.error("Profile update failed:", err);
-        setError(
-          "Account created, but profile update failed. Please update your profile later."
-        );
+        // 3) Sync AuthContext user state
+        setUser({
+          ...result.user,
+          displayName: name,
+          photoURL: image || result.user.photoURL,
+        });
+      } catch (profileErr) {
+        console.error("Profile update failed:", profileErr);
+        // Don’t stop registration; user can update later
+        toast.error("Account created, but profile update failed.");
       }
+
+      // 4) Sync MongoDB user (role defaults to buyer)
+      try {
+        // IMPORTANT: use Firebase user from result, token is valid
+        await syncUserToBackend(result.user, instance);
+      } catch (syncErr) {
+        console.error("Backend user sync failed:", syncErr);
+        // Don’t block navigation—account is created successfully
+        toast.error("Account created, but failed to sync profile to server.");
+      }
+
+      toast.success("Sign up successful!");
+      navigate(location.state ? location.state : "/");
     } catch (err) {
       console.error("Signup failed:", err);
       setError(firebaseErrorMessage(err?.code));

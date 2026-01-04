@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../Context/AuthProvider";
-import useAxios from "../Hooks/useAxios";
 import EachCrops from "../Components/EachCrops";
 import AllCropsPageSkeleton from "../Components/Skeleton/AllCropsPageSkeleton";
+import useAxiosSecure from "../Hooks/useAxios";
 // import { motion } from "framer-motion";
 
 const AllCropsPage = () => {
   const [allCrops, setAllCrops] = useState([]);
   const [search, setSearch] = useState("");
   const { loading, setLoading } = useContext(AuthContext);
-  const instance = useAxios();
+  const instance = useAxiosSecure();
 
   // const sectionVariants = {
   //   hidden: {},
