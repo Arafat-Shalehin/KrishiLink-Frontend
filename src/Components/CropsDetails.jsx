@@ -23,16 +23,23 @@ const CropsDetails = () => {
   const [crops, setCrops] = useState([]);
   const [allCrops, setAllCrops] = useState([]);
   const [interestCrops, setInterestCrops] = useState(0);
+
   const [sameType, setSameType] = useState([]);
   const [loading, setLoading] = useState(false);
   const [typeLoading, setTypeLoading] = useState(false);
+
+  const [interestsLoading, setInterestsLoading] = useState(false);
+  const [interestData, setInterestData] = useState([]);
+
   const [showForm, setShowForm] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [message, setMessage] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
-  const [interestData, setInterestData] = useState([]);
 
-  // All fetch id wise filter
+  const userEmail = user?.email;
+  const cropOwnerEmail = crops?.owner?.ownerEmail;
+
+  // All fetch id wise filter (kept as your current approach)
   useEffect(() => {
     const fetchCrop = async () => {
       setLoading(true);
@@ -71,20 +78,6 @@ const CropsDetails = () => {
     fetchAllCrops();
   }, [instance, type, id]);
 
-  // Manage Received interest
-  useEffect(() => {
-    const userCrop = allCrops.filter(
-      (crop) => crop?.owner?.ownerEmail === user?.email
-    );
-
-    const totalInterests = userCrop.reduce(
-      (acc, crop) => acc + (crop.interests?.length || 0),
-      0
-    );
-
-    setInterestCrops(totalInterests);
-  }, [allCrops, user?.email]);
-
   // Form price
   useEffect(() => {
     if (crops?.pricePerUnit) {
@@ -92,26 +85,52 @@ const CropsDetails = () => {
     }
   }, [quantity, crops]);
 
-  // Interested product
+  // ✅ NEW: Load interests from interests collection via API (only owner can access)
   useEffect(() => {
-    setInterestData(crops?.interests || []);
-  }, [crops]);
+    const fetchInterestsForCrop = async () => {
+      // If user not logged in or not owner, don't fetch (route is farmer-owner protected)
+      if (!userEmail || !crops?._id) {
+        setInterestData([]);
+        return;
+      }
 
-  const userName = user?.displayName;
-  const userEmail = user?.email;
+      if (userEmail !== cropOwnerEmail) {
+        setInterestData([]);
+        return;
+      }
 
-  const cropOwnerEmail = crops?.owner?.ownerEmail;
-
-  // Handle Interest Function
-  const handleInterestSubmit = async () => {
-    if (quantity < 1) return toast.error("Quantity must be at least 1.");
-
-    const interestData = {
-      userEmail,
-      userName,
-      quantity,
-      message,
+      try {
+        setInterestsLoading(true);
+        const res = await instance.get(`/allCrops/${crops._id}/interests`);
+        setInterestData(res.data?.interests || []);
+      } catch (err) {
+        console.error(err);
+        setInterestData([]);
+      } finally {
+        setInterestsLoading(false);
+      }
     };
+
+    fetchInterestsForCrop();
+  }, [instance, crops?._id, userEmail, cropOwnerEmail]);
+
+  // ✅ NEW: “received interest count” (simple: just for this crop now)
+  // If you want total across all crops later, we’ll move this to dashboard API.
+  useEffect(() => {
+    if (userEmail === cropOwnerEmail) {
+      setInterestCrops(interestData.length);
+    } else {
+      setInterestCrops(0);
+    }
+  }, [interestData, userEmail, cropOwnerEmail]);
+
+  // Handle Interest Function (buyer sends interest)
+  const handleInterestSubmit = async () => {
+    const qty = Number(quantity);
+    if (!qty || qty < 1) return toast.error("Quantity must be at least 1.");
+
+    // ✅ NEW payload (backend takes buyer identity from token)
+    const payload = { quantity: qty, message };
 
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -127,7 +146,7 @@ const CropsDetails = () => {
       try {
         const res = await instance.post(
           `/allCrops/${crops._id}/interests`,
-          interestData
+          payload
         );
 
         if (res.data.success) {
@@ -135,27 +154,19 @@ const CropsDetails = () => {
           setShowForm(false);
           setQuantity(1);
           setMessage("");
-          setInterestData((prev) => [
-            ...prev,
-            {
-              userEmail,
-              userName,
-              quantity,
-              message,
-              status: "pending",
-            },
-          ]);
+          // No optimistic update needed here because buyers can’t view owner-only list.
         } else {
           toast.error(
             res.data.message || "Submission failed, Try again later."
           );
         }
       } catch (error) {
-        if (error.response?.data?.message?.includes("already sent")) {
+        const msg = error?.response?.data?.message;
+        if (msg?.includes("already") || error?.response?.status === 409) {
           toast.error("You’ve already sent an interest for this crop.");
           setShowForm(false);
         } else {
-          toast.error("Error submitting interest.");
+          toast.error(msg || "Error submitting interest.");
         }
       }
     }
@@ -269,7 +280,7 @@ const CropsDetails = () => {
               {userEmail === cropOwnerEmail && (
                 <div className="mt-6 border-t border-[var(--color-border)] pt-4">
                   <h1 className="font-semibold text-sm sm:text-base text-[var(--color-muted)]">
-                    Amount of product received interest:{" "}
+                    Interests received for this crop:{" "}
                     <span className="text-[var(--color-text)]">
                       {interestCrops}
                     </span>
@@ -306,79 +317,76 @@ const CropsDetails = () => {
         )}
 
         {/* Interested People */}
-        <div className="mt-16 sm:mt-20">
-          <h1 className="font-semibold text-xl sm:text-2xl md:text-3xl text-[var(--color-text)]">
-            People who are interested in this product
-          </h1>
+        {interestsLoading ? (
+          <Loader />
+        ) : (
+          <>
+            {userEmail === cropOwnerEmail && interestData.length === 0 ? (
+              <div className="mt-8 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-10 text-center">
+                <h1 className="font-semibold text-xl sm:text-2xl md:text-3xl text-[var(--color-text)]">
+                  People who are interested in this product
+                </h1>
+                <p className="text-base sm:text-lg text-[var(--color-muted)] font-semibold">
+                  No one has shown any interest yet!
+                </p>
+              </div>
+            ) : null}
 
-          {loading ? (
-            <Loader />
-          ) : (
-            <>
-              {interestData.length === 0 ? (
-                <div className="mt-8 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-10 text-center">
-                  <h1 className="text-base sm:text-lg text-[var(--color-muted)] font-semibold">
-                    No one has shown any interest yet!
-                  </h1>
-                </div>
-              ) : (
-                <div className="w-full mx-auto my-8 bg-[var(--color-surface)] rounded-2xl shadow-sm border border-[var(--color-border)] overflow-hidden">
-                  <table className="min-w-full text-left text-sm">
-                    <thead className="bg-[var(--color-bg)] border-b border-[var(--color-border)]">
-                      <tr className="text-[var(--color-text)]">
-                        <th className="py-3 px-4 font-semibold">SL No</th>
-                        <th className="py-3 px-4 font-semibold">
-                          Wants to buy
-                        </th>
-                        <th className="py-3 px-4 font-semibold">Quantity</th>
-                        <th className="py-3 px-4 font-semibold">Status</th>
+            {userEmail === cropOwnerEmail && interestData.length > 0 ? (
+              <div className="w-full mx-auto my-8 bg-[var(--color-surface)] rounded-2xl shadow-sm border border-[var(--color-border)] overflow-hidden">
+                <table className="min-w-full text-left text-sm">
+                  <thead className="bg-[var(--color-bg)] border-b border-[var(--color-border)]">
+                    <tr className="text-[var(--color-text)]">
+                      <th className="py-3 px-4 font-semibold">SL No</th>
+                      <th className="py-3 px-4 font-semibold">Wants to buy</th>
+                      <th className="py-3 px-4 font-semibold">Quantity</th>
+                      <th className="py-3 px-4 font-semibold">Status</th>
+                    </tr>
+                  </thead>
+
+                  <tbody className="text-[var(--color-text)]/90">
+                    {interestData.map((interest, index) => (
+                      <tr
+                        key={interest._id || index}
+                        className="border-b border-[var(--color-border)] hover:bg-[color-mix(in_srgb,var(--color-primary)_6%,transparent)] transition"
+                      >
+                        <td className="py-3 px-4">{index + 1}</td>
+
+                        <td className="py-3 px-4">
+                          <div>
+                            <p className="font-semibold text-[var(--color-text)]">
+                              {interest.buyerName ||
+                                interest.userName ||
+                                "Unknown"}
+                            </p>
+                            <p className="text-xs text-[var(--color-muted)]">
+                              {interest.buyerEmail || interest.userEmail || "—"}
+                            </p>
+                          </div>
+                        </td>
+
+                        <td className="py-3 px-4 font-semibold">
+                          {interest.quantity} {crops.unit}
+                        </td>
+
+                        <td className="py-3 px-4">
+                          <span
+                            className={[
+                              "inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold capitalize",
+                              statusClass(interest.status),
+                            ].join(" ")}
+                          >
+                            {interest.status}
+                          </span>
+                        </td>
                       </tr>
-                    </thead>
-
-                    <tbody className="text-[var(--color-text)]/90">
-                      {interestData.map((interest, index) => (
-                        <tr
-                          key={index}
-                          className="border-b border-[var(--color-border)] hover:bg-[color-mix(in_srgb,var(--color-primary)_6%,transparent)] transition"
-                        >
-                          <td className="py-3 px-4">{index + 1}</td>
-
-                          <td className="py-3 px-4">
-                            <div className="flex items-center gap-3">
-                              <div>
-                                <p className="font-semibold text-[var(--color-text)]">
-                                  {interest.userName}
-                                </p>
-                                <p className="text-xs text-[var(--color-muted)]">
-                                  {interest.userEmail}
-                                </p>
-                              </div>
-                            </div>
-                          </td>
-
-                          <td className="py-3 px-4 font-semibold">
-                            {interest.quantity} {crops.unit}
-                          </td>
-
-                          <td className="py-3 px-4">
-                            <span
-                              className={[
-                                "inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold capitalize",
-                                statusClass(interest.status),
-                              ].join(" ")}
-                            >
-                              {interest.status}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </>
-          )}
-        </div>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : null}
+          </>
+        )}
 
         {/* Similar Type of Products */}
         <div className="mt-16 sm:mt-20">
@@ -422,7 +430,6 @@ const CropsDetails = () => {
                 Express Your Interest
               </h2>
 
-              {/* Quantity Field */}
               <label className="block mb-3">
                 <span className="text-[var(--color-muted)] font-medium text-sm sm:text-base">
                   Quantity ({crops.unit})
@@ -435,7 +442,6 @@ const CropsDetails = () => {
                 />
               </label>
 
-              {/* Message Field */}
               <label className="block mb-3">
                 <span className="text-[var(--color-muted)] font-medium text-sm sm:text-base">
                   Message
@@ -449,7 +455,6 @@ const CropsDetails = () => {
                 ></textarea>
               </label>
 
-              {/* Auto-calculated Price */}
               <div className="mb-4">
                 <p className="text-[var(--color-muted)] font-medium text-sm sm:text-base">
                   Total Price:{" "}
@@ -459,7 +464,6 @@ const CropsDetails = () => {
                 </p>
               </div>
 
-              {/* Buttons */}
               <div className="flex justify-end gap-3 mt-6">
                 <button
                   onClick={() => setShowForm(false)}
@@ -468,7 +472,7 @@ const CropsDetails = () => {
                   Cancel
                 </button>
                 <button
-                  onClick={() => handleInterestSubmit()}
+                  onClick={handleInterestSubmit}
                   className="px-4 py-2 bg-[var(--color-primary)] hover:brightness-95 text-white rounded-lg font-semibold transition"
                 >
                   Submit

@@ -15,7 +15,7 @@ const MyInterest = () => {
     setLoading(true);
 
     instance
-      .get(`/myInterests?email=${user.email}`)
+      .get("/myInterests")
       .then((res) => {
         setInterests(res.data.interests || []);
         setLoading(false);
@@ -87,7 +87,7 @@ const MyInterest = () => {
                     className="border-b border-[var(--color-border)] hover:bg-[color-mix(in_srgb,var(--color-primary)_6%,transparent)] transition-all duration-200"
                   >
                     <td className="py-3 px-4">
-                      <div className="flex items-center gap-3">
+                      <div className="flex flex-col md:flex-row items-center gap-3">
                         <img
                           src={
                             interest.cropImage ||

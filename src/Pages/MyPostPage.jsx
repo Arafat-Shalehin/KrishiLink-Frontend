@@ -1,15 +1,15 @@
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../Context/AuthProvider";
-import useAxios from "../Hooks/useAxios";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
 import { Pencil, Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
 import MyPostPageSkeleton from "../Components/Skeleton/MyPostPageSkeleton";
+import useAxiosSecure from "../Hooks/useAxios";
 
 const MyPostPage = () => {
   const { user } = useContext(AuthContext);
-  const instance = useAxios();
+  const instance = useAxiosSecure();
   const [myCrops, setMyCrops] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCrop, setSelectedCrop] = useState(null); // for edit modal
@@ -20,7 +20,7 @@ const MyPostPage = () => {
     if (!user?.email) return;
     setLoading(true);
     instance
-      .get(`/myCrops?email=${user.email}`)
+      .get("/myCrops")
       .then((res) => {
         setMyCrops(res.data.crops);
         setLoading(false);

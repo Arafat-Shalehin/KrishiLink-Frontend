@@ -1,15 +1,56 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { AuthContext } from "../Context/AuthProvider";
 import { toast } from "react-toastify";
+import useAuthProfile from "../Hooks/useAuthProfile";
+import useAxiosSecure from "../Hooks/useAxios";
+import { Link } from "react-router";
 
-const ProfilePage = () => {
+const StatCard = ({ title, value, to }) => {
+  return (
+    <Link
+      to={to}
+      className="block rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-sm transition
+      hover:shadow-md hover:border-[color-mix(in_srgb,var(--color-primary)_35%,transparent)]
+      focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+    >
+      <p className="text-sm font-semibold text-[var(--color-muted)]">{title}</p>
+      <p className="mt-2 text-3xl font-extrabold text-[var(--color-text)]">
+        {value}
+      </p>
+      <p className="mt-1 text-xs text-[var(--color-muted)]">Tap to view</p>
+    </Link>
+  );
+};
+
+const MyProfile = () => {
   const { user, updateUser, setUser } = useContext(AuthContext);
+  const axiosSecure = useAxiosSecure();
+  const { dbUser, loading: profileLoading, refetch } = useAuthProfile(user);
+
+  const [statsLoading, setStatsLoading] = useState(false);
+  const [stats, setStats] = useState({ myPostsCount: 0, myInterestsCount: 0 });
+
+  const farmerStatus = dbUser?.farmerRequest?.status || "none";
+  const role = dbUser?.role || "—";
+
+  const statusBadgeClass = useMemo(() => {
+    switch (farmerStatus) {
+      case "pending":
+        return "border-[color-mix(in_srgb,var(--color-accent)_40%,transparent)] bg-[color-mix(in_srgb,var(--color-accent)_18%,transparent)] text-[var(--color-text)]";
+      case "approved":
+        return "border-[color-mix(in_srgb,var(--color-primary)_40%,transparent)] bg-[color-mix(in_srgb,var(--color-primary)_14%,transparent)] text-[var(--color-primary)]";
+      case "rejected":
+        return "border-red-200 bg-red-50 text-red-700 dark:border-red-900/40 dark:bg-red-900/20 dark:text-red-300";
+      case "cancelled":
+        return "border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-muted)]";
+      default:
+        return "border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-muted)]";
+    }
+  }, [farmerStatus]);
 
   const handleUpdateProfile = (e) => {
     e.preventDefault();
-
     const form = e.target;
-
     const name = form.name.value.trim();
     const image = form.image.value.trim();
 
@@ -33,45 +74,193 @@ const ProfilePage = () => {
       });
   };
 
-  return (
-    <section className="bg-[var(--color-bg)] flex 
-    items-center justify-center p-5">
-      <div className="w-full max-w-md rounded-2xl 
-      border border-[var(--color-border)] 
-      bg-[var(--color-surface)] shadow-xl p-6 sm:p-8 my-10
-      ">
-        <div className="flex flex-col items-center text-center">
-          <img
-            src={
-              user?.photoURL ||
-              "https://i.fbcd.co/products/resized/resized-1500-1000/d4c961732ba6ec52c0bbde63c9cb9e5dd6593826ee788080599f68920224e27d.webp"
-            }
-            alt="Profile"
-            className="w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-[color-mix(in_srgb,var(--color-primary)_35%,transparent)]"
-          />
+  const handleRequestFarmer = async () => {
+    try {
+      await axiosSecure.post("/users/request-farmer");
+      toast.success("Farmer request submitted.");
+      refetch();
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Failed to submit request.");
+    }
+  };
 
-          <div className="mt-5 w-full text-left">
-            <h2 className="text-lg sm:text-xl font-semibold text-[var(--color-text)]">
-              <span className="text-[var(--color-muted)] font-medium">
-                Name:
-              </span>{" "}
-              {user?.displayName || "No name"}
-            </h2>
-            <p className="mt-1 text-sm sm:text-base text-[var(--color-muted)]">
-              <span className="text-[var(--color-muted)] font-medium">
-                Email:
-              </span>{" "}
-              {user?.email || "No email"}
-            </p>
+  const handleCancelRequest = async () => {
+    try {
+      await axiosSecure.patch("/users/request-farmer/cancel");
+      toast.success("Request cancelled.");
+      refetch();
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Failed to cancel request.");
+    }
+  };
+
+  const canRequestFarmer =
+    role === "buyer" &&
+    farmerStatus !== "pending" &&
+    farmerStatus !== "rejected";
+  const canCancelRequest = role === "buyer" && farmerStatus === "pending";
+
+  // ✅ Fetch stats (posts count + interests count)
+  useEffect(() => {
+    if (!user?.email) return;
+
+    const fetchStats = async () => {
+      try {
+        setStatsLoading(true);
+        const res = await axiosSecure.get("/users/me/stats");
+        // console.log(res.data);
+        setStats(res.data?.stats || { myPostsCount: 0, myInterestsCount: 0 });
+      } catch (err) {
+        console.error(err);
+        toast.error("Failed to load profile stats.");
+      } finally {
+        setStatsLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, [user?.email, axiosSecure]);
+
+  return (
+    <section className="min-h-[calc(100vh-64px)] bg-[var(--color-bg)] py-10 px-4">
+      <div className="mx-auto max-w-5xl">
+        <h1 className="text-center text-2xl sm:text-3xl font-bold text-[var(--color-text)]">
+          My <span className="text-[var(--color-primary)]">Profile</span>
+        </h1>
+        <p className="mt-2 text-center text-sm sm:text-base text-[var(--color-muted)]">
+          Manage your profile, access level, and activity.
+        </p>
+
+        {/* Top grid */}
+        <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-5">
+          {/* Profile Card */}
+          <div className="lg:col-span-1 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl p-6 sm:p-8">
+            <div className="flex items-center gap-4">
+              <img
+                src={
+                  user?.photoURL ||
+                  "https://i.fbcd.co/products/resized/resized-1500-1000/d4c961732ba6ec52c0bbde63c9cb9e5dd6593826ee788080599f68920224e27d.webp"
+                }
+                alt="Profile"
+                className="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover border-4 border-[color-mix(in_srgb,var(--color-primary)_35%,transparent)]"
+              />
+
+              <div className="min-w-0">
+                <p className="text-xs uppercase tracking-wider text-[var(--color-muted)]">
+                  Signed in as
+                </p>
+                <h2 className="truncate text-lg sm:text-xl font-semibold text-[var(--color-text)]">
+                  {user?.displayName || "No name"}
+                </h2>
+                <p className="truncate text-sm text-[var(--color-muted)]">
+                  {user?.email || "No email"}
+                </p>
+              </div>
+            </div>
+
+            <button
+              className="mt-6 w-full rounded-xl bg-[var(--color-primary)] hover:brightness-95 text-white font-semibold py-2.5 transition
+              focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+              onClick={() => document.getElementById("my_modal_1").showModal()}
+            >
+              Update Profile
+            </button>
           </div>
 
-          <button
-            className="mt-6 w-full sm:w-auto bg-[var(--color-primary)] hover:brightness-95 text-white font-semibold py-2.5 px-6 rounded-full shadow-md transition duration-300
-            focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
-            onClick={() => document.getElementById("my_modal_1").showModal()}
-          >
-            Update Profile
-          </button>
+          {/* Role / Request Card */}
+          <div className="lg:col-span-2 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl p-6 sm:p-8">
+            <h3 className="text-lg sm:text-xl font-bold text-[var(--color-text)]">
+              Account & Access
+            </h3>
+            <p className="mt-1 text-sm text-[var(--color-muted)]">
+              Role controls dashboard permissions. Farmer access requires
+              approval.
+            </p>
+
+            <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-4">
+                <p className="text-sm font-semibold text-[var(--color-muted)]">
+                  Current role
+                </p>
+                <p className="mt-2 text-xl font-bold text-[var(--color-text)]">
+                  {profileLoading ? "Loading..." : role}
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-4">
+                <p className="text-sm font-semibold text-[var(--color-muted)]">
+                  Farmer request
+                </p>
+                <div className="mt-2">
+                  <span
+                    className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold capitalize ${statusBadgeClass}`}
+                  >
+                    {profileLoading ? "loading" : farmerStatus}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {canRequestFarmer && (
+                <button
+                  onClick={handleRequestFarmer}
+                  className="w-full rounded-xl bg-[var(--color-primary)] px-4 py-2.5 text-sm font-semibold text-white hover:brightness-95 transition"
+                >
+                  Request Farmer Access
+                </button>
+              )}
+
+              {canCancelRequest && (
+                <button
+                  onClick={handleCancelRequest}
+                  className="w-full rounded-xl border border-[var(--color-secondary)] px-4 py-2.5 text-sm font-semibold text-[var(--color-secondary)] hover:bg-[color-mix(in_srgb,var(--color-secondary)_10%,transparent)] transition"
+                >
+                  Cancel Request
+                </button>
+              )}
+            </div>
+
+            {role === "buyer" && farmerStatus === "pending" && (
+              <p className="mt-3 text-xs text-[var(--color-muted)]">
+                Your request is pending. You will get farmer access after
+                approval.
+              </p>
+            )}
+            {role === "buyer" && farmerStatus === "cancelled" && (
+              <p className="mt-3 text-xs text-[var(--color-muted)]">
+                You cancelled your request. You can request again anytime.
+              </p>
+            )}
+            {role === "buyer" && farmerStatus === "rejected" && (
+              <p className="mt-3 text-xs text-[var(--color-muted)]">
+                Your request was rejected. You can request again later.
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Activity Stats */}
+        <div className="mt-6">
+          <h3 className="text-lg sm:text-xl font-bold text-[var(--color-text)]">
+            Activity
+          </h3>
+          <p className="mt-1 text-sm text-[var(--color-muted)]">
+            Quick links to your posts and interests.
+          </p>
+
+          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <StatCard
+              title="My Posts"
+              value={statsLoading ? "…" : stats.myPostsCount}
+              to="/my-posts"
+            />
+            <StatCard
+              title="My Interests"
+              value={statsLoading ? "…" : stats.myInterestsCount}
+              to="/my-interest"
+            />
+          </div>
         </div>
       </div>
 
@@ -132,4 +321,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default MyProfile;
