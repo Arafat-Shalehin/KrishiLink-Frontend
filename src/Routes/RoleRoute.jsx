@@ -15,7 +15,7 @@ const RoleRoute = ({ allowed = [], children }) => {
 
   if (!dbUser?.role) return <Navigate to="/auth/login" replace />;
 
-  if (!allowed.includes(dbUser.role)) {
+  if (!allowed.includes(dbUser?.role)) {
     return <Navigate to="/dashboard" replace />;
   }
 

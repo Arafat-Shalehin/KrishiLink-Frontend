@@ -6,15 +6,23 @@ import AllCropsPage from "../Pages/AllCropsPage";
 import AuthLayout from "../Layouts/AuthLayOut";
 import Login from "../Pages/Login";
 import Register from "../Pages/Register";
-import MyProfile from "../Pages/MyProfile";
 import CropsDetails from "../Components/CropsDetails";
 import NewsDetails from "../Pages/NewsDetails";
-import AddCrops from "../Pages/AddCrops";
-import MyPostPage from "../Pages/MyPostPage";
-import MyInterest from "../Pages/MyInterest";
-import ReceivedInterests from "../Components/ReceivedInterests";
-import PrivateRoute from "./PrivateRoute";
 import About from "../Pages/About";
+
+import PrivateRoute from "./PrivateRoute";
+import RoleRoute from "./RoleRoute";
+
+// Dashboard
+import DashboardLayout from "../Layouts/DashboardLayout";
+import MyProfile from "../Pages/MyProfile";
+import BuyerDashboard from "../Dashboard/buyer/BuyerDashboard";
+import BuyerInterests from "../Dashboard/buyer/BuyerInterests";
+import FarmerDashboard from "../Dashboard/farmer/FarmerDashboard";
+import FarmerCrops from "../Dashboard/farmer/FarmerCrops";
+import FarmerAddCrop from "../Dashboard/farmer/FarmerAddCrop";
+import FarmerInterests from "../Dashboard/farmer/FarmerInterests";
+import DashboardHome from "../Dashboard/DashboardHome";
 
 const router = createBrowserRouter([
   {
@@ -22,80 +30,84 @@ const router = createBrowserRouter([
     element: <HomeLayOut />,
     errorElement: <ErrorPage />,
     children: [
+      { index: true, element: <App /> },
+      { path: "/all-crops", element: <AllCropsPage /> },
+      { path: "/about", element: <About /> },
+      { path: "/news/:id", element: <NewsDetails /> },
+      { path: "crops-details/:id/:type", element: <CropsDetails /> },
+    ],
+  },
+
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
+    children: [
+      { index: true, element: <DashboardHome /> },
+
+      { path: "profile", element: <MyProfile /> },
+
       {
-        index: true,
-        element: <App />,
-      },
-      {
-        path: "/all-crops",
-        element: <AllCropsPage />,
-      },
-      {
-        path: "/about",
-        element: <About />,
-      },
-      {
-        path: "my-profile",
+        path: "buyer",
         element: (
-          <PrivateRoute>
-            <MyProfile />
-          </PrivateRoute>
+          <RoleRoute allowed={["buyer"]}>
+            <BuyerDashboard />
+          </RoleRoute>
         ),
       },
       {
-        path: "crops-details/:id/:type",
+        path: "buyer/interests",
         element: (
-          <PrivateRoute>
-            <CropsDetails />
-          </PrivateRoute>
+          <RoleRoute allowed={["buyer"]}>
+            <BuyerInterests />
+          </RoleRoute>
+        ),
+      },
+
+      {
+        path: "farmer",
+        element: (
+          <RoleRoute allowed={["farmer"]}>
+            <FarmerDashboard />
+          </RoleRoute>
         ),
       },
       {
-        path: "/news/:id",
-        element: <NewsDetails />,
-      },
-      {
-        path: "/add-crops",
+        path: "farmer/crops",
         element: (
-          <PrivateRoute>
-            <AddCrops />
-          </PrivateRoute>
+          <RoleRoute allowed={["farmer"]}>
+            <FarmerCrops />
+          </RoleRoute>
         ),
       },
       {
-        path: "/my-posts",
+        path: "farmer/crops/add",
         element: (
-          <PrivateRoute>
-            <MyPostPage />
-          </PrivateRoute>
+          <RoleRoute allowed={["farmer"]}>
+            <FarmerAddCrop />
+          </RoleRoute>
         ),
       },
       {
-        path: "/my-interest",
+        path: "farmer/interests",
         element: (
-          <PrivateRoute>
-            <MyInterest />
-          </PrivateRoute>
+          <RoleRoute allowed={["farmer"]}>
+            <FarmerInterests />
+          </RoleRoute>
         ),
-      },
-      {
-        path: "/receiveInterest",
-        element: <ReceivedInterests />,
       },
     ],
   },
+
   {
     path: "/auth",
     element: <AuthLayout />,
     children: [
-      {
-        path: "/auth/login",
-        element: <Login />,
-      },
-      {
-        path: "/auth/register",
-        element: <Register />,
-      },
+      { path: "/auth/login", element: <Login /> },
+      { path: "/auth/register", element: <Register /> },
     ],
   },
 ]);
