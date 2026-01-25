@@ -122,7 +122,7 @@ const MyProfile = () => {
   }, [user?.email, axiosSecure]);
 
   return (
-    <section className="min-h-[calc(100vh-64px)] bg-[var(--color-bg)] py-10 px-4">
+    <section className="min-h-[calc(100vh-64px)] py-10 px-4">
       <div className="mx-auto max-w-5xl">
         <h1 className="text-center text-2xl sm:text-3xl font-bold text-[var(--color-text)]">
           My <span className="text-[var(--color-primary)]">Profile</span>

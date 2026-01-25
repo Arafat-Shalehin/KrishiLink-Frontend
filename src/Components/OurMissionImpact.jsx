@@ -43,8 +43,12 @@ const OurMissionImpact = () => {
 
           <Link
             to="/about"
-            className="bg-[var(--color-primary)] text-white lg:px-6 px-4 py-3 rounded font-semibold 
-          hover:brightness-95 hover:scale-105 hover:shadow-lg transition-all duration-300"
+            className="border border-(--color-secondary) text-(--color-secondary) lg:px-6 px-4 py-3 rounded font-semibold 
+          hover:brightness-95 hover:scale-105 
+          hover:bg-[color-mix(in_srgb,var(--color-secondary)_12%,transparent)] 
+          focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] 
+          focus-visible:ring-offset-2 focus-visible:ring-offset-transparent 
+          transition-all duration-300"
           >
             Learn More
           </Link>

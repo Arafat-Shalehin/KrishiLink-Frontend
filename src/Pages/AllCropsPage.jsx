@@ -3,23 +3,12 @@ import { AuthContext } from "../Context/AuthProvider";
 import EachCrops from "../Components/EachCrops";
 import AllCropsPageSkeleton from "../Components/Skeleton/AllCropsPageSkeleton";
 import useAxiosSecure from "../Hooks/useAxios";
-// import { motion } from "framer-motion";
 
 const AllCropsPage = () => {
   const [allCrops, setAllCrops] = useState([]);
   const [search, setSearch] = useState("");
   const { loading, setLoading } = useContext(AuthContext);
   const instance = useAxiosSecure();
-
-  // const sectionVariants = {
-  //   hidden: {},
-  //   visible: {
-  //     transition: {
-  //       staggerChildren: 0.15,
-  //       delayChildren: 0.2,
-  //     },
-  //   },
-  // };
 
   useEffect(() => {
     const fetchAllCrops = async () => {
@@ -118,8 +107,12 @@ const AllCropsPage = () => {
           <AllCropsPageSkeleton cards={9} />
         ) : (
           <div className="mt-10 w-full grid grid-cols-2 md:grid-cols-3 mx-auto gap-5">
-            {searchApps.map((crops) => (
-              <EachCrops key={crops._id} crops={crops}></EachCrops>
+            {searchApps.map((crops, index) => (
+              <EachCrops
+                key={crops._id}
+                crops={crops}
+                index={index}
+              ></EachCrops>
             ))}
           </div>
         )}

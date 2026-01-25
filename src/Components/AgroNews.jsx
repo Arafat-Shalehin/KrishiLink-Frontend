@@ -102,7 +102,7 @@ const AgroNews = () => {
 
                 <Link
                   to={`/news/${article.id}`}
-                  className="mt-5 text-[var(--color-primary)] font-medium inline-flex items-center hover:gap-2 transition-all duration-300"
+                  className="mt-5 text-[var(--color-secondary)] font-medium inline-flex items-center hover:gap-2 transition-all duration-300"
                 >
                   Read More →
                 </Link>

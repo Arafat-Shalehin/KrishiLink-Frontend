@@ -1,28 +1,33 @@
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 import { ShoppingCart, Leaf, Users, CheckCircle } from "lucide-react";
+import { useContext } from "react";
+import { AuthContext } from "../Context/AuthProvider";
+import useAuthProfile from "../Hooks/useAuthProfile";
+import useBuyerDashboard from "../Hooks/dashboard/useBuyerDashboard";
+import useFarmerDashboard from "../Hooks/dashboard/useFarmerDashboard";
+import DashboardHomeSkeleton from "./DashboardHomeSkeleton";
 
-const mockFarmerData = [
-  { name: "Wheat", value: 40 },
-  { name: "Rice", value: 65 },
-  { name: "Potato", value: 30 },
-];
+export default function DashboardHome() {
+  const { user } = useContext(AuthContext);
+  const { dbUser, loading: profileLoading } = useAuthProfile(user);
 
-const mockBuyerData = [
-  { name: "Interested", value: 12 },
-  { name: "Approved", value: 6 },
-  { name: "Purchased", value: 4 },
-];
+  const role = dbUser?.role || "buyer";
 
-const mockAdminData = [
-  { name: "Pending", value: 10 },
-  { name: "Approved", value: 18 },
-  { name: "Rejected", value: 3 },
-];
+  const buyerQuery = useBuyerDashboard(role === "buyer");
+  const farmerQuery = useFarmerDashboard(role === "farmer");
 
-export default function DashboardHome({ role = "farmer" }) {
+  if (profileLoading) return <DashboardHomeSkeleton cards={3} />;
+
   return (
     <div className="p-6 space-y-6">
       <motion.h1
@@ -33,27 +38,45 @@ export default function DashboardHome({ role = "farmer" }) {
         Dashboard Overview
       </motion.h1>
 
-      {role === "farmer" && <FarmerDashboard />}
-      {role === "buyer" && <BuyerDashboard />}
+      {role === "farmer" && <FarmerDashboard query={farmerQuery} />}
+      {role === "buyer" && <BuyerDashboard query={buyerQuery} />}
+
+      {/* Admin later */}
       {role === "admin" && <AdminDashboard />}
     </div>
   );
 }
 
-function FarmerDashboard() {
+function FarmerDashboard({ query }) {
+  const { data, isLoading, isError } = query;
+
+  if (isLoading) return <p>Loading farmer dashboard...</p>;
+  if (isError) return <p>Failed to load farmer dashboard.</p>;
+
+  const stats = data?.stats || {};
+  const chart = data?.chart || [];
+
   return (
     <>
       <div className="grid md:grid-cols-3 gap-6">
-        <StatCard title="My Crops" value="8" icon={<Leaf />} />
-        <StatCard title="Interested Buyers" value="14" icon={<Users />} />
-        <StatCard title="Approved Sales" value="5" icon={<CheckCircle />} />
+        <StatCard title="My Crops" value={stats.myCrops ?? 0} icon={<Leaf />} />
+        <StatCard
+          title="Interested Buyers"
+          value={stats.interestedBuyers ?? 0}
+          icon={<Users />}
+        />
+        <StatCard
+          title="Approved Sales"
+          value={stats.approvedSales ?? 0}
+          icon={<CheckCircle />}
+        />
       </div>
 
       <Card className="mt-6">
         <CardContent className="p-4">
           <h2 className="font-semibold mb-4">Crop Interest Overview</h2>
           <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={mockFarmerData}>
+            <BarChart data={chart}>
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
@@ -66,20 +89,40 @@ function FarmerDashboard() {
   );
 }
 
-function BuyerDashboard() {
+function BuyerDashboard({ query }) {
+  const { data, isLoading, isError } = query;
+
+  if (isLoading) return <DashboardHomeSkeleton cards={3} />;
+  if (isError) return <p>Failed to load buyer dashboard.</p>;
+
+  const stats = data?.stats || {};
+  const chart = data?.chart || [];
+
   return (
     <>
       <div className="grid md:grid-cols-3 gap-6">
-        <StatCard title="Interested Crops" value="12" icon={<Leaf />} />
-        <StatCard title="Approved Requests" value="6" icon={<CheckCircle />} />
-        <StatCard title="Purchases" value="4" icon={<ShoppingCart />} />
+        <StatCard
+          title="Interested Crops"
+          value={stats.interestedCrops ?? 0}
+          icon={<Leaf />}
+        />
+        <StatCard
+          title="Approved Requests"
+          value={stats.approvedRequests ?? 0}
+          icon={<CheckCircle />}
+        />
+        <StatCard
+          title="Purchases"
+          value={stats.purchases ?? 0}
+          icon={<ShoppingCart />}
+        />
       </div>
 
       <Card className="mt-6">
         <CardContent className="p-4">
           <h2 className="font-semibold mb-4">Buying Journey</h2>
           <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={mockBuyerData}>
+            <BarChart data={chart}>
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
@@ -92,32 +135,28 @@ function BuyerDashboard() {
   );
 }
 
+// keep Admin static for now
 function AdminDashboard() {
   return (
     <>
       <div className="grid md:grid-cols-4 gap-6">
-        <StatCard title="Total Farmers" value="42" icon={<Leaf />} />
-        <StatCard title="Total Buyers" value="58" icon={<Users />} />
-        <StatCard title="Pending Approvals" value="10" icon={<CheckCircle />} />
-        <StatCard title="Completed Sales" value="23" icon={<ShoppingCart />} />
+        <StatCard title="Total Farmers" value="—" icon={<Leaf />} />
+        <StatCard title="Total Buyers" value="—" icon={<Users />} />
+        <StatCard title="Pending Approvals" value="—" icon={<CheckCircle />} />
+        <StatCard title="Completed Sales" value="—" icon={<ShoppingCart />} />
       </div>
 
       <Card className="mt-6">
         <CardContent className="p-4">
           <h2 className="font-semibold mb-4">System Approval Status</h2>
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={mockAdminData}>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="value" />
-            </BarChart>
-          </ResponsiveContainer>
+          <p className="text-sm text-muted-foreground">
+            Admin dashboard will be added later.
+          </p>
         </CardContent>
       </Card>
 
       <div className="flex justify-end mt-4">
-        <Button>Go to Approval Panel</Button>
+        <Button disabled>Go to Approval Panel</Button>
       </div>
     </>
   );

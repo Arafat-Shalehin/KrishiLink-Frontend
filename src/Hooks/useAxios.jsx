@@ -21,18 +21,18 @@ const useAxiosSecure = () => {
           config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
-      }
+      },
     );
 
     const resInterceptor = axiosSecure.interceptors.response.use(
       (response) => response,
       (error) => {
         const statusCode = error.response?.status;
-        if (statusCode === 401 || statusCode === 403) {
+        if (statusCode === 401) {
           dltUser().then(() => navigate("/auth/login"));
         }
         return Promise.reject(error);
-      }
+      },
     );
 
     return () => {

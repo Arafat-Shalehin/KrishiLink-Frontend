@@ -11,16 +11,6 @@ const LatestCrop = () => {
   const [error, setError] = useState(false);
   const instance = useAxiosSecure();
 
-  const sectionVariants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
   useEffect(() => {
     let mounted = true;
     setLoading(true);
@@ -51,11 +41,7 @@ const LatestCrop = () => {
 
   return (
     <motion.section
-      className="bg-[var(--color-bg)]"
-      variants={sectionVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.25 }}
+      className="bg-(--color-bg)"
     >
       <div className="mx-auto pt-10 px-4 sm:px-6 lg:px-8">
         {/* Header */}
@@ -81,8 +67,8 @@ const LatestCrop = () => {
             <LatestCropSkeleton count={6} />
           ) : (
             <div className="grid gap-2 md:gap-5 grid-cols-2 lg:grid-cols-3 lg:mx-12">
-              {sixCrops.map((crops) => (
-                <EachCrops key={crops._id} crops={crops} />
+              {sixCrops.map((crops, index) => (
+                <EachCrops key={crops._id} crops={crops} index={index} />
               ))}
             </div>
           )}
