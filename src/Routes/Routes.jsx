@@ -21,8 +21,12 @@ import BuyerInterests from "../Dashboard/buyer/BuyerInterests";
 import FarmerDashboard from "../Dashboard/farmer/FarmerDashboard";
 import FarmerCrops from "../Dashboard/farmer/FarmerCrops";
 import FarmerAddCrop from "../Dashboard/farmer/FarmerAddCrop";
-import FarmerInterests from "../Dashboard/farmer/FarmerInterests";
+import FarmerInterests from "@/Dashboard/farmer/FarmerInterests";
 import DashboardHome from "../Dashboard/DashboardHome";
+import AdminOverview from "../Dashboard/admin/AdminOverview";
+import AdminUsers from "../Dashboard/admin/AdminUsers";
+import AdminRequests from "../Dashboard/admin/AdminRequests";
+import AdminCrops from "../Dashboard/admin/AdminCrops";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +54,8 @@ const router = createBrowserRouter([
 
       { path: "profile", element: <MyProfile /> },
 
+      // Buyer routes...
+
       {
         path: "buyer",
         element: (
@@ -66,6 +72,8 @@ const router = createBrowserRouter([
           </RoleRoute>
         ),
       },
+
+      // Farmer routes...
 
       {
         path: "farmer",
@@ -96,6 +104,41 @@ const router = createBrowserRouter([
         element: (
           <RoleRoute allowed={["farmer"]}>
             <FarmerInterests />
+          </RoleRoute>
+        ),
+      },
+
+      // Admin routes...
+
+      {
+        path: "admin",
+        element: (
+          <RoleRoute allowed={["admin"]}>
+            <AdminOverview />
+          </RoleRoute>
+        ),
+      },
+      {
+        path: "admin/users",
+        element: (
+          <RoleRoute allowed={["admin"]}>
+            <AdminUsers />
+          </RoleRoute>
+        ),
+      },
+      {
+        path: "admin/requests",
+        element: (
+          <RoleRoute allowed={["admin"]}>
+            <AdminRequests />
+          </RoleRoute>
+        ),
+      },
+      {
+        path: "admin/crops",
+        element: (
+          <RoleRoute allowed={["admin"]}>
+            <AdminCrops />
           </RoleRoute>
         ),
       },

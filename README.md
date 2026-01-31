@@ -1,9 +1,12 @@
- # 🌾 KrishiLink - Crop Trading Platform
+# KrishiLink (KrishiLink) — Crop Trading Platform
 
-### Live Site URL: [https://krishilink-a8922.web.app](https://krishilink-a8922.web.app)
+KrishiLink is a modern agricultural trading platform that connects **farmers** and **buyers** directly. Farmers can list crops for sale, buyers can browse and submit interest requests, and farmers can manage those interests (accept/reject). The project is built to a **production-ready** with a consistent design system, role-based dashboard foundation, secure backend authorization, and responsive UI.
 
-KrishiLink is a modern agricultural trading platform designed to connect **farmers** and **buyers** directly.  
-It empowers farmers to post their crops for sale, receive buyer interests, and manage deals easily — all in one place.
+---
+
+## Live Links
+- Frontend (Firebase Hosting): **[https://krishilink-a8922.web.app]**
+- Backend API (Vercel): **[https://krishi-link-backend.vercel.app]**
 
 ---
 
@@ -17,12 +20,23 @@ It empowers farmers to post their crops for sale, receive buyer interests, and m
 
 ---
 
-## 🧩 Tech Stack
+## Tech Stack
 
-- **Frontend:** React.js, React Router, Tailwind CSS, Framer Motion  
-- **State & Auth:** Context API, Firebase Authentication  
-- **HTTP Requests:** Axios  
-- **Notifications:** React Toastify
+### Frontend
+- **React** + React Router
+- **Tailwind CSS** + DaisyUI (components)
+- **Framer Motion** (animations)
+- **TanStack Query** (server state / caching)
+- **Axios** (API requests, secure interceptor)
+- **Firebase Auth** (Email/Password + Google)
+- **React Toastify** (notifications)
+- **Recharts** (dashboard charts)
+
+### Backend
+- **Node.js** + **Express**
+- **MongoDB Atlas** (Database)
+- **Firebase Admin** (token verification; using base64 service key)
+- Modular architecture: `config/`, `middlewares/`, `modules/`, `utils/`
 
 ---
 
@@ -33,12 +47,14 @@ It empowers farmers to post their crops for sale, receive buyer interests, and m
 git clone
 cd krishilink-frontend
 npm install
+
 Create a .env.local file and add your Firebase + Backend credentials:
-VITE_api_url=<YOUR_BACKEND_URL>
-VITE_api_key=<FIREBASE_API_KEY>
-VITE_auth_domain=<FIREBASE_AUTH_DOMAIN>
-VITE_project_id=<FIREBASE_PROJECT_ID>
-VITE_storage_bucket=<FIREBASE_STORAGE_BUCKET>
-VITE_messaging_sender_id=<FIREBASE_SENDER_ID>
-VITE_app_id=<FIREBASE_APP_ID>
+- VITE_api_url=<YOUR_BACKEND_URL>
+- VITE_api_key=<FIREBASE_API_KEY>
+- VITE_auth_domain=<FIREBASE_AUTH_DOMAIN>
+- VITE_project_id=<FIREBASE_PROJECT_ID>
+- VITE_storage_bucket=<FIREBASE_STORAGE_BUCKET>
+- VITE_messaging_sender_id=<FIREBASE_SENDER_ID>
+- VITE_app_id=<FIREBASE_APP_ID>
+
 npm run dev

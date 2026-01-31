@@ -65,7 +65,7 @@ const CropsDetails = () => {
       try {
         const res = await instance.get(`/allCrops`);
         const sT = res.data.filter(
-          (crop) => crop.type === type && crop._id !== id
+          (crop) => crop.type === type && crop._id !== id,
         );
         setSameType(sT);
       } catch (error) {
@@ -146,7 +146,7 @@ const CropsDetails = () => {
       try {
         const res = await instance.post(
           `/allCrops/${crops._id}/interests`,
-          payload
+          payload,
         );
 
         if (res.data.success) {
@@ -157,7 +157,7 @@ const CropsDetails = () => {
           // No optimistic update needed here because buyers can’t view owner-only list.
         } else {
           toast.error(
-            res.data.message || "Submission failed, Try again later."
+            res.data.message || "Submission failed, Try again later.",
           );
         }
       } catch (error) {
@@ -175,26 +175,26 @@ const CropsDetails = () => {
   const statusClass = (status) => {
     const s = String(status || "").toLowerCase();
     if (s === "accepted")
-      return "text-[var(--color-primary)] bg-[color-mix(in_srgb,var(--color-primary)_10%,transparent)] border-[color-mix(in_srgb,var(--color-primary)_25%,transparent)]";
+      return "text-(--color-primary) bg-[color-mix(in_srgb,var(--color-primary)_10%,transparent) border-[color-mix(in_srgb,var(--color-primary)_25%,transparent)";
     if (s === "rejected")
       return "text-red-600 bg-red-50 dark:text-red-300 dark:bg-red-900/20 border-red-200 dark:border-red-900/40";
-    return "text-[var(--color-secondary)] bg-[color-mix(in_srgb,var(--color-accent)_14%,transparent)] border-[color-mix(in_srgb,var(--color-accent)_30%,transparent)]";
+    return "text-(--color-secondary) bg-[color-mix(in_srgb,var(--color-accent)_14%,transparent) border-[color-mix(in_srgb,var(--color-accent)_30%,transparent)";
   };
 
   return (
-    <div className="bg-[var(--color-bg)] text-[var(--color-text)]">
+    <div className="bg-(--color-bg) text-(--color-text)">
       <div className="max-w-7xl mx-auto px-4 py-10">
-        <h1 className="font-bold text-2xl sm:text-3xl md:text-4xl text-center mb-6 text-[var(--color-text)]">
-          Product <span className="text-[var(--color-primary)]">Details</span>
+        <h1 className="font-bold text-2xl sm:text-3xl md:text-4xl text-center mb-6 text-(--color-text)">
+          Product <span className="text-(--color-primary)">Details</span>
         </h1>
 
         {loading ? (
           <CropsDetailsSkeleton interestRows={4} />
         ) : (
-          <div className="mt-10 bg-[var(--color-surface)] border border-[var(--color-border)] shadow-xl rounded-2xl overflow-hidden flex flex-col md:flex-row transition-all hover:shadow-2xl">
+          <div className="mt-10 bg-(--color-surface) border border-(--color-border) shadow-xl rounded-2xl overflow-hidden flex flex-col md:flex-row transition-all hover:shadow-2xl">
             {/* Image Section */}
             <motion.div
-              className="md:w-1/2 bg-[var(--color-bg)]"
+              className="md:w-1/2 bg-(--color-bg)"
               initial={{ opacity: 0, x: -80 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
@@ -209,49 +209,49 @@ const CropsDetails = () => {
             {/* Details Section */}
             <div className="md:w-1/2 p-6 flex flex-col justify-between">
               <div>
-                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-[var(--color-text)] mb-2">
-                  <span className="text-[var(--color-primary)]">
+                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-(--color-text) mb-2">
+                  <span className="text-(--color-primary)">
                     {crops.name}
                   </span>
                 </h1>
 
-                <p className="text-[var(--color-muted)] text-sm sm:text-base mb-4 leading-relaxed">
+                <p className="text-(--color-muted) text-sm sm:text-base mb-4 leading-relaxed">
                   {crops.description}
                 </p>
 
                 <div className="space-y-2 text-sm sm:text-base">
-                  <p className="text-[var(--color-text)]">
-                    <span className="font-semibold text-[var(--color-secondary)]">
+                  <p className="text-(--color-text)">
+                    <span className="font-semibold text-(--color-secondary)">
                       Type:
                     </span>{" "}
-                    <span className="text-[var(--color-text)]/90">
+                    <span className="text-(--color-text)/90">
                       {crops.type}
                     </span>
                   </p>
 
-                  <p className="text-[var(--color-text)]">
-                    <span className="font-semibold text-[var(--color-secondary)]">
+                  <p className="text-(--color-text)">
+                    <span className="font-semibold text-(--color-secondary)">
                       Price:
                     </span>{" "}
-                    <span className="text-[var(--color-primary)] font-semibold">
+                    <span className="text-(--color-primary) font-semibold">
                       {crops.pricePerUnit} BDT/{crops.unit}
                     </span>
                   </p>
 
-                  <p className="text-[var(--color-text)]">
-                    <span className="font-semibold text-[var(--color-secondary)]">
+                  <p className="text-(--color-text)">
+                    <span className="font-semibold text-(--color-secondary)">
                       Quantity:
                     </span>{" "}
-                    <span className="text-[var(--color-text)]/90">
+                    <span className="text-(--color-text)/90">
                       {crops.quantity} {crops.unit}
                     </span>
                   </p>
 
-                  <p className="text-[var(--color-text)]">
-                    <span className="font-semibold text-[var(--color-secondary)]">
+                  <p className="text-(--color-text)">
+                    <span className="font-semibold text-(--color-secondary)">
                       Location:
                     </span>{" "}
-                    <span className="text-[var(--color-text)]/90">
+                    <span className="text-(--color-text)/90">
                       {crops.location}
                     </span>
                   </p>
@@ -259,18 +259,18 @@ const CropsDetails = () => {
               </div>
 
               {/* Owner Info */}
-              <div className="mt-6 border-t border-[var(--color-border)] pt-4">
-                <h2 className="text-base sm:text-lg font-semibold text-[var(--color-text)] mb-2">
+              <div className="mt-6 border-t border-(--color-border) pt-4">
+                <h2 className="text-base sm:text-lg font-semibold text-(--color-text) mb-2">
                   Owner Information
                 </h2>
-                <p className="text-sm sm:text-base text-[var(--color-text)]/90">
-                  <span className="font-medium text-[var(--color-secondary)]">
+                <p className="text-sm sm:text-base text-(--color-text)/90">
+                  <span className="font-medium text-(--color-secondary)">
                     Name:
                   </span>{" "}
                   {crops.owner?.ownerName}
                 </p>
-                <p className="text-sm sm:text-base text-[var(--color-text)]/90">
-                  <span className="font-medium text-[var(--color-secondary)]">
+                <p className="text-sm sm:text-base text-(--color-text)/90">
+                  <span className="font-medium text-(--color-secondary)">
                     Email:
                   </span>{" "}
                   {crops.owner?.ownerEmail}
@@ -278,10 +278,10 @@ const CropsDetails = () => {
               </div>
 
               {userEmail === cropOwnerEmail && (
-                <div className="mt-6 border-t border-[var(--color-border)] pt-4">
-                  <h1 className="font-semibold text-sm sm:text-base text-[var(--color-muted)]">
+                <div className="mt-6 border-t border-(--color-border) pt-4">
+                  <h1 className="font-semibold text-sm sm:text-base text-(--color-muted)">
                     Interests received for this crop:{" "}
-                    <span className="text-[var(--color-text)]">
+                    <span className="text-(--color-text)">
                       {interestCrops}
                     </span>
                   </h1>
@@ -291,15 +291,15 @@ const CropsDetails = () => {
               {/* Button Section */}
               <div className="mt-6 flex flex-col sm:flex-row gap-3">
                 {userEmail === cropOwnerEmail ? (
-                  <Link to="/receiveInterest" className="flex-1">
-                    <button className="w-full px-5 py-2.5 bg-[var(--color-primary)] text-white font-semibold rounded-lg hover:brightness-95 transition">
+                  <Link to="/dashboard/farmer/interests" className="flex-1">
+                    <button className="w-full px-5 py-2.5 bg-(--color-primary) text-white font-semibold rounded-lg hover:brightness-95 transition">
                       Manage received interests
                     </button>
                   </Link>
                 ) : (
                   <button
                     onClick={() => setShowForm(true)}
-                    className="flex-1 px-5 py-2.5 bg-[var(--color-primary)] text-white font-semibold rounded-lg hover:brightness-95 transition"
+                    className="flex-1 px-5 py-2.5 bg-(--color-primary) text-white font-semibold rounded-lg hover:brightness-95 transition"
                   >
                     Show Interest
                   </button>
@@ -307,7 +307,7 @@ const CropsDetails = () => {
 
                 <button
                   onClick={() => window.history.back()}
-                  className="flex-1 px-5 py-2.5 border border-[var(--color-secondary)] text-[var(--color-secondary)] font-semibold rounded-lg hover:bg-[color-mix(in_srgb,var(--color-secondary)_10%,transparent)] transition"
+                  className="flex-1 px-5 py-2.5 border border-(--color-secondary) text-(--color-secondary) font-semibold rounded-lg hover:bg-[color-mix(in_srgb,var(--color-secondary)_10%,transparent) transition"
                 >
                   Back
                 </button>
@@ -322,21 +322,21 @@ const CropsDetails = () => {
         ) : (
           <>
             {userEmail === cropOwnerEmail && interestData.length === 0 ? (
-              <div className="mt-8 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-10 text-center">
-                <h1 className="font-semibold text-xl sm:text-2xl md:text-3xl text-[var(--color-text)]">
+              <div className="mt-8 rounded-2xl border border-(--color-border) bg-(--color-surface) p-10 text-center">
+                <h1 className="font-semibold text-xl sm:text-2xl md:text-3xl text-(--color-text)">
                   People who are interested in this product
                 </h1>
-                <p className="text-base sm:text-lg text-[var(--color-muted)] font-semibold">
+                <p className="text-base sm:text-lg text-(--color-muted) font-semibold">
                   No one has shown any interest yet!
                 </p>
               </div>
             ) : null}
 
             {userEmail === cropOwnerEmail && interestData.length > 0 ? (
-              <div className="w-full mx-auto my-8 bg-[var(--color-surface)] rounded-2xl shadow-sm border border-[var(--color-border)] overflow-hidden">
+              <div className="w-full mx-auto my-8 bg-(--color-surface) rounded-2xl shadow-sm border border-(--color-border) overflow-hidden">
                 <table className="min-w-full text-left text-sm">
-                  <thead className="bg-[var(--color-bg)] border-b border-[var(--color-border)]">
-                    <tr className="text-[var(--color-text)]">
+                  <thead className="bg-(--color-bg) border-b border-(--color-border)">
+                    <tr className="text-(--color-text)">
                       <th className="py-3 px-4 font-semibold">SL No</th>
                       <th className="py-3 px-4 font-semibold">Wants to buy</th>
                       <th className="py-3 px-4 font-semibold">Quantity</th>
@@ -344,22 +344,22 @@ const CropsDetails = () => {
                     </tr>
                   </thead>
 
-                  <tbody className="text-[var(--color-text)]/90">
+                  <tbody className="text-(--color-text)/90">
                     {interestData.map((interest, index) => (
                       <tr
                         key={interest._id || index}
-                        className="border-b border-[var(--color-border)] hover:bg-[color-mix(in_srgb,var(--color-primary)_6%,transparent)] transition"
+                        className="border-b border-(--color-border) hover:bg-[color-mix(in_srgb,var(--color-primary)_6%,transparent) transition"
                       >
                         <td className="py-3 px-4">{index + 1}</td>
 
                         <td className="py-3 px-4">
                           <div>
-                            <p className="font-semibold text-[var(--color-text)]">
+                            <p className="font-semibold text-(--color-text)">
                               {interest.buyerName ||
                                 interest.userName ||
                                 "Unknown"}
                             </p>
-                            <p className="text-xs text-[var(--color-muted)]">
+                            <p className="text-xs text-(--color-muted)">
                               {interest.buyerEmail || interest.userEmail || "—"}
                             </p>
                           </div>
@@ -390,7 +390,7 @@ const CropsDetails = () => {
 
         {/* Similar Type of Products */}
         <div className="mt-16 sm:mt-20">
-          <h1 className="font-bold text-2xl sm:text-3xl md:text-4xl text-[var(--color-text)]/80">
+          <h1 className="font-bold text-2xl sm:text-3xl md:text-4xl text-(--color-text)/80">
             Similar types of products
           </h1>
 
@@ -413,7 +413,7 @@ const CropsDetails = () => {
                     </SwiperSlide>
                   ))
                 ) : (
-                  <h1 className="font-semibold text-base sm:text-lg text-[var(--color-muted)]">
+                  <h1 className="font-semibold text-base sm:text-lg text-(--color-muted)">
                     There are no product of this type.
                   </h1>
                 )}
@@ -425,40 +425,40 @@ const CropsDetails = () => {
         {/* Interest Form Modal */}
         {showForm && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
-            <div className="bg-[var(--color-surface)] border border-[var(--color-border)] p-6 rounded-2xl shadow-lg w-full max-w-md relative">
-              <h2 className="text-xl sm:text-2xl font-semibold text-[var(--color-text)] mb-4">
+            <div className="bg-(--color-surface) border border-(--color-border) p-6 rounded-2xl shadow-lg w-full max-w-md relative">
+              <h2 className="text-xl sm:text-2xl font-semibold text-(--color-text) mb-4">
                 Express Your Interest
               </h2>
 
               <label className="block mb-3">
-                <span className="text-[var(--color-muted)] font-medium text-sm sm:text-base">
+                <span className="text-(--color-muted) font-medium text-sm sm:text-base">
                   Quantity ({crops.unit})
                 </span>
                 <input
                   type="text"
                   defaultValue={quantity}
                   onChange={(e) => setQuantity(Number(e.target.value))}
-                  className="mt-1 w-full border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] rounded-lg px-3 py-2 focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/20"
+                  className="mt-1 w-full border border-(--color-border) bg-(--color-surface) text-(--color-text) rounded-lg px-3 py-2 focus:outline-none focus:ring-4 focus:ring-(--color-primary)/20"
                 />
               </label>
 
               <label className="block mb-3">
-                <span className="text-[var(--color-muted)] font-medium text-sm sm:text-base">
+                <span className="text-(--color-muted) font-medium text-sm sm:text-base">
                   Message
                 </span>
                 <textarea
                   rows="3"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="mt-1 w-full border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] rounded-lg px-3 py-2 focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/20"
+                  className="mt-1 w-full border border-(--color-border) bg-(--color-surface) text-(--color-text) rounded-lg px-3 py-2 focus:outline-none focus:ring-4 focus:ring-(--color-primary)/20"
                   placeholder="Example: Interested in buying 100kg..."
                 ></textarea>
               </label>
 
               <div className="mb-4">
-                <p className="text-[var(--color-muted)] font-medium text-sm sm:text-base">
+                <p className="text-(--color-muted) font-medium text-sm sm:text-base">
                   Total Price:{" "}
-                  <span className="text-[var(--color-primary)] font-semibold">
+                  <span className="text-(--color-primary) font-semibold">
                     {totalPrice.toLocaleString()} BDT
                   </span>
                 </p>
@@ -467,13 +467,13 @@ const CropsDetails = () => {
               <div className="flex justify-end gap-3 mt-6">
                 <button
                   onClick={() => setShowForm(false)}
-                  className="px-4 py-2 border border-[var(--color-border)] text-[var(--color-text)] rounded-lg hover:bg-[var(--color-bg)] transition"
+                  className="px-4 py-2 border border-(--color-border) text-(--color-text) rounded-lg hover:bg-(--color-bg) transition"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleInterestSubmit}
-                  className="px-4 py-2 bg-[var(--color-primary)] hover:brightness-95 text-white rounded-lg font-semibold transition"
+                  className="px-4 py-2 bg-(--color-primary) hover:brightness-95 text-white rounded-lg font-semibold transition"
                 >
                   Submit
                 </button>

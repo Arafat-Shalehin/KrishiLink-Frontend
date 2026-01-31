@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { syncUserToBackend } from "../utils/syncUserToBackend";
 import useAxiosSecure from "../Hooks/useAxios";
 import { getMeOrSync } from "../utils/getMeOrSync";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const { loginUser, googleLogin } = useContext(AuthContext);
@@ -17,6 +18,12 @@ const Login = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
+
+  const demoFarmerEmail = import.meta.env.VITE_DEMO_FARMER_EMAIL;
+  const demoFarmerPassword = import.meta.env.VITE_DEMO_FARMER_PASSWORD;
+
+  const demoAdminEmail = import.meta.env.VITE_DEMO_ADMIN_EMAIL;
+  const demoAdminPassword = import.meta.env.VITE_DEMO_ADMIN_PASSWORD;
 
   const firebaseErrorMessage = useMemo(() => {
     const map = {
@@ -105,24 +112,86 @@ const Login = () => {
     }
   };
 
+  const handleDemoFarmerLogin = async () => {
+    setError("");
+
+    if (!demoFarmerEmail || !demoFarmerPassword) {
+      toast.error("Demo farmer credentials are not configured.");
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+      const result = await loginUser(demoFarmerEmail, demoFarmerPassword);
+
+      // Ensure DB user exists / loaded
+      await getMeOrSync(instance, result.user);
+
+      toast.success("Logged in as Demo Farmer.");
+      navigate(location.state ? location.state : "/dashboard");
+    } catch (err) {
+      console.error(err);
+      setError(firebaseErrorMessage(err?.code));
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleDemoAdminLogin = async () => {
+    setError("");
+
+    if (!demoAdminEmail || !demoAdminPassword) {
+      toast.error("Demo admin credentials are not configured.");
+      return;
+    }
+
+    const resultConfirm = await Swal.fire({
+      title: "Proceed with Admin Demo?",
+      text: "You are about to enter with limited admin privileges. To protect the integrity of the platform, certain administrative functions are restricted. Proceed?",
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonText: "OK",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#2F855A", // matches your primary
+      cancelButtonColor: "#8B5E34", // secondary
+    });
+
+    if (!resultConfirm.isConfirmed) return;
+
+    try {
+      setSubmitting(true);
+      const result = await loginUser(demoAdminEmail, demoAdminPassword);
+
+      await getMeOrSync(instance, result.user);
+
+      toast.success("Logged in as Demo Admin.");
+      navigate(location.state ? location.state : "/dashboard");
+    } catch (err) {
+      console.error(err);
+      setError(firebaseErrorMessage(err?.code));
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <section
-      className="min-h-[calc(100vh-64px)] 
-    bg-[var(--color-bg)] flex items-center 
+      className="min-h-[calc(100vh-64px) 
+    bg-(--color-bg) flex items-center 
     justify-center px-4 py-10"
     >
       <div className="w-full max-w-md">
         <div
           className="rounded-2xl border 
-        border-[var(--color-border)] 
-        bg-[var(--color-surface)] shadow-xl"
+        border-(--color-border) 
+        bg-(--color-surface) shadow-xl"
         >
           {/* Header */}
           <div className="px-6 pt-8 text-center">
-            <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text)]">
+            <h2 className="text-2xl sm:text-3xl font-bold text-(--color-text)">
               Login to KrishiLink
             </h2>
-            <p className="mt-2 text-sm sm:text-base text-[var(--color-muted)]">
+            <p className="mt-2 text-sm sm:text-base text-(--color-muted)">
               Access your dashboard and manage your crops and interests.
             </p>
           </div>
@@ -142,7 +211,7 @@ const Login = () => {
           <form onSubmit={handleLogin} className="px-6 pb-7 pt-6 space-y-4">
             {/* Email */}
             <div className="space-y-1.5">
-              <label className="text-sm font-semibold text-[var(--color-text)]">
+              <label className="text-sm font-semibold text-(--color-text)">
                 Email
               </label>
               <input
@@ -151,13 +220,13 @@ const Login = () => {
                 placeholder="you@example.com"
                 onChange={() => error && setError("")}
                 autoComplete="email"
-                className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-sm sm:text-base text-[var(--color-text)] placeholder:text-[var(--color-muted)] focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/20"
+                className="w-full rounded-xl border border-(--color-border) bg-(--color-surface) px-4 py-2.5 text-sm sm:text-base text-(--color-text) placeholder:text-(--color-muted) focus:outline-none focus:ring-4 focus:ring-(--color-primary)/20"
               />
             </div>
 
             {/* Password */}
             <div className="space-y-1.5">
-              <label className="text-sm font-semibold text-[var(--color-text)]">
+              <label className="text-sm font-semibold text-(--color-text)">
                 Password
               </label>
 
@@ -168,13 +237,13 @@ const Login = () => {
                   placeholder="Enter your password"
                   onChange={() => error && setError("")}
                   autoComplete="current-password"
-                  className="w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 pr-16 text-sm sm:text-base text-[var(--color-text)] placeholder:text-[var(--color-muted)] focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/20"
+                  className="w-full rounded-xl border border-(--color-border) bg-(--color-surface) px-4 py-2.5 pr-16 text-sm sm:text-base text-(--color-text) placeholder:text-(--color-muted) focus:outline-none focus:ring-4 focus:ring-(--color-primary)/20"
                 />
 
                 <button
                   type="button"
                   onClick={() => setShow((prev) => !prev)}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg px-2.5 py-1 text-xs font-semibold text-[var(--color-secondary)] hover:bg-[color-mix(in_srgb,var(--color-secondary)_12%,transparent)]"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg px-2.5 py-1 text-xs font-semibold text-(--color-secondary) hover:bg-[color-mix(in_srgb,var(--color-secondary)_12%,transparent)"
                   aria-label={show ? "Hide password" : "Show password"}
                 >
                   {show ? "Hide" : "Show"}
@@ -185,7 +254,7 @@ const Login = () => {
                 {/* Kept functional + professional: mailto instead of Gmail inbox */}
                 <a
                   href="mailto:hello@krishilink.app?subject=Password%20Reset%20Help"
-                  className="text-sm font-medium text-[var(--color-primary)] hover:underline underline-offset-4"
+                  className="text-sm font-medium text-(--color-primary) hover:underline underline-offset-4"
                 >
                   Forgot password?
                 </a>
@@ -196,7 +265,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={submitting || googleSubmitting}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] px-4 py-2.5 text-sm sm:text-base font-semibold text-white hover:brightness-95 transition disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-(--color-primary) px-4 py-2.5 text-sm sm:text-base font-semibold text-white hover:brightness-95 transition disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {submitting ? (
                 <span className="inline-flex items-center gap-2">
@@ -210,11 +279,11 @@ const Login = () => {
 
             {/* Divider */}
             <div className="flex items-center gap-3 py-1">
-              <div className="h-px w-full bg-[var(--color-border)]" />
-              <span className="text-xs font-semibold text-[var(--color-muted)]">
+              <div className="h-px w-full bg-(--color-border)" />
+              <span className="text-xs font-semibold text-(--color-muted)">
                 OR
               </span>
-              <div className="h-px w-full bg-[var(--color-border)]" />
+              <div className="h-px w-full bg-(--color-border)" />
             </div>
 
             {/* Google */}
@@ -222,11 +291,11 @@ const Login = () => {
               type="button"
               onClick={handleGoogleLogin}
               disabled={submitting || googleSubmitting}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-sm sm:text-base font-semibold text-[var(--color-text)] hover:bg-[color-mix(in_srgb,var(--color-primary)_8%,var(--color-surface))] transition disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-(--color-border) bg-(--color-surface) px-4 py-2.5 text-sm sm:text-base font-semibold text-(--color-text) hover:bg-[color-mix(in_srgb,var(--color-primary)_8%,var(--color-surface)) transition disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {googleSubmitting ? (
                 <span className="inline-flex items-center gap-2">
-                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-[var(--color-muted)]/40 border-t-[var(--color-primary)]" />
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-(--color-muted)/40 border-t-(--color-primary)" />
                   Connecting...
                 </span>
               ) : (
@@ -236,12 +305,33 @@ const Login = () => {
                 </>
               )}
             </button>
+            {/* Demo Login Buttons */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={handleDemoFarmerLogin}
+                disabled={submitting || googleSubmitting}
+                className="w-full rounded-xl border border-(--color-primary) px-4 py-2.5 text-sm font-semibold text-(--color-primary)
+    hover:bg-[color-mix(in_srgb,var(--color-primary)_10%,transparent) transition disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                Login as Farmer
+              </button>
 
+              <button
+                type="button"
+                onClick={handleDemoAdminLogin}
+                disabled={submitting || googleSubmitting}
+                className="w-full rounded-xl border border-(--color-secondary) px-4 py-2.5 text-sm font-semibold text-(--color-secondary)
+    hover:bg-[color-mix(in_srgb,var(--color-secondary)_10%,transparent) transition disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                Login as Admin
+              </button>
+            </div>
             {/* Register */}
-            <p className="text-center text-sm sm:text-base text-[var(--color-muted)] pt-1">
+            <p className="text-center text-sm sm:text-base text-(--color-muted) pt-1">
               Don&apos;t have an account?{" "}
               <Link
-                className="font-semibold text-[var(--color-primary)] hover:underline underline-offset-4"
+                className="font-semibold text-(--color-primary) hover:underline underline-offset-4"
                 to="/auth/register"
                 state={location.state}
               >

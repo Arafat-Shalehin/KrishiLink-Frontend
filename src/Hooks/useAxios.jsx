@@ -17,7 +17,7 @@ const useAxiosSecure = () => {
       async (config) => {
         // Don't overwrite Authorization if already set (ex: syncUserToBackend sets it)
         if (user && !config.headers?.Authorization) {
-          const token = await user.getIdToken();
+          const token = await user?.getIdToken();
           config.headers.Authorization = `Bearer ${token}`;
         }
         return config;

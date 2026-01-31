@@ -87,88 +87,44 @@ export default function Footer() {
         {/* Link Grid */}
         <nav
           aria-label="Footer"
-          className="grid gap-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 sm:p-6 lg:p-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+          className="grid gap-6 rounded-2xl border border-[var(--color-border)] 
+          bg-[var(--color-surface)] p-5 sm:p-6 lg:p-8 
+          grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
         >
+          {/* Platform */}
           <div>
             <h3 className="text-xs uppercase tracking-widest text-[var(--color-secondary)] mb-3">
-              Explore
+              Platform
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a
+                <Link
+                  to="/all-crops"
                   className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
-                  href="/explore"
                 >
-                  Browse crop posts
-                </a>
+                  Browse crops
+                </Link>
               </li>
               <li>
-                <a
+                <Link
+                  to={user ? "/dashboard" : "/auth/login"}
                   className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
-                  href="/connect"
                 >
-                  Connect & collaborate
-                </a>
+                  Dashboard
+                </Link>
               </li>
               <li>
-                <a
+                <Link
+                  to="/auth/register"
                   className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
-                  href="/stories"
                 >
-                  Success stories
-                </a>
-              </li>
-              <li>
-                <a
-                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
-                  href="/trends"
-                >
-                  Seasonal trends
-                </a>
+                  Join KrishiLink
+                </Link>
               </li>
             </ul>
           </div>
 
-          <div>
-            <h3 className="text-xs uppercase tracking-widest text-[var(--color-secondary)] mb-3">
-              For Users
-            </h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <a
-                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
-                  href="/farmers"
-                >
-                  For Farmers
-                </a>
-              </li>
-              <li>
-                <a
-                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
-                  href="/traders"
-                >
-                  For Traders
-                </a>
-              </li>
-              <li>
-                <a
-                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
-                  href="/consumers"
-                >
-                  For Consumers
-                </a>
-              </li>
-              <li>
-                <a
-                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
-                  href="/guides/get-started"
-                >
-                  Getting started
-                </a>
-              </li>
-            </ul>
-          </div>
-
+          {/* Resources */}
           <div>
             <h3 className="text-xs uppercase tracking-widest text-[var(--color-secondary)] mb-3">
               Resources
@@ -176,39 +132,29 @@ export default function Footer() {
             <ul className="space-y-2 text-sm">
               <li>
                 <a
-                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
-                  href="/guidelines"
-                >
-                  Community guidelines
-                </a>
-              </li>
-              <li>
-                <a
-                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
-                  href="/safety"
-                >
-                  Safety & quality tips
-                </a>
-              </li>
-              <li>
-                <a
-                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
                   href="/faq"
+                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
                 >
                   FAQs
                 </a>
               </li>
               <li>
                 <a
+                  href="/guidelines"
                   className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
-                  href="/help"
                 >
-                  Help center
+                  Community Guidelines
                 </a>
+              </li>
+              <li>
+                <span className="text-[var(--color-muted)] cursor-not-allowed">
+                  Market insights (coming soon)
+                </span>
               </li>
             </ul>
           </div>
 
+          {/* Contact */}
           <div>
             <h3 className="text-xs uppercase tracking-widest text-[var(--color-secondary)] mb-3">
               Contact
@@ -216,67 +162,34 @@ export default function Footer() {
             <ul className="space-y-2 text-sm">
               <li>
                 <a
-                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
                   href="mailto:hello@krishilink.app"
+                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
                 >
                   hello@krishilink.app
                 </a>
               </li>
               <li>
-                <a
-                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
-                  href="/partnerships"
-                >
-                  Partnerships
-                </a>
-              </li>
-              <li>
-                <a
-                  className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
-                  href="/report"
-                >
-                  Report an issue
-                </a>
+                <span className="text-[var(--color-muted)]">
+                  Partnerships (invite only)
+                </span>
               </li>
             </ul>
 
             {/* Social */}
-            <div
-              className="mt-3 flex items-center gap-2"
-              aria-label="Social links"
-            >
-              <a
-                href="/"
-                aria-label="X (Twitter)"
-                title="X"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-primary)] hover:bg-[color-mix(in_srgb,var(--color-primary)_12%,var(--color-surface))] transition"
-              >
-                <FaSquareXTwitter />
-              </a>
-              <a
-                href="/"
-                aria-label="Instagram"
-                title="Instagram"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-primary)] hover:bg-[color-mix(in_srgb,var(--color-primary)_12%,var(--color-surface))] transition"
-              >
-                <FaInstagramSquare />
-              </a>
-              <a
-                href="/"
-                aria-label="LinkedIn"
-                title="LinkedIn"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-primary)] hover:bg-[color-mix(in_srgb,var(--color-primary)_12%,var(--color-surface))] transition"
-              >
-                <FaLinkedin />
-              </a>
-              <a
-                href="/"
-                aria-label="YouTube"
-                title="YouTube"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-primary)] hover:bg-[color-mix(in_srgb,var(--color-primary)_12%,var(--color-surface))] transition"
-              >
-                <FaYoutube />
-              </a>
+            <div className="mt-3 flex items-center gap-2">
+              {[FaSquareXTwitter, FaInstagramSquare, FaLinkedin, FaYoutube].map(
+                (Icon, i) => (
+                  <span
+                    key={i}
+                    title="Social launch soon"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-full 
+            border border-[var(--color-border)] text-[var(--color-muted)] 
+            cursor-not-allowed"
+                  >
+                    <Icon />
+                  </span>
+                ),
+              )}
             </div>
           </div>
         </nav>

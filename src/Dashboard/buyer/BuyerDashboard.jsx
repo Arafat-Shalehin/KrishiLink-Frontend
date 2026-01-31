@@ -26,7 +26,7 @@ const BuyerDashboard = () => {
   return (
     <div>
       <h1 className="text-xl sm:text-2xl font-bold">
-        Buyer <span className="text-[var(--color-primary)]">Overview</span>
+        Buyer <span className="text-(--color-primary)">Overview</span>
       </h1>
 
       <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -40,9 +40,9 @@ const BuyerDashboard = () => {
 };
 
 const Card = ({ title, value }) => (
-  <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg)] p-4">
-    <p className="text-xs font-semibold text-[var(--color-muted)]">{title}</p>
-    <p className="mt-2 text-2xl font-extrabold text-[var(--color-text)]">
+  <div className="rounded-2xl border border-(--color-border) bg-(--color-bg) p-4">
+    <p className="text-xs font-semibold text-(--color-muted)">{title}</p>
+    <p className="mt-2 text-2xl font-extrabold text-(--color-text)">
       {value}
     </p>
   </div>

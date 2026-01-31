@@ -15,13 +15,14 @@ import { AuthContext } from "../Context/AuthProvider";
 import useAuthProfile from "../Hooks/useAuthProfile";
 import useBuyerDashboard from "../Hooks/dashboard/useBuyerDashboard";
 import useFarmerDashboard from "../Hooks/dashboard/useFarmerDashboard";
+import useAdminOverview from "@/Hooks/admin/useAdminOverview";
 import DashboardHomeSkeleton from "./DashboardHomeSkeleton";
 
 export default function DashboardHome() {
   const { user } = useContext(AuthContext);
   const { dbUser, loading: profileLoading } = useAuthProfile(user);
 
-  const role = dbUser?.role || "buyer";
+  const role = dbUser?.role;
 
   const buyerQuery = useBuyerDashboard(role === "buyer");
   const farmerQuery = useFarmerDashboard(role === "farmer");
@@ -42,7 +43,7 @@ export default function DashboardHome() {
       {role === "buyer" && <BuyerDashboard query={buyerQuery} />}
 
       {/* Admin later */}
-      {role === "admin" && <AdminDashboard />}
+      {role === "admin" && <AdminDashboard enabled />}
     </div>
   );
 }
@@ -50,7 +51,7 @@ export default function DashboardHome() {
 function FarmerDashboard({ query }) {
   const { data, isLoading, isError } = query;
 
-  if (isLoading) return <p>Loading farmer dashboard...</p>;
+  if (isLoading) return <DashboardHomeSkeleton cards={3} />;
   if (isError) return <p>Failed to load farmer dashboard.</p>;
 
   const stats = data?.stats || {};
@@ -135,28 +136,64 @@ function BuyerDashboard({ query }) {
   );
 }
 
-// keep Admin static for now
-function AdminDashboard() {
+function AdminDashboard({ enabled }) {
+  const { data, isLoading, isError } = useAdminOverview(enabled);
+
+  if (isLoading) return <DashboardHomeSkeleton cards={4} />;
+  if (isError) return <p>Failed to load admin dashboard.</p>;
+
+  const stats = data?.stats || {};
+
+  const chartData = [
+    { name: "Active", value: stats.activeCrops ?? 0 },
+    { name: "Hidden", value: stats.hiddenCrops ?? 0 },
+    { name: "Requests", value: stats.pendingRequests ?? 0 },
+    { name: "Deals", value: stats.acceptedDeals ?? 0 },
+  ];
+
   return (
     <>
       <div className="grid md:grid-cols-4 gap-6">
-        <StatCard title="Total Farmers" value="—" icon={<Leaf />} />
-        <StatCard title="Total Buyers" value="—" icon={<Users />} />
-        <StatCard title="Pending Approvals" value="—" icon={<CheckCircle />} />
-        <StatCard title="Completed Sales" value="—" icon={<ShoppingCart />} />
+        <StatCard
+          title="Total Farmers"
+          value={stats.totalFarmers ?? 0}
+          icon={<Leaf />}
+        />
+        <StatCard
+          title="Total Buyers"
+          value={stats.totalBuyers ?? 0}
+          icon={<Users />}
+        />
+        <StatCard
+          title="Pending Approvals"
+          value={stats.pendingRequests ?? 0}
+          icon={<CheckCircle />}
+        />
+        <StatCard
+          title="Accepted Deals"
+          value={stats.acceptedDeals ?? 0}
+          icon={<ShoppingCart />}
+        />
       </div>
 
       <Card className="mt-6">
         <CardContent className="p-4">
-          <h2 className="font-semibold mb-4">System Approval Status</h2>
-          <p className="text-sm text-muted-foreground">
-            Admin dashboard will be added later.
-          </p>
+          <h2 className="font-semibold mb-4">Platform Status</h2>
+          <ResponsiveContainer width="100%" height={250}>
+            <BarChart data={chartData}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="value" />
+            </BarChart>
+          </ResponsiveContainer>
         </CardContent>
       </Card>
 
       <div className="flex justify-end mt-4">
-        <Button disabled>Go to Approval Panel</Button>
+        <Button asChild>
+          <a href="/dashboard/admin/requests">Go to Approval Panel</a>
+        </Button>
       </div>
     </>
   );

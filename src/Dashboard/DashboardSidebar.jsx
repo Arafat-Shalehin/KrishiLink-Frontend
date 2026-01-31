@@ -11,11 +11,18 @@ import {
   Inbox,
   House,
 } from "lucide-react";
+import {
+  Shield,
+  Users as UsersIcon,
+  ClipboardList,
+  Sprout,
+} from "lucide-react";
 
-const SidebarItem = ({ to, icon: Icon, label }) => {
+const SidebarItem = ({ to, icon: Icon, label, end = false }) => {
   return (
     <NavLink
       to={to}
+      end={end}
       data-tip={label}
       className={({ isActive }) =>
         [
@@ -36,9 +43,13 @@ const DashboardSidebar = () => {
   const { user } = useContext(AuthContext);
   const { dbUser, isLoading } = useAuthProfile(user);
 
-  if (isLoading) return null;
+  if (isLoading) {
+    return <aside className="h-full w-full px-2" />;
+  }
 
-  const role = dbUser?.role ?? "buyer";
+  if (!dbUser) return null;
+
+  const role = dbUser?.role;
 
   return (
     <aside className="h-full w-full px-2">
@@ -46,7 +57,7 @@ const DashboardSidebar = () => {
         {/* Home */}
         <Link
           to="/"
-          className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold text-[var(--color-text)] hover:bg-[color-mix(in_srgb,var(--color-primary)_10%,transparent)] transition"
+          className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold text-(--color-text) hover:bg-[color-mix(in_srgb,var(--color-primary)_10%,transparent)] transition"
           data-tip="Homepage"
         >
           <House className="h-4 w-4" />
@@ -55,14 +66,14 @@ const DashboardSidebar = () => {
 
         {/* Dashboard Section */}
         <div className="flex flex-col gap-2">
-          <Link
+          <NavLink
             to="/dashboard"
-            className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold text-[var(--color-text)] hover:bg-[color-mix(in_srgb,var(--color-primary)_10%,transparent)] transition"
+            className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold text-(--color-text) hover:bg-[color-mix(in_srgb,var(--color-primary)_10%,transparent)] transition"
             data-tip="Overview"
           >
             <LayoutDashboard className="h-4 w-4" />
             <span className="is-drawer-close:hidden">Overview</span>
-          </Link>
+          </NavLink>
 
           <SidebarItem to="/dashboard/profile" icon={User} label="Profile" />
 
@@ -82,6 +93,7 @@ const DashboardSidebar = () => {
                 to="/dashboard/farmer/crops"
                 icon={Leaf}
                 label="My Crops"
+                end
               />
               <SidebarItem
                 to="/dashboard/farmer/crops/add"
@@ -92,6 +104,34 @@ const DashboardSidebar = () => {
                 to="/dashboard/farmer/interests"
                 icon={Inbox}
                 label="Crop Interests"
+              />
+            </>
+          )}
+
+          {/* Admin */}
+          {/* Admin */}
+          {role === "admin" && (
+            <>
+              <SidebarItem
+                to="/dashboard/admin"
+                icon={Shield}
+                label="Admin Overview"
+                end
+              />
+              <SidebarItem
+                to="/dashboard/admin/users"
+                icon={UsersIcon}
+                label="Users"
+              />
+              <SidebarItem
+                to="/dashboard/admin/requests"
+                icon={ClipboardList}
+                label="Requests"
+              />
+              <SidebarItem
+                to="/dashboard/admin/crops"
+                icon={Sprout}
+                label="Crops"
               />
             </>
           )}
