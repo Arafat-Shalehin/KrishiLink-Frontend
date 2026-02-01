@@ -5,8 +5,8 @@ const SkeletonBlock = ({ className = "" }) => (
     aria-hidden="true"
     className={[
       "relative overflow-hidden rounded-md",
-      "bg-[color-mix(in_srgb,var(--color-muted)_18%,transparent)",
-      "dark:bg-[color-mix(in_srgb,var(--color-muted)_24%,transparent)",
+      "bg-[color-mix(in_srgb,var(--color-muted)_18%,transparent)]",
+      "dark:bg-[color-mix(in_srgb,var(--color-muted)_24%,transparent)]",
       "before:absolute before:inset-0",
       "before:-translate-x-full before:animate-[shimmer_1.6s_infinite]",
       "before:bg-gradient-to-r before:from-transparent before:via-white/25 before:to-transparent",
@@ -39,9 +39,9 @@ const AdminTableSkeleton = ({ titleWidth = "w-56", cols = 4, rows = 8 }) => {
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-2xl border border-(--color-border) bg-(--color-surface)">
+      <div className="overflow-x-auto rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]">
         <table className="min-w-full text-sm">
-          <thead className="bg-(--color-bg) border-b border-(--color-border)">
+          <thead className="bg-[var(--color-bg)] border-b border-[var(--color-border)]">
             <tr>
               {Array.from({ length: cols }).map((_, i) => (
                 <th key={i} className="px-4 py-3">
@@ -53,7 +53,7 @@ const AdminTableSkeleton = ({ titleWidth = "w-56", cols = 4, rows = 8 }) => {
 
           <tbody>
             {Array.from({ length: rows }).map((_, r) => (
-              <tr key={r} className="border-b border-(--color-border)">
+              <tr key={r} className="border-b border-[var(--color-border)]">
                 {Array.from({ length: cols }).map((_, c) => (
                   <td key={c} className="px-4 py-4">
                     <SkeletonBlock className="h-4 w-full max-w-[180px]" />

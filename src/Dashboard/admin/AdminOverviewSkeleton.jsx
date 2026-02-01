@@ -5,11 +5,11 @@ const SkeletonBlock = ({ className = "" }) => (
     aria-hidden="true"
     className={[
       "relative overflow-hidden rounded-md",
-      "bg-[color-mix(in_srgb,var(--color-muted)_18%,transparent)",
-      "dark:bg-[color-mix(in_srgb,var(--color-muted)_24%,transparent)",
+      "bg-[color-mix(in_srgb,var(--color-muted)_18%,transparent)]",
+      "dark:bg-[color-mix(in_srgb,var(--color-muted)_24%,transparent)]",
       "before:absolute before:inset-0",
       "before:-translate-x-full before:animate-[shimmer_1.6s_infinite]",
-      "before:bg-gradient-to-r before:from-transparent before:via-white/25 before:to-transparent",
+      "before:bg-linear-to-r before:from-transparent before:via-white/25 before:to-transparent",
       "dark:before:via-white/10",
       className,
     ].join(" ")}
@@ -72,7 +72,7 @@ const AdminOverviewSkeleton = () => {
       {/* Header */}
       <div className="rounded-2xl border border-(--color-border) bg-(--color-surface) p-5">
         <SkeletonBlock className="h-8 w-64 rounded-lg" />
-        <SkeletonBlock className="mt-3 h-4 w-[min(680px,90%)" />
+        <SkeletonBlock className="mt-3 h-4 w-[min(680px,90%)]" />
         <div className="mt-4 flex flex-wrap gap-2">
           <SkeletonBlock className="h-10 w-40 rounded-xl" />
           <SkeletonBlock className="h-10 w-40 rounded-xl" />

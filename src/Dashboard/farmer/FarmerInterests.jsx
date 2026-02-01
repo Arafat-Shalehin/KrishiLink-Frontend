@@ -1,103 +1,66 @@
-import { useContext, useState, useEffect } from "react";
+// src/Components/FarmerInterests.jsx
+import { useContext } from "react";
 import { AuthContext } from "../../Context/AuthProvider";
-import useAxiosSecure from "@/Hooks/useAxios";
-import { toast } from "react-toastify";
 import { motion } from "framer-motion";
-import Loader from "@/Components/Loader";
 import FarmerInterestsSkeleton from "./FarmerInterestsSkeleton";
+import {
+  useFarmerInterests,
+  useUpdateInterestStatus,
+} from "@/Hooks/farmer/useFarmerInterests";
 
 const FarmerInterests = () => {
   const { user, loading: authLoading } = useContext(AuthContext);
-  const instance = useAxiosSecure();
 
-  const [receivedInterests, setReceivedInterests] = useState([]);
-  const [loadingInterestId, setLoadingInterestId] = useState(null);
-  const [pageLoading, setPageLoading] = useState(true);
+  // ✅ TanStack Query for fetching interests
+  const {
+    data: receivedInterests = [],
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useFarmerInterests(user?.email);
 
-  useEffect(() => {
-    if (!user?.email) return;
+  // ✅ Mutation for accept/reject
+  const updateStatusMutation = useUpdateInterestStatus();
 
-    const fetchReceivedInterests = async () => {
-      setPageLoading(true);
-      try {
-        // ✅ farmer-only secured endpoint (no email query needed)
-        const cropsRes = await instance.get("/myCrops");
-        const myCrops = cropsRes.data?.crops || [];
-
-        // fetch interests per crop (owner-only secured endpoint)
-        const interestLists = await Promise.all(
-          myCrops.map(async (crop) => {
-            try {
-              const res = await instance.get(`/allCrops/${crop._id}/interests`);
-              const interests = res.data?.interests || [];
-
-              return interests.map((interest) => ({
-                cropId: crop._id,
-                cropName: crop.name,
-                buyerName: interest.buyerName || interest.userName,
-                buyerEmail: interest.buyerEmail || interest.userEmail,
-                quantity: interest.quantity,
-                message: interest.message,
-                status: interest.status,
-                interestId: interest._id,
-                cropQuantity: crop.quantity,
-              }));
-            } catch (err) {
-              // if a crop has no interests or request fails, just ignore it
-              return [];
-            }
-          }),
-        );
-
-        const flat = interestLists.flat();
-        setReceivedInterests(flat);
-      } catch (error) {
-        console.error("Error loading received interests:", error);
-        toast.error(
-          error.response?.data?.message || "Failed to load received interests.",
-        );
-      } finally {
-        setPageLoading(false);
-      }
-    };
-
-    fetchReceivedInterests();
-  }, [instance, user?.email]);
-
-  const handleStatusChange = async (cropId, interestId, newStatus) => {
-    try {
-      setLoadingInterestId(interestId);
-
-      const res = await instance.patch(
-        `/updateInterestStatus/${cropId}/${interestId}`,
-        { status: newStatus },
-      );
-
-      toast.success(res.data.message);
-
-      setReceivedInterests((prev) =>
-        prev.map((interest) =>
-          interest.interestId === interestId
-            ? {
-                ...interest,
-                status: newStatus,
-                ...(newStatus === "accepted" &&
-                res.data.newQuantity !== undefined
-                  ? { cropQuantity: res.data.newQuantity }
-                  : {}),
-              }
-            : interest,
-        ),
-      );
-    } catch (error) {
-      console.error(error);
-      toast.error(error.response?.data?.message || "Failed to update status");
-    } finally {
-      setLoadingInterestId(null);
-    }
+  // Handler for status change
+  const handleStatusChange = (cropId, interestId, newStatus) => {
+    updateStatusMutation.mutate({ cropId, interestId, newStatus });
   };
 
-  if (authLoading || pageLoading) return <FarmerInterestsSkeleton rows={6} />;
+  // Check if a specific interest is being updated
+  const isUpdating = (interestId) => {
+    return (
+      updateStatusMutation.isPending &&
+      updateStatusMutation.variables?.interestId === interestId
+    );
+  };
+
+  // Loading state
+  if (authLoading || isLoading) {
+    return <FarmerInterestsSkeleton rows={6} />;
+  }
+
+  // Error state
+  if (isError) {
+    return (
+      <motion.div
+        className="mt-12 rounded-2xl border border-red-300 bg-red-50 dark:bg-red-900/20 p-6 text-center"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <p className="text-red-600 dark:text-red-400 mb-4">
+          {error?.response?.data?.message || "Failed to load interests"}
+        </p>
+        <button
+          onClick={() => refetch()}
+          className="rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700 transition"
+        >
+          Try Again
+        </button>
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div
@@ -117,7 +80,7 @@ const FarmerInterests = () => {
       ) : (
         <div className="overflow-x-auto">
           <table className="min-w-full rounded-xl border border-(--color-border) overflow-hidden">
-            <thead className="bg-[color-mix(in_srgb,var(--color-primary)_12%,var(--color-bg)) text-(--color-text)">
+            <thead className="bg-[color-mix(in_srgb,var(--color-primary)_12%,var(--color-bg))] text-(--color-text)">
               <tr>
                 <th className="px-4 py-3 text-left font-semibold">Crop</th>
                 <th className="px-4 py-3 text-left font-semibold">Buyer</th>
@@ -132,7 +95,7 @@ const FarmerInterests = () => {
               {receivedInterests.map((interest) => (
                 <motion.tr
                   key={interest.interestId}
-                  className="border-t border-(--color-border) hover:bg-[color-mix(in_srgb,var(--color-primary)_6%,transparent) transition duration-200"
+                  className="border-t border-(--color-border) hover:bg-[color-mix(in_srgb,var(--color-primary)_6%,transparent)] transition duration-200"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.25 }}
@@ -159,25 +122,14 @@ const FarmerInterests = () => {
                   </td>
 
                   <td className="px-4 py-3">
-                    <span
-                      className={[
-                        "inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold capitalize",
-                        interest.status === "accepted"
-                          ? "border-[color-mix(in_srgb,var(--color-primary)_30%,transparent) bg-[color-mix(in_srgb,var(--color-primary)_12%,transparent) text-(--color-primary)"
-                          : interest.status === "rejected"
-                            ? "border-red-200 bg-red-50 text-red-700 dark:border-red-900/40 dark:bg-red-900/20 dark:text-red-300"
-                            : "border-[color-mix(in_srgb,var(--color-accent)_30%,transparent) bg-[color-mix(in_srgb,var(--color-accent)_14%,transparent) text-(--color-secondary)",
-                      ].join(" ")}
-                    >
-                      {interest.status}
-                    </span>
+                    <StatusBadge status={interest.status} />
                   </td>
 
                   <td className="px-4 py-3 space-x-2">
                     <button
                       disabled={
                         interest.status !== "pending" ||
-                        loadingInterestId === interest.interestId
+                        isUpdating(interest.interestId)
                       }
                       onClick={() =>
                         handleStatusChange(
@@ -187,17 +139,15 @@ const FarmerInterests = () => {
                         )
                       }
                       className="rounded-lg border border-(--color-primary) px-3 py-1.5 text-sm font-semibold text-(--color-primary)
-                      hover:bg-(--color-primary) hover:text-white transition disabled:opacity-50 disabled:cursor-not-allowed"
+                        hover:bg-(--color-primary) hover:text-white transition disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {loadingInterestId === interest.interestId
-                        ? "..."
-                        : "Accept"}
+                      {isUpdating(interest.interestId) ? "..." : "Accept"}
                     </button>
 
                     <button
                       disabled={
                         interest.status !== "pending" ||
-                        loadingInterestId === interest.interestId
+                        isUpdating(interest.interestId)
                       }
                       onClick={() =>
                         handleStatusChange(
@@ -207,11 +157,9 @@ const FarmerInterests = () => {
                         )
                       }
                       className="rounded-lg border border-red-500 px-3 py-1.5 text-sm font-semibold text-red-600
-                      hover:bg-red-600 hover:text-white transition disabled:opacity-50 disabled:cursor-not-allowed"
+                        hover:bg-red-600 hover:text-white transition disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {loadingInterestId === interest.interestId
-                        ? "..."
-                        : "Reject"}
+                      {isUpdating(interest.interestId) ? "..." : "Reject"}
                     </button>
                   </td>
                 </motion.tr>
@@ -221,6 +169,28 @@ const FarmerInterests = () => {
         </div>
       )}
     </motion.div>
+  );
+};
+
+// ─────────────────────────────────────────────────────────────
+// Status Badge Component (extracted for cleaner code)
+// ─────────────────────────────────────────────────────────────
+const StatusBadge = ({ status }) => {
+  const statusStyles = {
+    accepted:
+      "border-[color-mix(in_srgb,var(--color-primary)_30%,transparent)] bg-[color-mix(in_srgb,var(--color-primary)_12%,transparent)] text-(--color-primary)",
+    rejected:
+      "border-red-200 bg-red-50 text-red-700 dark:border-red-900/40 dark:bg-red-900/20 dark:text-red-300",
+    pending:
+      "border-[color-mix(in_srgb,var(--color-accent)_30%,transparent)] bg-[color-mix(in_srgb,var(--color-accent)_14%,transparent)] text-(--color-secondary)",
+  };
+
+  return (
+    <span
+      className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold capitalize ${statusStyles[status] || statusStyles.pending}`}
+    >
+      {status}
+    </span>
   );
 };
 

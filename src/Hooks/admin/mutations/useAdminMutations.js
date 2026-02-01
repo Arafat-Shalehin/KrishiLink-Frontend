@@ -107,3 +107,20 @@ export const useAdminDeleteCropMutation = () => {
     },
   });
 };
+
+export const useAdminResetRequestMutation = () => {
+  const axiosSecure = useAxiosSecure();
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id }) => {
+      const res = await axiosSecure.patch(`/admin/farmer-requests/${id}/reset`);
+      return res.data;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "farmer-requests"] });
+      qc.invalidateQueries({ queryKey: ["admin", "users"] });
+      qc.invalidateQueries({ queryKey: ["admin", "overview"] });
+    },
+  });
+};

@@ -114,9 +114,9 @@ const MyPostPage = () => {
 
         {/* Table */}
         <div className="overflow-x-auto bg-(--color-surface) border border-(--color-border) shadow-xl rounded-2xl p-4">
-          <table className="min-w-full text-sm text-left">
+          <table className="min-w-full rounded-xl border border-(--color-border) overflow-hidden">
             <thead>
-              <tr className="bg-[color-mix(in_srgb,var(--color-primary)_12%,var(--color-bg)) text-(--color-text)">
+              <tr className="bg-[color-mix(in_srgb,var(--color-primary)_12%,var(--color-bg))] text-(--color-text) text-left">
                 <th className="py-3 px-4 font-semibold">Image</th>
                 <th className="py-3 px-4 font-semibold">Name</th>
                 <th className="py-3 px-4 font-semibold">Type</th>
@@ -141,7 +141,7 @@ const MyPostPage = () => {
                 myCrops.map((crop) => (
                   <tr
                     key={crop._id}
-                    className="border-b border-(--color-border) hover:bg-[color-mix(in_srgb,var(--color-primary)_6%,transparent) transition-all duration-200"
+                    className="border-t border-(--color-border) hover:bg-[color-mix(in_srgb,var(--color-primary)_6%,transparent)] transition duration-200"
                   >
                     <td className="py-2 px-4">
                       <img

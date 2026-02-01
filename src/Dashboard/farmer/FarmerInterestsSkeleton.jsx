@@ -6,8 +6,8 @@ const SkeletonBlock = ({ className = "" }) => (
     aria-hidden="true"
     className={[
       "relative overflow-hidden rounded-md",
-      "bg-[color-mix(in_srgb,var(--color-muted)_18%,transparent)",
-      "dark:bg-[color-mix(in_srgb,var(--color-muted)_24%,transparent)",
+      "bg-[color-mix(in_srgb,var(--color-muted)_18%,transparent)]",
+      "dark:bg-[color-mix(in_srgb,var(--color-muted)_24%,transparent)]",
       "before:absolute before:inset-0",
       "before:-translate-x-full before:animate-[shimmer_1.6s_infinite]",
       "before:bg-linear-to-r before:from-transparent before:via-white/25 before:to-transparent",
