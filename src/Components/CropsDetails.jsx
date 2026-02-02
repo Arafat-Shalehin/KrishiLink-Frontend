@@ -39,43 +39,54 @@ const CropsDetails = () => {
   const userEmail = user?.email;
   const cropOwnerEmail = crops?.owner?.ownerEmail;
 
-  // All fetch id wise filter (kept as your current approach)
+  // ✅ FIXED: Fetch single crop by ID (using direct endpoint)
   useEffect(() => {
     const fetchCrop = async () => {
       setLoading(true);
       try {
-        const res = await instance.get(`/allCrops`);
-        setAllCrops(res.data);
-        const filterCrop = res.data.find((crop) => crop._id === id);
-        setCrops(filterCrop);
+        // ✅ Use direct endpoint instead of fetching all and filtering
+        const res = await instance.get(`/allCrops/${id}`);
+        setCrops(res.data); // This endpoint returns the crop object directly
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching crop:", error);
+        toast.error("Failed to load crop details");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCrop();
+    if (id) {
+      fetchCrop();
+    }
   }, [instance, id]);
 
-  // Type wise fetch
+  // ✅ FIXED: Fetch similar products by type
   useEffect(() => {
-    const fetchAllCrops = async () => {
+    const fetchSimilarCrops = async () => {
       setTypeLoading(true);
       try {
-        const res = await instance.get(`/allCrops`);
-        const sT = res.data.filter(
-          (crop) => crop.type === type && crop._id !== id,
+        // ✅ Use the new filter endpoint
+        const res = await instance.get(
+          `/allCrops?type=${encodeURIComponent(type)}&limit=10`,
         );
-        setSameType(sT);
+
+        // ✅ Access crops array from response object
+        const cropsData = res.data.crops || [];
+
+        // Filter out the current crop
+        const similarCrops = cropsData.filter((crop) => crop._id !== id);
+        setSameType(similarCrops);
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching similar crops:", error);
+        setSameType([]);
       } finally {
         setTypeLoading(false);
       }
     };
 
-    fetchAllCrops();
+    if (type) {
+      fetchSimilarCrops();
+    }
   }, [instance, type, id]);
 
   // Form price
@@ -85,7 +96,7 @@ const CropsDetails = () => {
     }
   }, [quantity, crops]);
 
-  // ✅ NEW: Load interests from interests collection via API (only owner can access)
+  // ✅ Load interests from interests collection via API (only owner can access)
   useEffect(() => {
     const fetchInterestsForCrop = async () => {
       // If user not logged in or not owner, don't fetch (route is farmer-owner protected)
@@ -114,8 +125,7 @@ const CropsDetails = () => {
     fetchInterestsForCrop();
   }, [instance, crops?._id, userEmail, cropOwnerEmail]);
 
-  // ✅ NEW: “received interest count” (simple: just for this crop now)
-  // If you want total across all crops later, we’ll move this to dashboard API.
+  // ✅ "received interest count" (simple: just for this crop now)
   useEffect(() => {
     if (userEmail === cropOwnerEmail) {
       setInterestCrops(interestData.length);
@@ -129,7 +139,7 @@ const CropsDetails = () => {
     const qty = Number(quantity);
     if (!qty || qty < 1) return toast.error("Quantity must be at least 1.");
 
-    // ✅ NEW payload (backend takes buyer identity from token)
+    // ✅ payload (backend takes buyer identity from token)
     const payload = { quantity: qty, message };
 
     const result = await Swal.fire({
@@ -154,7 +164,6 @@ const CropsDetails = () => {
           setShowForm(false);
           setQuantity(1);
           setMessage("");
-          // No optimistic update needed here because buyers can’t view owner-only list.
         } else {
           toast.error(
             res.data.message || "Submission failed, Try again later.",
@@ -163,7 +172,7 @@ const CropsDetails = () => {
       } catch (error) {
         const msg = error?.response?.data?.message;
         if (msg?.includes("already") || error?.response?.status === 409) {
-          toast.error("You’ve already sent an interest for this crop.");
+          toast.error("You've already sent an interest for this crop.");
           setShowForm(false);
         } else {
           toast.error(msg || "Error submitting interest.");
@@ -175,10 +184,10 @@ const CropsDetails = () => {
   const statusClass = (status) => {
     const s = String(status || "").toLowerCase();
     if (s === "accepted")
-      return "text-(--color-primary) bg-[color-mix(in_srgb,var(--color-primary)_10%,transparent) border-[color-mix(in_srgb,var(--color-primary)_25%,transparent)";
+      return "text-(--color-primary) bg-[color-mix(in_srgb,var(--color-primary)_10%,transparent)] border-[color-mix(in_srgb,var(--color-primary)_25%,transparent)]";
     if (s === "rejected")
       return "text-red-600 bg-red-50 dark:text-red-300 dark:bg-red-900/20 border-red-200 dark:border-red-900/40";
-    return "text-(--color-secondary) bg-[color-mix(in_srgb,var(--color-accent)_14%,transparent) border-[color-mix(in_srgb,var(--color-accent)_30%,transparent)";
+    return "text-(--color-secondary) bg-[color-mix(in_srgb,var(--color-accent)_14%,transparent)] border-[color-mix(in_srgb,var(--color-accent)_30%,transparent)]";
   };
 
   return (
@@ -210,9 +219,7 @@ const CropsDetails = () => {
             <div className="md:w-1/2 p-6 flex flex-col justify-between">
               <div>
                 <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-(--color-text) mb-2">
-                  <span className="text-(--color-primary)">
-                    {crops.name}
-                  </span>
+                  <span className="text-(--color-primary)">{crops.name}</span>
                 </h1>
 
                 <p className="text-(--color-muted) text-sm sm:text-base mb-4 leading-relaxed">
@@ -224,9 +231,7 @@ const CropsDetails = () => {
                     <span className="font-semibold text-(--color-secondary)">
                       Type:
                     </span>{" "}
-                    <span className="text-(--color-text)/90">
-                      {crops.type}
-                    </span>
+                    <span className="text-(--color-text)/90">{crops.type}</span>
                   </p>
 
                   <p className="text-(--color-text)">
@@ -281,9 +286,7 @@ const CropsDetails = () => {
                 <div className="mt-6 border-t border-(--color-border) pt-4">
                   <h1 className="font-semibold text-sm sm:text-base text-(--color-muted)">
                     Interests received for this crop:{" "}
-                    <span className="text-(--color-text)">
-                      {interestCrops}
-                    </span>
+                    <span className="text-(--color-text)">{interestCrops}</span>
                   </h1>
                 </div>
               )}
@@ -307,7 +310,7 @@ const CropsDetails = () => {
 
                 <button
                   onClick={() => window.history.back()}
-                  className="flex-1 px-5 py-2.5 border border-(--color-secondary) text-(--color-secondary) font-semibold rounded-lg hover:bg-[color-mix(in_srgb,var(--color-secondary)_10%,transparent) transition"
+                  className="flex-1 px-5 py-2.5 border border-(--color-secondary) text-(--color-secondary) font-semibold rounded-lg hover:bg-[color-mix(in_srgb,var(--color-secondary)_10%,transparent)] transition"
                 >
                   Back
                 </button>
@@ -348,7 +351,7 @@ const CropsDetails = () => {
                     {interestData.map((interest, index) => (
                       <tr
                         key={interest._id || index}
-                        className="border-b border-(--color-border) hover:bg-[color-mix(in_srgb,var(--color-primary)_6%,transparent) transition"
+                        className="border-b border-(--color-border) hover:bg-[color-mix(in_srgb,var(--color-primary)_6%,transparent)] transition"
                       >
                         <td className="py-3 px-4">{index + 1}</td>
 
