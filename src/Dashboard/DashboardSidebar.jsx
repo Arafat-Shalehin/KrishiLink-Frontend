@@ -10,6 +10,8 @@ import {
   PlusCircle,
   Inbox,
   House,
+  ShoppingBag,
+  Receipt,
 } from "lucide-react";
 import {
   Shield,
@@ -79,11 +81,23 @@ const DashboardSidebar = () => {
 
           {/* Buyer */}
           {role === "buyer" && (
-            <SidebarItem
-              to="/dashboard/buyer/interests"
-              icon={ListChecks}
-              label="My Interests"
-            />
+            <>
+              <SidebarItem
+                to="/dashboard/buyer/interests"
+                icon={ListChecks}
+                label="My Interests"
+              />
+              <SidebarItem
+                to="/dashboard/buyer/purchases"
+                icon={ShoppingBag}
+                label="My Purchases"
+              />
+              <SidebarItem
+                to="/dashboard/buyer/transactions"
+                icon={Receipt}
+                label="Transactions"
+              />
+            </>
           )}
 
           {/* Farmer */}

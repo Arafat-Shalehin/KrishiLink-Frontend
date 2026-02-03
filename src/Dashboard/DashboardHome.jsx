@@ -92,6 +92,7 @@ function FarmerDashboard({ query }) {
 
 function BuyerDashboard({ query }) {
   const { data, isLoading, isError } = query;
+  // console.log(data);
 
   if (isLoading) return <DashboardHomeSkeleton cards={3} />;
   if (isError) return <p>Failed to load buyer dashboard.</p>;

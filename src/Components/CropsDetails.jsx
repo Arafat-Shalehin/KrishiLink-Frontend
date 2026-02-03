@@ -398,7 +398,7 @@ const CropsDetails = () => {
           </h1>
 
           {typeLoading ? (
-            <SimilarProductsSkeleton count={4} />
+            <SimilarProductsSkeleton count={2} />
           ) : (
             <div className="mt-5 mb-5">
               <Swiper

@@ -4,8 +4,7 @@ import { useNavigate } from "react-router";
 import { AuthContext } from "../Context/AuthProvider";
 
 const axiosSecure = axios.create({
-  baseURL: "http://localhost:4000",
-  // baseURL: "https://krishi-link-backend.vercel.app",
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:4000",
 });
 
 const useAxiosSecure = () => {

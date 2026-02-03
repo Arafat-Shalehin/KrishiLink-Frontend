@@ -18,6 +18,8 @@ import DashboardLayout from "../Layouts/DashboardLayout";
 import MyProfile from "../Pages/MyProfile";
 import BuyerDashboard from "../Dashboard/buyer/BuyerDashboard";
 import BuyerInterests from "../Dashboard/buyer/BuyerInterests";
+import BuyerPurchases from "../Dashboard/buyer/BuyerPurchases";
+import BuyerTransactions from "../Dashboard/buyer/BuyerTransactions";
 import FarmerDashboard from "../Dashboard/farmer/FarmerDashboard";
 import FarmerCrops from "../Dashboard/farmer/FarmerCrops";
 import FarmerAddCrop from "../Dashboard/farmer/FarmerAddCrop";
@@ -27,6 +29,12 @@ import AdminOverview from "../Dashboard/admin/AdminOverview";
 import AdminUsers from "../Dashboard/admin/AdminUsers";
 import AdminRequests from "../Dashboard/admin/AdminRequests";
 import AdminCrops from "../Dashboard/admin/AdminCrops";
+
+// Payment Pages
+import PaymentSuccess from "../Pages/Payment/PaymentSuccess";
+import PaymentFailed from "../Pages/Payment/PaymentFailed";
+import PaymentCancelled from "../Pages/Payment/PaymentCancelled";
+import PaymentError from "../Pages/Payment/PaymentError";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +48,24 @@ const router = createBrowserRouter([
       { path: "/news/:id", element: <NewsDetails /> },
       { path: "crops-details/:id/:type", element: <CropsDetails /> },
     ],
+  },
+
+  // Payment result pages (outside dashboard, full page)
+  {
+    path: "/payment/success",
+    element: <PaymentSuccess />,
+  },
+  {
+    path: "/payment/failed",
+    element: <PaymentFailed />,
+  },
+  {
+    path: "/payment/cancelled",
+    element: <PaymentCancelled />,
+  },
+  {
+    path: "/payment/error",
+    element: <PaymentError />,
   },
 
   {
@@ -69,6 +95,22 @@ const router = createBrowserRouter([
         element: (
           <RoleRoute allowed={["buyer"]}>
             <BuyerInterests />
+          </RoleRoute>
+        ),
+      },
+      {
+        path: "buyer/purchases",
+        element: (
+          <RoleRoute allowed={["buyer"]}>
+            <BuyerPurchases />
+          </RoleRoute>
+        ),
+      },
+      {
+        path: "buyer/transactions",
+        element: (
+          <RoleRoute allowed={["buyer"]}>
+            <BuyerTransactions />
           </RoleRoute>
         ),
       },
