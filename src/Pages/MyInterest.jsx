@@ -167,6 +167,11 @@ const MyInterest = () => {
                   
                   {/* Pay Button for accepted interests awaiting payment */}
                   {interest.status === "accepted" && interest.paymentStatus === "awaiting_payment" && (
+                     interest.attemptCount >= 3 ? (
+                      <div className="w-full px-4 py-3 bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300 text-sm font-semibold rounded-xl text-center border border-red-200 dark:border-red-800">
+                        Max attempts reached. <br/> Contact Support.
+                      </div>
+                    ) : (
                     <button
                       onClick={() => handlePayment(interest)}
                       disabled={paymentLoading && payingInterestId === interest._id}
@@ -184,6 +189,7 @@ const MyInterest = () => {
                         </>
                       )}
                     </button>
+                    )
                   )}
                 </div>
               </div>
@@ -277,6 +283,11 @@ const MyInterest = () => {
 
                     <td className="py-3 px-4 text-center">
                       {interest.status === "accepted" && interest.paymentStatus === "awaiting_payment" ? (
+                        interest.attemptCount >= 3 ? (
+                          <span className="text-xs font-bold text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded-md cursor-help" title="Maximum payment attempts reached. Please contact support to reset.">
+                            Contact Support
+                          </span>
+                        ) : (
                         <button
                           onClick={() => handlePayment(interest)}
                           disabled={paymentLoading && payingInterestId === interest._id}
@@ -294,6 +305,7 @@ const MyInterest = () => {
                             </>
                           )}
                         </button>
+                        )
                       ) : interest.paymentStatus === "paid" ? (
                         <span className="inline-flex items-center gap-1 text-green-600 dark:text-green-400">
                           <CheckCircle className="w-4 h-4" />

@@ -45,8 +45,6 @@
 
 ## 📸 Screenshots
 
-> *Add screenshots of your application here*
-
 | Home Page | All Crops | Dashboard |
 |-----------|-----------|-----------|
 | ![Home](#) | ![Crops](#) | ![Dashboard](#) |
@@ -483,9 +481,8 @@ This project is private and proprietary.
 ## 👨‍💻 Author
 
 **Your Name**  
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
-- Portfolio: [yourportfolio.com](https://yourportfolio.com)
+- GitHub: [@Arafat-Shalehin](https://github.com/Arafat-Shalehin)
+- LinkedIn: [Arafat Shalehin](https://www.linkedin.com/in/arafat-shalehin/)
 
 ---
 
