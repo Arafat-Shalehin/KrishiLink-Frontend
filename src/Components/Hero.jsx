@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaArrowRight } from "react-icons/fa";
+import { Link } from "react-router";
 
 import imageOne from "../Assets/pexels-brian-wijoyo-2156646375-34601487.jpg";
 import imageTwo from "../Assets/pexels-zen-chung-5529952.jpg";
@@ -32,7 +33,7 @@ const heroData = [
     subtext:
       "Post what you’re growing or selling and connect instantly with people who care.",
     cta: "Start Posting",
-    href: "/add-crops",
+    href: "dashboard/farmer/crops/add",
     image: imageThree,
   },
   {
@@ -52,29 +53,33 @@ const heroContainerVariants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.3,
-      delayChildren: 0.6,
+      /* ── Faster sequencing: reduced stagger and delay ── */
+      staggerChildren: 0.12,
+      delayChildren: 0.2,
     },
   },
   exit: {
     opacity: 0,
-    y: -30,
-    transition: { duration: 0.6, ease: "easeInOut" },
+    y: -20,
+    transition: { duration: 0.35, ease: "easeOut" },
   },
 };
 
 const heroChildVariants = {
-  hidden: { opacity: 0, y: -30 },
+  hidden: { opacity: 0, y: 30 }, // Slide up from bottom looks better than dropping
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: "easeInOut" },
+    transition: {
+      duration: 0.5,
+      ease: [0.22, 1, 0.36, 1], // Custom cubic-bezier for a "premium" feel
+    },
   },
 };
 
 /* ---------------------------------------------
    Hero Component
---------------------------------------------- */
+ --------------------------------------------- */
 const Hero = () => {
   const [slideIndex, setSlideIndex] = useState(0);
 
@@ -83,32 +88,33 @@ const Hero = () => {
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(nextSlide, 6000);
+    const interval = setInterval(nextSlide, 7000); // Slightly longer pause for readability
     return () => clearInterval(interval);
   }, [nextSlide]);
 
   const currentSlide = heroData[slideIndex];
 
   return (
-    <section className="relative h-screen flex items-center overflow-hidden">
-      {/* Background Image */}
-      <AnimatePresence mode="wait">
+    <section className="relative h-screen flex items-center overflow-hidden bg-black">
+      <AnimatePresence initial={false}>
         <motion.div
           key={currentSlide.image}
-          initial={{ opacity: 0, scale: 1.05 }}
+          initial={{ opacity: 0, scale: 1.1 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 1.05 }}
-          transition={{ duration: 1, ease: "easeInOut" }}
-          style={{ backgroundImage: `url(${currentSlide.image})` }}
+          transition={{ duration: 1.2, ease: "easeInOut" }}
+          style={{
+            backgroundImage: `url(${currentSlide.image})`,
+            willChange: "transform, opacity",
+          }}
           className="absolute inset-0 bg-cover bg-center"
         />
       </AnimatePresence>
 
-      {/* Overlay (palette-based) */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-primary)]/80 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-primary)]/80 via-[var(--color-primary)]/40 to-transparent" />
 
       {/* Content */}
-      <div className="relative z-10 max-w-3xl px-8 md:px-16 text-white">
+      <div className="relative z-10 max-w-4xl px-8 md:px-16 text-white">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentSlide.text}
@@ -117,47 +123,46 @@ const Hero = () => {
             animate="visible"
             exit="exit"
             className="space-y-6"
+            style={{ willChange: "transform, opacity" }}
           >
             <motion.h1
               variants={heroChildVariants}
-              className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight drop-shadow-lg"
+              className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-[1.1] drop-shadow-2xl"
             >
               {currentSlide.text}
             </motion.h1>
 
             <motion.p
               variants={heroChildVariants}
-              className="text-base sm:text-lg md:text-xl text-white/90 max-w-xl leading-relaxed"
+              className="text-base sm:text-lg md:text-xl text-white/90 max-w-2xl leading-relaxed"
             >
               {currentSlide.subtext}
             </motion.p>
 
-            <motion.a
-              href={currentSlide.href}
-              variants={heroChildVariants}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center mt-6 bg-[var(--color-accent)] text-[var(--color-text)]
-              font-semibold text-base sm:text-lg md:text-lg rounded-full px-6 py-3 gap-2
-              shadow-md hover:brightness-95 transition"
-            >
-              {currentSlide.cta}
-              <FaArrowRight className="text-[var(--color-secondary)]" />
-            </motion.a>
+            <motion.div variants={heroChildVariants} className="pt-2">
+              <Link
+                to={currentSlide.href}
+                className="inline-flex items-center bg-[var(--color-accent)] text-[var(--color-text)]
+                font-bold text-base sm:text-lg rounded-full px-8 py-3.5 gap-3
+                shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:scale-105 active:scale-95 transition-all"
+              >
+                {currentSlide.cta}
+                <FaArrowRight className="text-[var(--color-secondary)]" />
+              </Link>
+            </motion.div>
           </motion.div>
         </AnimatePresence>
 
         {/* Navigation Dots */}
-        <div className="absolute mt-10 flex gap-3">
+        <div className="absolute mt-12 flex gap-4">
           {heroData.map((_, index) => (
             <button
               key={index}
               onClick={() => setSlideIndex(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === slideIndex
-                  ? "bg-[var(--color-accent)] scale-125"
-                  : "bg-white/55 hover:bg-white/80"
-              }`}
+              className={`h-1.5 rounded-full transition-all duration-500 ${index === slideIndex
+                ? "w-10 bg-[var(--color-accent)]"
+                : "w-4 bg-white/40 hover:bg-white/70"
+                }`}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}

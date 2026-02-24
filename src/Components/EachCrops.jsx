@@ -2,23 +2,22 @@ import { motion } from "framer-motion";
 import { Link } from "react-router";
 
 const EachCrops = ({ crops, index }) => {
-  // console.log(crops);
-
   return (
     <motion.div
       className="flex flex-col md:flex-row items-center justify-evenly 
       border border-(--color-border) rounded-2xl overflow-hidden shadow-md 
-      hover:shadow-lg transition-all duration-300 
-      bg-(--color-surface) hover:-translate-y-1 p-4 md:p-6 gap-5 lg:gap-0"
+      hover:shadow-lg transition-shadow duration-300 
+      bg-(--color-surface) p-4 md:p-6 gap-5 lg:gap-0"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.5, delay: Math.min(index * 0.08, 0.32), ease: "easeOut" }}
       viewport={{ once: true }}
     >
       {/* Image */}
       <div>
         <img
-          className="w-50 h-50 object-cover rounded-lg hover:scale-115 transition-transform duration-500"
+          className="w-50 h-50 object-cover rounded-lg hover:scale-105 transition-transform duration-500"
           src={crops.image}
           alt={crops.name}
         />

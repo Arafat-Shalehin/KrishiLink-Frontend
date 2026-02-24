@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router";
 import Loader from "./Loader";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import EachCrops from "./EachCrops";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -21,7 +21,6 @@ const CropsDetails = () => {
   const { user } = useContext(AuthContext);
 
   const [crops, setCrops] = useState([]);
-  const [allCrops, setAllCrops] = useState([]);
   const [interestCrops, setInterestCrops] = useState(0);
 
   const [sameType, setSameType] = useState([]);
@@ -426,64 +425,79 @@ const CropsDetails = () => {
         </div>
 
         {/* Interest Form Modal */}
-        {showForm && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
-            <div className="bg-(--color-surface) border border-(--color-border) p-6 rounded-2xl shadow-lg w-full max-w-md relative">
-              <h2 className="text-xl sm:text-2xl font-semibold text-(--color-text) mb-4">
-                Express Your Interest
-              </h2>
+        <AnimatePresence>
+          {showForm && (
+            <motion.div
+              /* ── Backdrop animation ── */
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4 backdrop-blur-sm"
+            >
+              <motion.div
+                /* ── Modal Content animation ── */
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                className="bg-(--color-surface) border border-(--color-border) p-6 rounded-2xl shadow-lg w-full max-w-md relative"
+              >
+                <h2 className="text-xl sm:text-2xl font-semibold text-(--color-text) mb-4">
+                  Express Your Interest
+                </h2>
 
-              <label className="block mb-3">
-                <span className="text-(--color-muted) font-medium text-sm sm:text-base">
-                  Quantity ({crops.unit})
-                </span>
-                <input
-                  type="text"
-                  defaultValue={quantity}
-                  onChange={(e) => setQuantity(Number(e.target.value))}
-                  className="mt-1 w-full border border-(--color-border) bg-(--color-surface) text-(--color-text) rounded-lg px-3 py-2 focus:outline-none focus:ring-4 focus:ring-(--color-primary)/20"
-                />
-              </label>
-
-              <label className="block mb-3">
-                <span className="text-(--color-muted) font-medium text-sm sm:text-base">
-                  Message
-                </span>
-                <textarea
-                  rows="3"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  className="mt-1 w-full border border-(--color-border) bg-(--color-surface) text-(--color-text) rounded-lg px-3 py-2 focus:outline-none focus:ring-4 focus:ring-(--color-primary)/20"
-                  placeholder="Example: Interested in buying 100kg..."
-                ></textarea>
-              </label>
-
-              <div className="mb-4">
-                <p className="text-(--color-muted) font-medium text-sm sm:text-base">
-                  Total Price:{" "}
-                  <span className="text-(--color-primary) font-semibold">
-                    {totalPrice.toLocaleString()} BDT
+                <label className="block mb-3">
+                  <span className="text-(--color-muted) font-medium text-sm sm:text-base">
+                    Quantity ({crops.unit})
                   </span>
-                </p>
-              </div>
+                  <input
+                    type="text"
+                    defaultValue={quantity}
+                    onChange={(e) => setQuantity(Number(e.target.value))}
+                    className="mt-1 w-full border border-(--color-border) bg-(--color-surface) text-(--color-text) rounded-lg px-3 py-2 focus:outline-none focus:ring-4 focus:ring-(--color-primary)/20"
+                  />
+                </label>
 
-              <div className="flex justify-end gap-3 mt-6">
-                <button
-                  onClick={() => setShowForm(false)}
-                  className="px-4 py-2 border border-(--color-border) text-(--color-text) rounded-lg hover:bg-(--color-bg) transition"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleInterestSubmit}
-                  className="px-4 py-2 bg-(--color-primary) hover:brightness-95 text-white rounded-lg font-semibold transition"
-                >
-                  Submit
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+                <label className="block mb-3">
+                  <span className="text-(--color-muted) font-medium text-sm sm:text-base">
+                    Message
+                  </span>
+                  <textarea
+                    rows="3"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    className="mt-1 w-full border border-(--color-border) bg-(--color-surface) text-(--color-text) rounded-lg px-3 py-2 focus:outline-none focus:ring-4 focus:ring-(--color-primary)/20"
+                    placeholder="Example: Interested in buying 100kg..."
+                  ></textarea>
+                </label>
+
+                <div className="mb-4">
+                  <p className="text-(--color-muted) font-medium text-sm sm:text-base">
+                    Total Price:{" "}
+                    <span className="text-(--color-primary) font-semibold">
+                      {totalPrice.toLocaleString()} BDT
+                    </span>
+                  </p>
+                </div>
+
+                <div className="flex justify-end gap-3 mt-6">
+                  <button
+                    onClick={() => setShowForm(false)}
+                    className="px-4 py-2 border border-(--color-border) text-(--color-text) rounded-lg hover:bg-(--color-bg) transition"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleInterestSubmit}
+                    className="px-4 py-2 bg-(--color-primary) hover:brightness-95 text-white rounded-lg font-semibold transition"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

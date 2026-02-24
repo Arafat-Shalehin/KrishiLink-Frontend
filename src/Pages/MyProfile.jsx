@@ -25,7 +25,8 @@ const StatCard = ({ title, value, to, icon: Icon, colorClass }) => {
     <Link to={to} className="block group">
       <motion.div
         whileHover={{ y: -4 }}
-        className="relative overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-md hover:shadow-xl transition-all duration-300"
+        /* ── Profile stat card: uses theme variables for consistent dark mode support ── */
+        className="relative overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-md hover:shadow-xl transition-all duration-300"
       >
         <div
           className={`absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity transform scale-150`}
@@ -34,13 +35,13 @@ const StatCard = ({ title, value, to, icon: Icon, colorClass }) => {
         </div>
         <div className="flex items-center gap-4 relative z-10">
           <div
-            className={`p-3 rounded-xl bg-background shadow-inner ${colorClass}`}
+            className={`p-3 rounded-xl bg-[var(--color-bg)] shadow-inner ${colorClass}`}
           >
             <Icon className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-sm font-medium text-muted-foreground">{title}</p>
-            <p className="text-2xl font-bold text-foreground mt-1 group-hover:translate-x-1 transition-transform">
+            <p className="text-sm font-medium text-[var(--color-muted)]">{title}</p>
+            <p className="text-2xl font-bold text-[var(--color-text)] mt-1 group-hover:translate-x-1 transition-transform">
               {value}
             </p>
           </div>
@@ -180,6 +181,8 @@ const MyProfile = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
+        /* ── Explicit transition ensures consistency with other page components ── */
+        transition={{ duration: 0.5, ease: "easeOut" }}
         className="max-w-6xl mx-auto space-y-8"
       >
         {/* Header */}
@@ -320,10 +323,10 @@ const MyProfile = () => {
                       : stats.blockedUsersCount
               }
               to={
-                  role === 'admin' ? '/dashboard/admin/users' :
-                  role === 'farmer' ? '/dashboard/my-crops' : 
-                  '/my-posts' // buyers see their activity here (or maybe a purchase history page?)
-              } 
+                role === 'admin' ? '/dashboard/admin/users' :
+                  role === 'farmer' ? '/dashboard/my-crops' :
+                    '/my-posts' // buyers see their activity here (or maybe a purchase history page?)
+              }
               icon={FileText}
               colorClass="text-blue-500"
             />
@@ -345,7 +348,7 @@ const MyProfile = () => {
                       : stats.farmerRequestsCount
               }
               to={
-                  role === 'admin' ? '/dashboard/admin/users' :
+                role === 'admin' ? '/dashboard/admin/users' :
                   '/my-interest'
               }
               icon={Heart}

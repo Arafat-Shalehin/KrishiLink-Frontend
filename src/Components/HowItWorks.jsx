@@ -2,7 +2,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
-import { motion } from "framer-motion";
 
 const steps = [
   {
@@ -18,7 +17,7 @@ const steps = [
   {
     img: "https://images.pexels.com/photos/3771107/pexels-photo-3771107.jpeg",
     title: "Filter & Search",
-    desc: "Use smart filters to quickly find the type of crops you’re interested in buying or collaborating on.",
+    desc: "Use smart filters to quickly find the type of crops you're interested in buying or collaborating on.",
   },
   {
     img: "https://images.pexels.com/photos/13826860/pexels-photo-13826860.jpeg",
@@ -62,7 +61,8 @@ const HowItWorks = () => {
           autoplay={{
             delay: 2500,
             disableOnInteraction: false,
-            pauseOnMouseEnter: true, // pauses when user hovers
+            /* ── Pause autoplay while user is hovering on a slide ── */
+            pauseOnMouseEnter: true,
           }}
           pagination={{
             clickable: true,
@@ -78,17 +78,19 @@ const HowItWorks = () => {
         >
           {steps.map((step, index) => (
             <SwiperSlide key={index}>
-              <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-[var(--color-surface)] rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden h-full flex flex-col border border-[var(--color-border)]"
+              <div
+                className="bg-[var(--color-surface)] rounded-2xl shadow-md hover:shadow-xl 
+                transition-all duration-300 overflow-hidden h-full flex flex-col 
+                border border-[var(--color-border)]
+                opacity-0 animate-[fadeInUp_0.5s_ease-out_forwards]"
+                style={{ animationDelay: `${index * 0.05}s` }}
               >
                 <div className="h-48 w-full overflow-hidden">
                   <img
                     src={step.img}
                     alt={step.title}
+                    /* ── CSS scale on hover is fine here since there is no
+                       Framer Motion transform on the same element ── */
                     className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
                   />
                 </div>
@@ -100,13 +102,13 @@ const HowItWorks = () => {
                     {step.desc}
                   </p>
                 </div>
-              </motion.div>
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>
       </div>
 
-      {/* Optional: style Swiper bullets with palette */}
+      {/* Swiper pagination bullet styles using palette variables */}
       <style>{`
         .swiper-pagination-bullet {
           background: var(--color-muted);
@@ -115,6 +117,20 @@ const HowItWorks = () => {
         .swiper-pagination-bullet-active {
           background: var(--color-accent);
           opacity: 1;
+        }
+
+        /* ── fadeInUp keyframe for the slide cards.
+           Used instead of Framer Motion whileInView inside SwiperSlide
+           to prevent animation conflicts with Swiper's transform system. ── */
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
       `}</style>
     </section>

@@ -17,7 +17,8 @@ const OurMissionImpact = () => {
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="lg:w-1/2 text-center lg:text-left"
         >
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--color-text)] mb-4">
@@ -55,10 +56,12 @@ const OurMissionImpact = () => {
         </motion.div>
 
         {/* Image Section */}
+        {/* ── Slide in from the right, matching the text animation timing. ── */}
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="lg:w-1/2 flex justify-center"
         >
           <img

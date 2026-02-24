@@ -4,6 +4,7 @@ import { AuthContext } from "../Context/AuthProvider";
 import { toast } from "react-toastify";
 import { syncUserToBackend } from "../utils/syncUserToBackend";
 import useAxiosSecure from "../Hooks/useAxios";
+import { motion } from "framer-motion";
 
 const Register = () => {
   const { createUser, setUser, updateUser } = useContext(AuthContext);
@@ -111,8 +112,14 @@ const Register = () => {
   };
 
   return (
-    <section className="min-h-[calc(100vh-64px) bg-(--color-bg) flex items-center justify-center px-4 py-10">
-      <div className="w-full max-w-md">
+    <section className="min-h-[calc(100vh-64px)] bg-(--color-bg) flex items-center justify-center px-4 py-10">
+      {/* ── Register Card entrance animation ── */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="w-full max-w-md"
+      >
         <div className="rounded-2xl border border-(--color-border) bg-(--color-surface) shadow-xl">
           {/* Header */}
           <div className="px-6 pt-8 text-center">
@@ -205,7 +212,7 @@ const Register = () => {
                 <button
                   type="button"
                   onClick={() => setShow((prev) => !prev)}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg px-2.5 py-1 text-xs font-semibold text-(--color-secondary) hover:bg-[color-mix(in_srgb,var(--color-secondary)_12%,transparent)"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg px-2.5 py-1 text-xs font-semibold text-(--color-secondary) hover:bg-[color-mix(in_srgb,var(--color-secondary)_12%,transparent)]"
                   aria-label={show ? "Hide password" : "Show password"}
                 >
                   {show ? "Hide" : "Show"}
@@ -282,9 +289,10 @@ const Register = () => {
             </p>
           </form>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };
 
 export default Register;
+

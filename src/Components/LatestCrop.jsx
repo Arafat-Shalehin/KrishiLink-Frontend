@@ -36,12 +36,15 @@ const LatestCrop = () => {
       mounted = false;
     };
   }, [instance]);
-  
-  // console.log(sixCrops);
 
   return (
+    /* ── Section entry animation: fade up from slight offset ── */
     <motion.section
       className="bg-(--color-bg)"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
     >
       <div className="mx-auto pt-10 px-4 sm:px-6 lg:px-8">
         {/* Header */}
@@ -92,7 +95,7 @@ const LatestCrop = () => {
                 No new crops available yet
               </h3>
               <p className="mt-2 text-sm text-[var(--color-muted)]">
-                Farmers haven’t posted any new crops recently. Please check back
+                Farmers haven't posted any new crops recently. Please check back
                 soon or explore all available listings.
               </p>
 

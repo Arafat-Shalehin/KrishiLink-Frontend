@@ -417,20 +417,36 @@ const AllCropsPage = () => {
         {/* ─────────────────────────────────────────────────────────────
             Crops Grid
         ───────────────────────────────────────────────────────────── */}
-        {isLoading ? (
-          <AllCropsPageSkeleton cards={ITEMS_PER_PAGE} />
-        ) : (
-          crops.length > 0 && (
-            <div
-              className="mt-8 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
-              
+        <AnimatePresence mode="wait">
+          {isLoading ? (
+            <motion.div
+              key="skeleton"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
             >
-              {crops.map((crop, index) => (
-                <EachCrops key={crop._id} crops={crop} index={index} />
-              ))}
-            </div>
-          )
-        )}
+              <AllCropsPageSkeleton cards={ITEMS_PER_PAGE} />
+            </motion.div>
+          ) : (
+            crops.length > 0 && (
+              /* ── Grid entry/swap animation: triggered whenever params change ── */
+              <motion.div
+                key={JSON.stringify(params)}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="mt-8 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
+              >
+                {crops.map((crop, index) => (
+                  <EachCrops key={crop._id} crops={crop} index={index} />
+                ))}
+              </motion.div>
+            )
+          )}
+        </AnimatePresence>
+
 
         {/* ─────────────────────────────────────────────────────────────
             Pagination
@@ -616,11 +632,10 @@ const PageButton = ({ page, current, onClick, disabled }) => (
   <button
     onClick={() => onClick(page)}
     disabled={disabled}
-    className={`min-w-[40px] h-10 rounded-lg border text-sm font-semibold transition ${
-      page === current
+    className={`min-w-[40px] h-10 rounded-lg border text-sm font-semibold transition ${page === current
         ? "border-(--color-primary) bg-(--color-primary) text-white"
         : "border-(--color-border) bg-(--color-surface) text-(--color-text) hover:border-(--color-primary)"
-    } disabled:cursor-not-allowed`}
+      } disabled:cursor-not-allowed`}
   >
     {page}
   </button>

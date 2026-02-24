@@ -7,6 +7,7 @@ import { syncUserToBackend } from "../utils/syncUserToBackend";
 import useAxiosSecure from "../Hooks/useAxios";
 import { getMeOrSync } from "../utils/getMeOrSync";
 import Swal from "sweetalert2";
+import { motion } from "framer-motion";
 
 const Login = () => {
   const { loginUser, googleLogin } = useContext(AuthContext);
@@ -176,11 +177,17 @@ const Login = () => {
 
   return (
     <section
-      className="min-h-[calc(100vh-64px) 
+      className="min-h-[calc(100vh-64px)] 
     bg-(--color-bg) flex items-center 
     justify-center px-4 py-10"
     >
-      <div className="w-full max-w-md">
+      {/* ── Login Card entrance animation ── */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="w-full max-w-md"
+      >
         <div
           className="rounded-2xl border 
         border-(--color-border) 
@@ -243,7 +250,7 @@ const Login = () => {
                 <button
                   type="button"
                   onClick={() => setShow((prev) => !prev)}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg px-2.5 py-1 text-xs font-semibold text-(--color-secondary) hover:bg-[color-mix(in_srgb,var(--color-secondary)_12%,transparent)"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg px-2.5 py-1 text-xs font-semibold text-(--color-secondary) hover:bg-[color-mix(in_srgb,var(--color-secondary)_12%,transparent)]"
                   aria-label={show ? "Hide password" : "Show password"}
                 >
                   {show ? "Hide" : "Show"}
@@ -291,7 +298,7 @@ const Login = () => {
               type="button"
               onClick={handleGoogleLogin}
               disabled={submitting || googleSubmitting}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-(--color-border) bg-(--color-surface) px-4 py-2.5 text-sm sm:text-base font-semibold text-(--color-text) hover:bg-[color-mix(in_srgb,var(--color-primary)_8%,var(--color-surface)) transition disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-(--color-border) bg-(--color-surface) px-4 py-2.5 text-sm sm:text-base font-semibold text-(--color-text) hover:bg-[color-mix(in_srgb,var(--color-primary)_8%,var(--color-surface))] transition disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {googleSubmitting ? (
                 <span className="inline-flex items-center gap-2">
@@ -312,7 +319,7 @@ const Login = () => {
                 onClick={handleDemoFarmerLogin}
                 disabled={submitting || googleSubmitting}
                 className="w-full rounded-xl border border-(--color-primary) px-4 py-2.5 text-sm font-semibold text-(--color-primary)
-    hover:bg-[color-mix(in_srgb,var(--color-primary)_10%,transparent) transition disabled:opacity-60 disabled:cursor-not-allowed"
+    hover:bg-[color-mix(in_srgb,var(--color-primary)_10%,transparent)] transition disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 Login as Farmer
               </button>
@@ -322,7 +329,7 @@ const Login = () => {
                 onClick={handleDemoAdminLogin}
                 disabled={submitting || googleSubmitting}
                 className="w-full rounded-xl border border-(--color-secondary) px-4 py-2.5 text-sm font-semibold text-(--color-secondary)
-    hover:bg-[color-mix(in_srgb,var(--color-secondary)_10%,transparent) transition disabled:opacity-60 disabled:cursor-not-allowed"
+    hover:bg-[color-mix(in_srgb,var(--color-secondary)_10%,transparent)] transition disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 Login as Admin
               </button>
@@ -340,9 +347,10 @@ const Login = () => {
             </p>
           </form>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };
 
 export default Login;
+

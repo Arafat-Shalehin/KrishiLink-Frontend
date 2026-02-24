@@ -74,7 +74,11 @@ const AgroNews = () => {
               key={article.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              transition={{
+                duration: 0.55,
+                delay: Math.min(index * 0.08, 0.3),
+                ease: "easeOut",
+              }}
               viewport={{ once: true }}
               className="group rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 bg-[var(--color-surface)] border border-[var(--color-border)] flex flex-col"
             >
