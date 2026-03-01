@@ -1,3 +1,4 @@
+import { lazy } from "react";
 import { createBrowserRouter } from "react-router";
 import HomeLayOut from "../Layouts/HomeLayOut";
 import App from "../App";
@@ -15,20 +16,20 @@ import RoleRoute from "./RoleRoute";
 
 // Dashboard
 import DashboardLayout from "../Layouts/DashboardLayout";
-import MyProfile from "../Pages/MyProfile";
-import BuyerDashboard from "../Dashboard/buyer/BuyerDashboard";
-import BuyerInterests from "../Dashboard/buyer/BuyerInterests";
-import BuyerPurchases from "../Dashboard/buyer/BuyerPurchases";
-import BuyerTransactions from "../Dashboard/buyer/BuyerTransactions";
-import FarmerDashboard from "../Dashboard/farmer/FarmerDashboard";
-import FarmerCrops from "../Dashboard/farmer/FarmerCrops";
-import FarmerAddCrop from "../Dashboard/farmer/FarmerAddCrop";
-import FarmerInterests from "@/Dashboard/farmer/FarmerInterests";
 import DashboardHome from "../Dashboard/DashboardHome";
-import AdminOverview from "../Dashboard/admin/AdminOverview";
-import AdminUsers from "../Dashboard/admin/AdminUsers";
-import AdminRequests from "../Dashboard/admin/AdminRequests";
-import AdminCrops from "../Dashboard/admin/AdminCrops";
+import MyProfile from "../Pages/MyProfile";
+const BuyerDashboard = lazy(() => import("../Dashboard/buyer/BuyerDashboard"));
+const BuyerInterests = lazy(() => import("../Dashboard/buyer/BuyerInterests"));
+const BuyerPurchases = lazy(() => import("../Dashboard/buyer/BuyerPurchases"));
+const BuyerTransactions = lazy(() => import("../Dashboard/buyer/BuyerTransactions"));
+const FarmerDashboard = lazy(() => import("../Dashboard/farmer/FarmerDashboard"));
+const FarmerCrops = lazy(() => import("../Dashboard/farmer/FarmerCrops"));
+const FarmerAddCrop = lazy(() => import("../Dashboard/farmer/FarmerAddCrop"));
+const FarmerInterests = lazy(() => import("@/Dashboard/farmer/FarmerInterests"));
+const AdminOverview = lazy(() => import("../Dashboard/admin/AdminOverview"));
+const AdminUsers = lazy(() => import("../Dashboard/admin/AdminUsers"));
+const AdminRequests = lazy(() => import("../Dashboard/admin/AdminRequests"));
+const AdminCrops = lazy(() => import("../Dashboard/admin/AdminCrops"));
 
 // Payment Pages
 import PaymentSuccess from "../Pages/Payment/PaymentSuccess";

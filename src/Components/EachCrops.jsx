@@ -20,6 +20,7 @@ const EachCrops = ({ crops, index }) => {
           className="w-50 h-50 object-cover rounded-lg hover:scale-105 transition-transform duration-500"
           src={crops.image}
           alt={crops.name}
+          loading="lazy"
         />
       </div>
 

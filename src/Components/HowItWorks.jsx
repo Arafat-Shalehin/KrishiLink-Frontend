@@ -89,8 +89,7 @@ const HowItWorks = () => {
                   <img
                     src={step.img}
                     alt={step.title}
-                    /* ── CSS scale on hover is fine here since there is no
-                       Framer Motion transform on the same element ── */
+                    loading="lazy"
                     className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
                   />
                 </div>
