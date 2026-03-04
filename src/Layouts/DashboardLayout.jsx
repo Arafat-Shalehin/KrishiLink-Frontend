@@ -16,7 +16,7 @@ function DashboardLayout() {
         <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content">
           {/* Navbar */}
-          <nav className="navbar w-full bg-base-300">
+          <nav className="navbar w-full bg-[--color-surface] dark:bg-[#111827] border-b border-[--color-border] dark:border-[#243044]">
             <label
               htmlFor="my-drawer-4"
               aria-label="open sidebar"
@@ -39,10 +39,10 @@ function DashboardLayout() {
               </svg>
             </label>
             <div className="px-4 flex items-center">
-              <p className="text-lg uppercase tracking-wider text-(--color-muted)">
+              <p className="text-lg uppercase tracking-wider text-(--color-muted) dark:text-[#94a3b8]">
                 Dashboard
               </p>
-              <p className="ml-2 text-lg font-bold text-black">
+              <p className="ml-2 text-lg font-bold text-(--color-text) dark:text-[#e5e7eb]">
                 {dbUser?.name || user?.displayName || "User"}
               </p>
             </div>
@@ -59,7 +59,7 @@ function DashboardLayout() {
             aria-label="close sidebar"
             className="drawer-overlay"
           ></label>
-          <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
+          <div className="flex min-h-full flex-col items-start bg-[--color-surface] dark:bg-[#111827] is-drawer-close:w-14 is-drawer-open:w-64 border-r border-[--color-border] dark:border-[#243044]">
             {/* Sidebar content here */}
             <DashboardSidebar />
           </div>
