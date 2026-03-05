@@ -1,13 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
 @import "tailwindcss";
+@import "tw-animate-css";
+
 @plugin "daisyui";
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
 }
 
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@plugin "daisyui/theme" {
+  name: "dark";
+  default: false;
 
-@import "tw-animate-css";
+  --color-base-100: #111827;
+  --color-base-200: #0b1220;
+  --color-base-300: #1f2937;
+  --color-base-content: #e5e7eb;
+  --color-primary: #2f855a;
+  --color-primary-content: #ffffff;
+  --color-secondary: #8b5e34;
+  --color-secondary-content: #ffffff;
+  --color-accent: #f6c453;
+  --color-accent-content: #0f172a;
+  --color-neutral: #1f2937;
+  --color-neutral-content: #e5e7eb;
+  --color-success: #2f855a;
+  --color-warning: #f6c453;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+}
 
 @custom-variant dark (&:is(.dark *));
 
