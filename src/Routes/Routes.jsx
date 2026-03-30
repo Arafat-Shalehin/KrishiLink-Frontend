@@ -9,7 +9,8 @@ import Login from "../Pages/Login";
 import Register from "../Pages/Register";
 import CropsDetails from "../Components/CropsDetails";
 import NewsDetails from "../Pages/NewsDetails";
-import About from "../Pages/About";
+import FAQ from "../Pages/FAQ";
+import CommunityGuidelines from "../Pages/CommunityGuidelines";
 
 import PrivateRoute from "./PrivateRoute";
 import RoleRoute from "./RoleRoute";
@@ -36,6 +37,7 @@ import PaymentSuccess from "../Pages/Payment/PaymentSuccess";
 import PaymentFailed from "../Pages/Payment/PaymentFailed";
 import PaymentCancelled from "../Pages/Payment/PaymentCancelled";
 import PaymentError from "../Pages/Payment/PaymentError";
+import About from "@/Pages/About";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +48,8 @@ const router = createBrowserRouter([
       { index: true, element: <App /> },
       { path: "/all-crops", element: <AllCropsPage /> },
       { path: "/about", element: <About /> },
+      { path: "/faq", element: <FAQ /> },
+      { path: "/guidelines", element: <CommunityGuidelines /> },
       { path: "/news/:id", element: <NewsDetails /> },
       { path: "crops-details/:id/:type", element: <CropsDetails /> },
     ],

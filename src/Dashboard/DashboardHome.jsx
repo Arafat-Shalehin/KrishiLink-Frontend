@@ -118,7 +118,7 @@ function FarmerDashboard({ query }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Chart Section */}
-        <Card className="shadow-lg border-none bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-950/50">
+        <Card className="shadow-lg border-none bg-linear-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-950/50">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-xl">
               <Activity className="w-5 h-5 text-muted-foreground" />
@@ -148,7 +148,7 @@ function FarmerDashboard({ query }) {
         </Card>
 
         {/* Quick Actions / Tips (Placeholder for future) */}
-        <Card className="shadow-lg border-none bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20">
+        <Card className="shadow-lg border-none bg-linear-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20">
           <CardHeader>
              <CardTitle className="text-xl">Farming Tips</CardTitle>
           </CardHeader>
@@ -246,7 +246,7 @@ function BuyerDashboard({ query }) {
         </Card>
 
         {/* CTA Card */}
-        <Card className="shadow-lg border-none bg-gradient-to-br from-emerald-600 via-teal-600 to-green-600 text-white flex flex-col justify-center">
+        <Card className="shadow-lg border-none bg-linear-to-br from-primary to-secondary text-white flex flex-col justify-center">
             <CardContent className="p-8 text-center space-y-6">
                 <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto backdrop-blur-md">
                     <Leaf className="w-8 h-8 text-white" />
@@ -272,7 +272,7 @@ function AdminDashboard({ enabled }) {
   const { data, isLoading, isError } = useAdminOverview(enabled);
 
   if (isLoading) return <DashboardHomeSkeleton cards={4} />;
-  if (isError) return <div className="text-red-500">Failed to load admin overview.</div>;
+  if (isError) return <div className="text-error">Failed to load admin overview.</div>;
 
   const stats = data?.stats || {};
   const chartData = [
@@ -286,10 +286,10 @@ function AdminDashboard({ enabled }) {
     <div className="space-y-8">
       {/* 4-Column Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard title="Total Farmers" value={stats.totalFarmers ?? 0} icon={<Leaf className="text-green-500" />} />
-        <StatCard title="Total Buyers" value={stats.totalBuyers ?? 0} icon={<Users className="text-blue-500" />} />
-        <StatCard title="Pending Approvals" value={stats.pendingRequests ?? 0} icon={<Activity className="text-orange-500" />} />
-        <StatCard title="Completed Deals" value={stats.acceptedDeals ?? 0} icon={<TrendingUp className="text-emerald-500" />} />
+        <StatCard title="Total Farmers" value={stats.totalFarmers ?? 0} icon={<Leaf className="text-success" />} />
+        <StatCard title="Total Buyers" value={stats.totalBuyers ?? 0} icon={<Users className="text-info" />} />
+        <StatCard title="Pending Approvals" value={stats.pendingRequests ?? 0} icon={<Activity className="text-(--color-warning)" />} />
+        <StatCard title="Completed Deals" value={stats.acceptedDeals ?? 0} icon={<TrendingUp className="text-(--color-primary)" />} />
       </div>
 
       <div className="grid md:grid-cols-2 gap-8">
@@ -318,13 +318,13 @@ function AdminDashboard({ enabled }) {
         
         {/* Admin Quick Links */}
         <div className="grid grid-cols-1 gap-4">
-             <Button variant="outline" className="h-full flex flex-col items-center justify-center gap-2 p-6 hover:bg-slate-50 dark:hover:bg-slate-900" asChild>
+             <Button variant="outline" className="h-full flex flex-col items-center justify-center gap-2 p-6 hover:bg-base-200 dark:hover:bg-base-300 dark:hover:text-black " asChild>
                 <a href="/dashboard/admin/users">
                     <Users className="w-8 h-8 opacity-50" />
                     <span className="text-lg font-semibold">Manage Users</span>
                 </a>
              </Button>
-             <Button variant="outline" className="h-full flex flex-col items-center justify-center gap-2 p-6 hover:bg-slate-50 dark:hover:bg-slate-900" asChild>
+             <Button variant="outline" className="h-full flex flex-col items-center justify-center gap-2 p-6 hover:bg-base-200 dark:hover:bg-base-300 dark:hover:text-black" asChild>
                 <a href="/dashboard/admin/crops">
                     <Leaf className="w-8 h-8 opacity-50" />
                     <span className="text-lg font-semibold">Moderate Crops</span>
@@ -342,21 +342,21 @@ function AdminDashboard({ enabled }) {
 function StatCard({ title, value, icon, gradient = "from-background to-background", trend, suffix = "" }) {
   return (
     <motion.div whileHover={{ y: -5 }} transition={{ type: 'spring', stiffness: 300 }}>
-      <Card className={`border-none shadow-lg bg-gradient-to-br ${gradient} backdrop-blur-sm relative overflow-hidden`}>
+      <Card className={`border-none shadow-lg ${gradient} backdrop-blur-sm relative overflow-hidden`}>
         <div className="absolute top-0 right-0 p-4 opacity-10 scale-150 transform translate-x-2 -translate-y-2">
             {icon}
         </div>
         <CardContent className="p-6 relative z-10">
           <div className="flex items-center justify-between mb-4">
-            <div className="p-2 bg-background/50 rounded-lg shadow-sm backdrop-blur-md">
+            <div className="p-2 bg-base-200 rounded-lg shadow-sm backdrop-blur-md">
                 {icon}
             </div>
-            {trend && <span className="text-xs font-medium px-2 py-1 bg-background/40 rounded-full text-foreground/70">{trend}</span>}
+            {trend && <span className="text-xs font-medium px-2 py-1 bg-base-200 rounded-full text-base-content/70">{trend}</span>}
           </div>
           <div className="space-y-1">
-            <h3 className="text-sm font-medium text-muted-foreground">{title}</h3>
-            <p className="text-3xl font-bold tracking-tight text-foreground">
-                {value}<span className="text-lg text-muted-foreground font-medium">{suffix}</span>
+            <h3 className="text-sm font-medium text-base-content/60 dark:text-white">{title}</h3>
+            <p className="text-3xl font-bold tracking-tight text-base-content dark:text-white">
+                {value}<span className="text-lg text-base-content/60 font-medium">{suffix}</span>
             </p>
           </div>
         </CardContent>

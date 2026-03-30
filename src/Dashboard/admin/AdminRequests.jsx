@@ -139,7 +139,7 @@ const AdminRequests = () => {
   }
 
   return (
-    <div>
+    <div className="dark:min-h-[calc(112vh-200px)]">
       <h1 className="text-2xl font-bold text-(--color-text)">
         Farmer <span className="text-(--color-primary)">Requests</span>
       </h1>

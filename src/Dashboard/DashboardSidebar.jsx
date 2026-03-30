@@ -30,8 +30,8 @@ const SidebarItem = ({ to, icon: Icon, label, end = false }) => {
         [
           "is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold transition",
           isActive
-            ? "bg-(--color-primary) text-white"
-            : "text-(--color-text) hover:bg-[color-mix(in_srgb,var(--color-primary)_10%,transparent)]",
+            ? "bg-(--color-primary) dark:bg-green-500 dark:text-black text-primary-content"
+            : "text-base-content hover:bg-primary/10",
         ].join(" ")
       }
     >
@@ -55,11 +55,11 @@ const DashboardSidebar = () => {
 
   return (
     <aside className="h-full w-full px-2">
-      <nav className="flex flex-col gap-6 mt-4">
+      <nav className="flex flex-col gap-6 mt-4 dark:*:text-white">
         {/* Home */}
         <Link
           to="/"
-          className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold text-(--color-text) hover:bg-[color-mix(in_srgb,var(--color-primary)_10%,transparent)] transition"
+          className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold text-base-content hover:bg-primary/10 transition"
           data-tip="Homepage"
         >
           <House className="h-4 w-4" />
@@ -67,10 +67,10 @@ const DashboardSidebar = () => {
         </Link>
 
         {/* Dashboard Section */}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 dark:*:text-white">
           <NavLink
             to="/dashboard"
-            className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold text-(--color-text) hover:bg-[color-mix(in_srgb,var(--color-primary)_10%,transparent)] transition"
+            className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold text-base-content hover:bg-primary/10 transition"
             data-tip="Overview"
           >
             <LayoutDashboard className="h-4 w-4" />

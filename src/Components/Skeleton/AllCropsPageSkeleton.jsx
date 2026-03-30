@@ -10,7 +10,7 @@ const SkeletonBlock = ({ className = "" }) => (
       "dark:bg-[color-mix(in_srgb,var(--color-muted)_24%,transparent)]",
       "before:absolute before:inset-0",
       "before:-translate-x-full before:animate-[shimmer_1.6s_infinite]",
-      "before:bg-gradient-to-r before:from-transparent before:via-white/25 before:to-transparent",
+      "before:bg-linear-to-r before:from-transparent before:via-white/25 before:to-transparent",
       "dark:before:via-white/10",
       className,
     ].join(" ")}
@@ -19,7 +19,7 @@ const SkeletonBlock = ({ className = "" }) => (
 
 const CropCardSkeleton = () => (
   <div
-    className="flex flex-col md:flex-row items-center justify-evenly gap-5 lg:gap-0
+    className="flex flex-col md:flex-row items-center justify-center gap-5 lg:gap-5
       rounded-2xl overflow-hidden shadow-md border border-[var(--color-border)]
       bg-[var(--color-surface)] p-4 md:p-6"
   >

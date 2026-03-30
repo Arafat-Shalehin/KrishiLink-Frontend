@@ -10,7 +10,7 @@ const SkeletonBlock = ({ className = "" }) => (
       "dark:bg-muted/10",
       "before:absolute before:inset-0",
       "before:-translate-x-full before:animate-[shimmer_1.6s_infinite]",
-      "before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent",
+      "before:bg-linear-to-r before:from-transparent before:via-white/10 before:to-transparent",
       "dark:before:via-white/5",
       className,
     ].join(" ")}

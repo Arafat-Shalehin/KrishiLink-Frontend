@@ -80,7 +80,7 @@ const AdminUsers = () => {
     return <AdminTableSkeleton titleWidth="w-48" cols={4} rows={8} />;
 
   return (
-    <div>
+    <div className="dark:min-h-[calc(112vh-200px)]">
       <h1 className="text-2xl font-bold text-(--color-text)">
         Admin <span className="text-(--color-primary)">Users</span>
       </h1>
