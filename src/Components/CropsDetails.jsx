@@ -45,7 +45,7 @@ const CropsDetails = () => {
       try {
         // ✅ Use direct endpoint instead of fetching all and filtering
         const res = await instance.get(`/allCrops/${id}`);
-        setCrops(res.data); // This endpoint returns the crop object directly
+        setCrops(res.data.crop || {}); // Extract crop object from standardized response
       } catch (error) {
         console.error("Error fetching crop:", error);
         toast.error("Failed to load crop details");
@@ -454,7 +454,7 @@ const CropsDetails = () => {
                     type="text"
                     defaultValue={quantity}
                     onChange={(e) => setQuantity(Number(e.target.value))}
-                    className="mt-1 w-full border border-(--color-border) bg-(--color-surface) text-(--color-text) rounded-lg px-3 py-2 focus:outline-none focus:ring-4 focus:ring-(--color-primary)/20"
+                    className="mt-1 w-full border border-(--color-border) bg-(--color-surface) text-(--color-text) rounded-lg px-3 py-2 focus:outline-none focus:ring-4 focus:ring-primary/20"
                   />
                 </label>
 

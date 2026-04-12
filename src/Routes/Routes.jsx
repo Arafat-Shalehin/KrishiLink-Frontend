@@ -3,41 +3,53 @@ import { createBrowserRouter } from "react-router";
 import HomeLayOut from "../Layouts/HomeLayOut";
 import App from "../App";
 import ErrorPage from "../Pages/ErrorPage";
-import AllCropsPage from "../Pages/AllCropsPage";
-import AuthLayout from "../Layouts/AuthLayOut";
-import Login from "../Pages/Login";
-import Register from "../Pages/Register";
-import CropsDetails from "../Components/CropsDetails";
-import NewsDetails from "../Pages/NewsDetails";
-import FAQ from "../Pages/FAQ";
-import CommunityGuidelines from "../Pages/CommunityGuidelines";
+const AllCropsPage = lazy(() => import("../Pages/AllCropsPage"));
+const About = lazy(() => import("@/Pages/About"));
+const FAQ = lazy(() => import("../Pages/FAQ"));
+const CommunityGuidelines = lazy(() =>
+  import("../Pages/CommunityGuidelines")
+);
+const NewsDetails = lazy(() => import("../Pages/NewsDetails"));
+const CropsDetails = lazy(() => import("../Components/CropsDetails"));
+
+const AuthLayout = lazy(() => import("../Layouts/AuthLayOut"));
+const Login = lazy(() => import("../Pages/Login"));
+const Register = lazy(() => import("../Pages/Register"));
 
 import PrivateRoute from "./PrivateRoute";
 import RoleRoute from "./RoleRoute";
 
 // Dashboard
-import DashboardLayout from "../Layouts/DashboardLayout";
-import DashboardHome from "../Dashboard/DashboardHome";
-import MyProfile from "../Pages/MyProfile";
+const DashboardLayout = lazy(() => import("../Layouts/DashboardLayout"));
+const DashboardHome = lazy(() => import("../Dashboard/DashboardHome"));
+const MyProfile = lazy(() => import("../Pages/MyProfile"));
+
 const BuyerDashboard = lazy(() => import("../Dashboard/buyer/BuyerDashboard"));
 const BuyerInterests = lazy(() => import("../Dashboard/buyer/BuyerInterests"));
 const BuyerPurchases = lazy(() => import("../Dashboard/buyer/BuyerPurchases"));
-const BuyerTransactions = lazy(() => import("../Dashboard/buyer/BuyerTransactions"));
-const FarmerDashboard = lazy(() => import("../Dashboard/farmer/FarmerDashboard"));
+const BuyerTransactions = lazy(() =>
+  import("../Dashboard/buyer/BuyerTransactions")
+);
+const FarmerDashboard = lazy(() =>
+  import("../Dashboard/farmer/FarmerDashboard")
+);
 const FarmerCrops = lazy(() => import("../Dashboard/farmer/FarmerCrops"));
 const FarmerAddCrop = lazy(() => import("../Dashboard/farmer/FarmerAddCrop"));
-const FarmerInterests = lazy(() => import("@/Dashboard/farmer/FarmerInterests"));
+const FarmerInterests = lazy(() =>
+  import("@/Dashboard/farmer/FarmerInterests")
+);
 const AdminOverview = lazy(() => import("../Dashboard/admin/AdminOverview"));
 const AdminUsers = lazy(() => import("../Dashboard/admin/AdminUsers"));
 const AdminRequests = lazy(() => import("../Dashboard/admin/AdminRequests"));
 const AdminCrops = lazy(() => import("../Dashboard/admin/AdminCrops"));
 
 // Payment Pages
-import PaymentSuccess from "../Pages/Payment/PaymentSuccess";
-import PaymentFailed from "../Pages/Payment/PaymentFailed";
-import PaymentCancelled from "../Pages/Payment/PaymentCancelled";
-import PaymentError from "../Pages/Payment/PaymentError";
-import About from "@/Pages/About";
+const PaymentSuccess = lazy(() => import("../Pages/Payment/PaymentSuccess"));
+const PaymentFailed = lazy(() => import("../Pages/Payment/PaymentFailed"));
+const PaymentCancelled = lazy(() =>
+  import("../Pages/Payment/PaymentCancelled")
+);
+const PaymentError = lazy(() => import("../Pages/Payment/PaymentError"));
 
 const router = createBrowserRouter([
   {

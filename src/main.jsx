@@ -10,7 +10,23 @@ import AuthProvider from "./Context/AuthProvider";
 import { ThemeProvider } from "./Context/ThemeProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // Prevent automatic silent refetches when switching back to the browser tab
+      refetchOnWindowFocus: false,
+      // Global stale time to prevent redundant fetches within the same minute
+      staleTime: 1000 * 30, // 30 seconds
+      // Customize retry logic
+      retry: (failureCount, error) => {
+        // If we hit a 429 Too Many Requests, do NOT retry (it only makes it worse)
+        if (error?.response?.status === 429) return false;
+        // Default retry 3 times for other errors
+        return failureCount < 3;
+      },
+    },
+  },
+});
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

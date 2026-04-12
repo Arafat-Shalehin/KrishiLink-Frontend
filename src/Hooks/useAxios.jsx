@@ -7,6 +7,9 @@ const axiosSecure = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:4000",
 });
 
+// Module-level lock to prevent multiple simultaneous logouts
+let isLoggingOut = false;
+
 const useAxiosSecure = () => {
   const { user, dltUser } = useContext(AuthContext); // ✅ use dltUser
   const navigate = useNavigate();
@@ -27,8 +30,15 @@ const useAxiosSecure = () => {
       (response) => response,
       (error) => {
         const statusCode = error.response?.status;
-        if (statusCode === 401) {
-          dltUser().then(() => navigate("/auth/login"));
+        if (statusCode === 401 && !isLoggingOut) {
+          isLoggingOut = true;
+          dltUser()
+            .then(() => {
+              navigate("/auth/login");
+            })
+            .finally(() => {
+              isLoggingOut = false;
+            });
         }
         return Promise.reject(error);
       },

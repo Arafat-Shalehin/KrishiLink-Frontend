@@ -20,7 +20,7 @@ const LatestCrop = () => {
       .get("/sixCrops")
       .then((res) => {
         if (!mounted) return;
-        setSixCrops(res.data);
+        setSixCrops(res.data.crops || []);
       })
       .catch((error) => {
         console.error(error);
@@ -49,17 +49,17 @@ const LatestCrop = () => {
       <div className="mx-auto pt-10 px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-sm font-semibold tracking-wide text-[var(--color-secondary)]">
+          <p className="text-sm font-semibold tracking-wide text-(--color-secondary)">
             Fresh arrivals
           </p>
 
-          <h1 className="mt-2 text-3xl font-bold tracking-tight text-[var(--color-text)] sm:text-4xl">
+          <h1 className="mt-2 text-3xl font-bold tracking-tight text-(--color-text) sm:text-4xl">
             Latest Crop Posts
           </h1>
 
-          <div className="mx-auto mt-4 h-1 w-20 rounded-full bg-[var(--color-accent)]" />
+          <div className="mx-auto mt-4 h-1 w-20 rounded-full bg-(--color-accent)" />
 
-          <p className="mt-4 text-sm leading-6 text-[var(--color-muted)]">
+          <p className="mt-4 text-sm leading-6 text-(--color-muted)">
             Browse newly listed crops from farmers and explore the best deals.
           </p>
         </div>
@@ -90,18 +90,18 @@ const LatestCrop = () => {
 
           {/* Empty State */}
           {!loading && !error && sixCrops.length === 0 && (
-            <div className="mx-auto max-w-xl rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-8 text-center">
-              <h3 className="text-lg font-semibold text-[var(--color-text)]">
+            <div className="mx-auto max-w-xl rounded-2xl border border-(--color-border) bg-(--color-surface) p-8 text-center">
+              <h3 className="text-lg font-semibold text-(--color-text)">
                 No new crops available yet
               </h3>
-              <p className="mt-2 text-sm text-[var(--color-muted)]">
+              <p className="mt-2 text-sm text-(--color-muted)">
                 Farmers haven't posted any new crops recently. Please check back
                 soon or explore all available listings.
               </p>
 
               <div className="mt-6">
                 <Link to="/all-crops">
-                  <button className="rounded-full border border-[var(--color-secondary)] px-6 py-2 text-sm font-semibold text-[var(--color-secondary)] transition hover:bg-[color-mix(in_srgb,var(--color-secondary)_12%,transparent)]">
+                  <button className="rounded-full border border-(--color-secondary) px-6 py-2 text-sm font-semibold text-(--color-secondary) transition hover:bg-[color-mix(in_srgb,var(--color-secondary)_12%,transparent)]">
                     Browse all crops
                   </button>
                 </Link>
@@ -116,9 +116,9 @@ const LatestCrop = () => {
             <button
               className={[
                 "text-sm sm:text-lg lg:text-xl inline-flex items-center justify-center rounded-full border px-10 py-3 font-semibold transition-colors",
-                "border-[var(--color-secondary)] text-[var(--color-secondary)]",
+                "border-(--color-secondary) text-(--color-secondary)",
                 "hover:bg-[color-mix(in_srgb,var(--color-secondary)_12%,transparent)]",
-                "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+                "focus:outline-none focus-visible:ring-2 focus-visible:ring-(--color-primary) focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
               ].join(" ")}
             >
               View All

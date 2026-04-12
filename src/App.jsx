@@ -1,22 +1,26 @@
-import React from 'react'
-import Hero from './Components/Hero'
-import LatestCrop from './Components/LatestCrop'
-import HowItWorks from './Components/HowItWorks'
-import AgroNews from './Components/AgroNews'
-import PartnerShips from './Components/PartnerShips'
-import OurMissionImpact from './Components/OurMissionImpact'
+import React, { lazy, Suspense } from "react";
+import Loader from "./Components/Loader";
+
+const Hero = lazy(() => import("./Components/Hero"));
+const LatestCrop = lazy(() => import("./Components/LatestCrop"));
+const HowItWorks = lazy(() => import("./Components/HowItWorks"));
+const AgroNews = lazy(() => import("./Components/AgroNews"));
+const PartnerShips = lazy(() => import("./Components/PartnerShips"));
+const OurMissionImpact = lazy(() => import("./Components/OurMissionImpact"));
 
 function App() {
   return (
-    <div className='*:py-10 md:*:py-20'>
-      <Hero/>
-      <LatestCrop/>
-      <HowItWorks/>
-      <AgroNews/>
-      <PartnerShips/>
-      <OurMissionImpact/>
-    </div>
-  )
+    <Suspense fallback={<Loader />}>
+      <div className="*:py-10 md:*:py-20">
+        <Hero />
+        <LatestCrop />
+        <HowItWorks />
+        <AgroNews />
+        <PartnerShips />
+        <OurMissionImpact />
+      </div>
+    </Suspense>
+  );
 }
 
-export default App
+export default App;

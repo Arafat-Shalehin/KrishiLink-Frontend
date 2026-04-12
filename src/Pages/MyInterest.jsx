@@ -1,35 +1,16 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../Context/AuthProvider";
-import useAxios from "../Hooks/useAxios";
 import { usePayment } from "../Hooks/payments/usePayment";
+import { useMyInterests } from "../Hooks/interests/useMyInterests";
 import { toast } from "react-toastify";
 import MyInterestSkeleton from "../Components/Skeleton/MyInterestSkeleton";
 import { CreditCard, CheckCircle, Clock, XCircle, Loader2 } from "lucide-react";
 
 const MyInterest = () => {
   const { user } = useContext(AuthContext);
-  const instance = useAxios();
   const { initiatePayment, isLoading: paymentLoading } = usePayment();
-  const [interests, setInterests] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data: interests = [], isLoading: loading } = useMyInterests();
   const [payingInterestId, setPayingInterestId] = useState(null);
-
-  useEffect(() => {
-    if (!user?.email) return;
-    setLoading(true);
-
-    instance
-      .get("/myInterests")
-      .then((res) => {
-        setInterests(res.data.interests || []);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        toast.error("Failed to load interests!");
-        setLoading(false);
-      });
-  }, [user, instance]);
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -175,7 +156,7 @@ const MyInterest = () => {
                     <button
                       onClick={() => handlePayment(interest)}
                       disabled={paymentLoading && payingInterestId === interest._id}
-                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-emerald-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-emerald-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {paymentLoading && payingInterestId === interest._id ? (
                         <>
@@ -291,7 +272,7 @@ const MyInterest = () => {
                         <button
                           onClick={() => handlePayment(interest)}
                           disabled={paymentLoading && payingInterestId === interest._id}
-                          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white text-sm font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white text-sm font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           {paymentLoading && payingInterestId === interest._id ? (
                             <>
