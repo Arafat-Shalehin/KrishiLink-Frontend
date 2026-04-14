@@ -17,7 +17,8 @@
 ## 📋 Table of Contents
 
 - [Overview](#-overview)
-- [Screenshots](#-screenshots)
+- [Visual Showcase](#-visual-showcase)
+- [Performance & UX](#-performance--ux)
 - [Tech Stack](#-tech-stack)
 - [Features](#-features)
 - [Architecture](#-architecture)
@@ -34,6 +35,7 @@
 **KrishiLink Frontend** is a feature-rich React application that provides an intuitive interface for agricultural trading. The platform implements a sophisticated **role-based access system** with dedicated dashboards and functionalities for Buyers, Farmers, and Administrators.
 
 ### Key Highlights:
+
 - **Role-Based UI** — Dynamic interface adapting to user roles (Buyer/Farmer/Admin)
 - **Modern React 19** — Latest React features with concurrent rendering
 - **Secure Authentication** — Firebase Auth with Email/Password and Google OAuth
@@ -43,11 +45,52 @@
 
 ---
 
-## 📸 Screenshots
+## 📸 Visual Showcase
 
-| Home Page | All Crops | Dashboard |
-|-----------|-----------|-----------|
-| ![Home](#) | ![Crops](#) | ![Dashboard](#) |
+### 🌐 Public Experience
+
+_The gateway for farmers and buyers to connect._
+
+|                        🏠 Landing Page                         |                         🔍 Advanced Search                         |                       📦 Crop Details(50% ZoomOut)                       |
+| :------------------------------------------------------------: | :----------------------------------------------------------------: | :----------------------------------------------------------------------: |
+| ![Home Page Placeholder](/KrishiLink-Frontend/public/Home.png) | ![All Crops Placeholder](/KrishiLink-Frontend/public/AllCrops.png) | ![Crop Details Placeholder](/KrishiLink-Frontend/public/CropDetails.png) |
+
+### 🌾 Farmer's Workspace
+
+_Tools for farmers to list crops and manage buyer interests._
+
+|                             📊 Farmer Dashboard                             |                           🤝 Interest Management                           |
+| :-------------------------------------------------------------------------: | :------------------------------------------------------------------------: |
+| ![Farmer Dashboard Placeholder](/KrishiLink-Frontend/public/FarmerDash.png) | ![Farmer Interests Placeholder](/KrishiLink-Frontend/public/FarmerIns.png) |
+
+### 🛒 Buyer's Experience
+
+_Simplified interface for buyers to track their interests and profile._
+
+|                            👤 Buyer Dashboard                             |                             📋 My Interests                              |
+| :-----------------------------------------------------------------------: | :----------------------------------------------------------------------: |
+| ![Buyer Dashboard Placeholder](/KrishiLink-Frontend/public/buyerDash.png) | ![Buyer Interests Placeholder](/KrishiLink-Frontend/public/buyerIns.png) |
+
+### 🛡️ Administrative Suite
+
+_Comprehensive control panel for platform moderation and analytics._
+
+|                               📈 Admin Overview                                |                            👥 User Management                             |                             📝 Approval Workflow                             |
+| :----------------------------------------------------------------------------: | :-----------------------------------------------------------------------: | :--------------------------------------------------------------------------: |
+| ![Admin Dashboard Placeholder](/KrishiLink-Frontend/public/AdminDashboard.png) | ![User Management Placeholder](/KrishiLink-Frontend/public/AdminUSer.png) | ![Admin Overview Placeholder](/KrishiLink-Frontend/public/AdminOver.png.png) |
+
+---
+
+## ⚡ Performance & UX
+
+| Feature                        | Implementation            | Benefit                              |
+| :----------------------------- | :------------------------ | :----------------------------------- |
+| **Search Engine Optimization** | Meta tags & Semantic HTML | High visibility on Google/Bing       |
+| **Responsive Design**          | Mobile-First Approach     | Seamless experience on all devices   |
+| **Theme System**               | Dark/Light Mode           | Reduced eye strain & personalization |
+| **Micro-Interactions**         | Framer Motion             | Fluid, high-end application feel     |
+
+---
 
 ---
 
@@ -55,40 +98,40 @@
 
 ### Core Technologies
 
-| Category | Technology | Version | Purpose |
-|----------|------------|---------|---------|
-| **UI Library** | React | 19.x | Component-based user interface |
-| **Build Tool** | Vite | 7.x | Lightning-fast development & builds |
-| **Routing** | React Router | 7.x | Client-side routing with nested layouts |
-| **State Management** | TanStack Query | 5.x | Server state, caching & synchronization |
-| **HTTP Client** | Axios | 1.x | API requests with interceptors |
+| Category             | Technology     | Version | Purpose                                 |
+| -------------------- | -------------- | ------- | --------------------------------------- |
+| **UI Library**       | React          | 19.x    | Component-based user interface          |
+| **Build Tool**       | Vite           | 7.x     | Lightning-fast development & builds     |
+| **Routing**          | React Router   | 7.x     | Client-side routing with nested layouts |
+| **State Management** | TanStack Query | 5.x     | Server state, caching & synchronization |
+| **HTTP Client**      | Axios          | 1.x     | API requests with interceptors          |
 
 ### Styling & UI
 
-| Technology | Purpose |
-|------------|---------|
-| **Tailwind CSS 4** | Utility-first CSS framework |
-| **DaisyUI 5** | Component library for Tailwind |
-| **Framer Motion** | Production-ready animations |
-| **Lucide React** | Modern icon library |
-| **React Icons** | Additional icon sets |
+| Technology         | Purpose                        |
+| ------------------ | ------------------------------ |
+| **Tailwind CSS 4** | Utility-first CSS framework    |
+| **DaisyUI 5**      | Component library for Tailwind |
+| **Framer Motion**  | Production-ready animations    |
+| **Lucide React**   | Modern icon library            |
+| **React Icons**    | Additional icon sets           |
 
 ### Authentication & Backend
 
-| Technology | Purpose |
-|------------|---------|
-| **Firebase Auth** | User authentication (Email/Google) |
-| **Firebase Hosting** | Static site deployment |
-| **Custom Axios Instance** | JWT interceptor & token refresh |
+| Technology                | Purpose                            |
+| ------------------------- | ---------------------------------- |
+| **Firebase Auth**         | User authentication (Email/Google) |
+| **Firebase Hosting**      | Static site deployment             |
+| **Custom Axios Instance** | JWT interceptor & token refresh    |
 
 ### Additional Libraries
 
-| Library | Purpose |
-|---------|---------|
-| **Recharts** | Dashboard analytics charts |
-| **Swiper** | Touch-enabled carousels |
-| **React Toastify** | Toast notifications |
-| **SweetAlert2** | Beautiful alert dialogs |
+| Library                   | Purpose                      |
+| ------------------------- | ---------------------------- |
+| **Recharts**              | Dashboard analytics charts   |
+| **Swiper**                | Touch-enabled carousels      |
+| **React Toastify**        | Toast notifications          |
+| **SweetAlert2**           | Beautiful alert dialogs      |
 | **clsx + tailwind-merge** | Conditional class management |
 
 ---
@@ -96,6 +139,7 @@
 ## ✨ Features
 
 ### 🔐 Authentication System
+
 - Email/Password registration and login
 - Google OAuth integration
 - Persistent sessions with Firebase
@@ -103,6 +147,7 @@
 - Automatic token injection via Axios interceptors
 
 ### 🏠 Public Pages
+
 - **Home Page** — Hero section, latest crops, how it works, partnerships
 - **All Crops** — Advanced filtering, search, and pagination
 - **Crop Details** — Comprehensive crop information with interest submission
@@ -112,6 +157,7 @@
 ### 👤 User Roles & Permissions
 
 #### 🛒 Buyer Dashboard
+
 - View personalized dashboard with statistics
 - Browse and filter crop listings
 - Submit purchase interests on crops
@@ -119,6 +165,7 @@
 - Request upgrade to Farmer role
 
 #### 🌾 Farmer Dashboard
+
 - Comprehensive crop management (CRUD)
 - Add new crop listings with detailed information
 - View received interests on crops
@@ -126,6 +173,7 @@
 - Dashboard with crop performance analytics
 
 #### 🛡️ Admin Panel
+
 - Platform-wide overview and statistics
 - User management (view, activate/deactivate, role change)
 - Farmer role request approval workflow
@@ -133,6 +181,7 @@
 - Analytics with visual charts
 
 ### 🎨 UI/UX Features
+
 - **Dark/Light Theme** — System-aware theme with manual toggle
 - **Skeleton Loaders** — Polished loading states throughout
 - **Responsive Design** — Seamless experience from mobile to desktop
@@ -210,12 +259,12 @@
 
 ### State Management Strategy
 
-| State Type | Solution | Use Case |
-|------------|----------|----------|
-| **Server State** | TanStack Query | API data, caching, synchronization |
-| **Auth State** | React Context | User session, authentication status |
-| **Theme State** | React Context | Dark/Light mode preferences |
-| **UI State** | Local State | Component-specific interactions |
+| State Type       | Solution       | Use Case                            |
+| ---------------- | -------------- | ----------------------------------- |
+| **Server State** | TanStack Query | API data, caching, synchronization  |
+| **Auth State**   | React Context  | User session, authentication status |
+| **Theme State**  | React Context  | Dark/Light mode preferences         |
+| **UI State**     | Local State    | Component-specific interactions     |
 
 ---
 
@@ -318,6 +367,7 @@ KrishiLink-Frontend/
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js v18 or higher
 - npm or yarn package manager
 - Firebase project with Authentication enabled
@@ -342,12 +392,12 @@ npm run dev
 
 ### Available Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server with HMR |
-| `npm run build` | Build production bundle |
-| `npm run preview` | Preview production build locally |
-| `npm run lint` | Run ESLint for code quality |
+| Command           | Description                       |
+| ----------------- | --------------------------------- |
+| `npm run dev`     | Start development server with HMR |
+| `npm run build`   | Build production bundle           |
+| `npm run preview` | Preview production build locally  |
+| `npm run lint`    | Run ESLint for code quality       |
 
 ---
 
@@ -415,8 +465,9 @@ vercel
 ## 🗺 Roadmap
 
 ### Completed ✅
+
 - [x] Core authentication system
-- [x] Role-based dashboard architecture  
+- [x] Role-based dashboard architecture
 - [x] Crop management for farmers
 - [x] Interest system for buyers
 - [x] Admin panel with moderation tools
@@ -424,10 +475,12 @@ vercel
 - [x] Skeleton loading states
 
 ### In Progress 🚧
+
 - [ ] **SSLCommerz payment integration**
 - [ ] Enhanced image upload with preview
 
 ### Planned 📋
+
 - [ ] Real-time notifications
 - [ ] Chat system between buyers and farmers
 - [ ] Advanced search with filters
@@ -460,6 +513,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 5. Open a Pull Request
 
 ### Commit Convention
+
 ```
 feat: add new feature
 fix: bug fix
@@ -480,7 +534,8 @@ This project is private and proprietary.
 
 ## 👨‍💻 Author
 
-**Your Name**  
+**Your Name**
+
 - GitHub: [@Arafat-Shalehin](https://github.com/Arafat-Shalehin)
 - LinkedIn: [Arafat Shalehin](https://www.linkedin.com/in/arafat-shalehin/)
 
