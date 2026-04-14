@@ -51,33 +51,33 @@
 
 _The gateway for farmers and buyers to connect._
 
-|                        🏠 Landing Page                         |                         🔍 Advanced Search                         |                       📦 Crop Details(50% ZoomOut)                       |
-| :------------------------------------------------------------: | :----------------------------------------------------------------: | :----------------------------------------------------------------------: |
-| ![Home Page Placeholder](/KrishiLink-Frontend/public/Home.png) | ![All Crops Placeholder](/KrishiLink-Frontend/public/AllCrops.png) | ![Crop Details Placeholder](/KrishiLink-Frontend/public/CropDetails.png) |
+|              🏠 Landing Page               |               🔍 Advanced Search               |             📦 Crop Details(50% ZoomOut)             |
+| :----------------------------------------: | :--------------------------------------------: | :--------------------------------------------------: |
+| ![Home Page Placeholder](/public/Home.png) | ![All Crops Placeholder](/public/AllCrops.png) | ![Crop Details Placeholder](/public/CropDetails.png) |
 
 ### 🌾 Farmer's Workspace
 
 _Tools for farmers to list crops and manage buyer interests._
 
-|                             📊 Farmer Dashboard                             |                           🤝 Interest Management                           |
-| :-------------------------------------------------------------------------: | :------------------------------------------------------------------------: |
-| ![Farmer Dashboard Placeholder](/KrishiLink-Frontend/public/FarmerDash.png) | ![Farmer Interests Placeholder](/KrishiLink-Frontend/public/FarmerIns.png) |
+|                   📊 Farmer Dashboard                   |                 🤝 Interest Management                 |
+| :-----------------------------------------------------: | :----------------------------------------------------: |
+| ![Farmer Dashboard Placeholder](/public/FarmerDash.png) | ![Farmer Interests Placeholder](/public/FarmerIns.png) |
 
 ### 🛒 Buyer's Experience
 
 _Simplified interface for buyers to track their interests and profile._
 
-|                            👤 Buyer Dashboard                             |                             📋 My Interests                              |
-| :-----------------------------------------------------------------------: | :----------------------------------------------------------------------: |
-| ![Buyer Dashboard Placeholder](/KrishiLink-Frontend/public/buyerDash.png) | ![Buyer Interests Placeholder](/KrishiLink-Frontend/public/buyerIns.png) |
+|                  👤 Buyer Dashboard                   |                   📋 My Interests                    |
+| :---------------------------------------------------: | :--------------------------------------------------: |
+| ![Buyer Dashboard Placeholder](/public/buyerDash.png) | ![Buyer Interests Placeholder](/public/buyerIns.png) |
 
 ### 🛡️ Administrative Suite
 
 _Comprehensive control panel for platform moderation and analytics._
 
-|                               📈 Admin Overview                                |                            👥 User Management                             |                             📝 Approval Workflow                             |
-| :----------------------------------------------------------------------------: | :-----------------------------------------------------------------------: | :--------------------------------------------------------------------------: |
-| ![Admin Dashboard Placeholder](/KrishiLink-Frontend/public/AdminDashboard.png) | ![User Management Placeholder](/KrishiLink-Frontend/public/AdminUSer.png) | ![Admin Overview Placeholder](/KrishiLink-Frontend/public/AdminOver.png.png) |
+|                     📈 Admin Overview                      |                  👥 User Management                   |                   📝 Approval Workflow                   |
+| :--------------------------------------------------------: | :---------------------------------------------------: | :------------------------------------------------------: |
+| ![Admin Dashboard Placeholder](/public/AdminDashboard.png) | ![User Management Placeholder](/public/AdminUSer.png) | ![Admin Overview Placeholder](/public/AdminOver.png.png) |
 
 ---
 
@@ -89,8 +89,6 @@ _Comprehensive control panel for platform moderation and analytics._
 | **Responsive Design**          | Mobile-First Approach     | Seamless experience on all devices   |
 | **Theme System**               | Dark/Light Mode           | Reduced eye strain & personalization |
 | **Micro-Interactions**         | Framer Motion             | Fluid, high-end application feel     |
-
----
 
 ---
 
@@ -376,7 +374,7 @@ KrishiLink-Frontend/
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/krishilink-frontend.git
+git clone https://github.com/yourusername/KrishiLink-Frontend.git
 cd krishilink-frontend
 
 # Install dependencies
