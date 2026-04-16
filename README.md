@@ -77,7 +77,7 @@ _Comprehensive control panel for platform moderation and analytics._
 
 |                     📈 Admin Overview                      |                  👥 User Management                   |                   📝 Approval Workflow                   |
 | :--------------------------------------------------------: | :---------------------------------------------------: | :------------------------------------------------------: |
-| ![Admin Dashboard Placeholder](/public/AdminDashboard.png) | ![User Management Placeholder](/public/AdminUSer.png) | ![Admin Overview Placeholder](/public/AdminOver.png.png) |
+| ![Admin Dashboard Placeholder](/public/AdminDash.png) | ![User Management Placeholder](/public/AdminUSer.png) | ![Admin Overview Placeholder](/public/AdminOver.png) |
 
 ---
 
