@@ -1,171 +1,232 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { FaArrowRight } from "react-icons/fa";
+import React from "react";
+import { motion } from "framer-motion";
 import { Link } from "react-router";
+import {
+  ArrowRight,
+  CheckCircle2,
+  Leaf,
+  MapPin
+} from "lucide-react";
 
-import imageOne from "../Assets/pexels-brian-wijoyo-2156646375-34601487.jpg";
-import imageTwo from "../Assets/pexels-zen-chung-5529952.jpg";
-import imageThree from "../Assets/pexels-quang-nguyen-vinh-222549-2131784.jpg";
-import imageFour from "../Assets/pexels-nc-farm-bureau-mark-2886937.jpg";
+import heroMangoes from "../Assets/hero-mangoes.png";
 
-/* ---------------------------------------------
-   Hero Content (Data-driven)
---------------------------------------------- */
-const heroData = [
+/* ─── Animation helpers ─── */
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 18 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.65, delay, ease: [0.25, 0.46, 0.45, 0.94] },
+});
+
+/* ─── Card Data for Blooming Array ─── */
+const cropCards = [
   {
-    text: "Connecting Farmers, Traders & Consumers",
-    subtext:
-      "Join KrishiLink — the digital network empowering every hand in agriculture.",
-    cta: "Join the Community",
-    href: "/about",
-    image: imageOne,
+    id: 1,
+    title: "Miniket Rice",
+    price: "৳68 / kg",
+    location: "Dinajpur",
+    image: "https://images.unsplash.com/photo-1586201375761-83865001e8ac?q=80&w=400&auto=format&fit=crop",
+    rotate: -20,
+    x: -125,
+    y: 40,
+    zIndex: 10
   },
   {
-    text: "Grow Together, Trade Smarter",
-    subtext:
-      "Discover new markets, share your harvest, and collaborate directly with others in your region.",
-    cta: "Explore Posts",
-    href: "/all-crops",
-    image: imageTwo,
+    id: 2,
+    title: "Fresh Tomatoes",
+    price: "৳45 / kg",
+    location: "Rangpur",
+    image: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?q=80&w=400&auto=format&fit=crop",
+    rotate: -10,
+    x: -62,
+    y: 15,
+    zIndex: 20
   },
   {
-    text: "Your Farm, Your Network",
-    subtext:
-      "Post what you’re growing or selling and connect instantly with people who care.",
-    cta: "Start Posting",
-    href: "dashboard/farmer/crops/add",
-    image: imageThree,
+    id: 3,
+    title: "Rajshahi Mangoes",
+    price: "৳62 / kg",
+    location: "Shibganj",
+    image: heroMangoes,
+    rotate: 0,
+    x: 0,
+    y: 0,
+    zIndex: 30 // Center card on top
   },
   {
-    text: "Building the Future of Farming — Digitally",
-    subtext:
-      "KrishiLink bridges rural and urban communities to create a smarter, connected agro world.",
-    cta: "Learn More",
-    href: "/about",
-    image: imageFour,
+    id: 4,
+    title: "Bogura Potatoes",
+    price: "৳35 / kg",
+    location: "Bogura",
+    image: "https://images.unsplash.com/photo-1518977673343-a4e0f40d2a93?q=80&w=400&auto=format&fit=crop",
+    rotate: 10,
+    x: 62,
+    y: 15,
+    zIndex: 20
   },
+  {
+    id: 5,
+    title: "Red Chilies",
+    price: "৳210 / kg",
+    location: "Panchagarh",
+    image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=400&auto=format&fit=crop",
+    rotate: 20,
+    x: 125,
+    y: 40,
+    zIndex: 10
+  }
 ];
 
-/* ---------------------------------------------
-   Animation Variants (Static, Reusable)
---------------------------------------------- */
-const heroContainerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      /* ── Faster sequencing: reduced stagger and delay ── */
-      staggerChildren: 0.12,
-      delayChildren: 0.2,
-    },
-  },
-  exit: {
-    opacity: 0,
-    y: -20,
-    transition: { duration: 0.35, ease: "easeOut" },
-  },
-};
-
-const heroChildVariants = {
-  hidden: { opacity: 0, y: 30 }, // Slide up from bottom looks better than dropping
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: [0.22, 1, 0.36, 1], // Custom cubic-bezier for a "premium" feel
-    },
-  },
-};
-
-/* ---------------------------------------------
-   Hero Component
- --------------------------------------------- */
 const Hero = () => {
-  const [slideIndex, setSlideIndex] = useState(0);
-
-  const nextSlide = useCallback(() => {
-    setSlideIndex((prev) => (prev < heroData.length - 1 ? prev + 1 : 0));
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(nextSlide, 7000); // Slightly longer pause for readability
-    return () => clearInterval(interval);
-  }, [nextSlide]);
-
-  const currentSlide = heroData[slideIndex];
-
   return (
-    <section className="relative h-screen flex items-center overflow-hidden bg-black">
-      <AnimatePresence initial={false}>
-        <motion.div
-          key={currentSlide.image}
-          initial={{ opacity: 0, scale: 1.1 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 1.05 }}
-          transition={{ duration: 1.2, ease: "easeInOut" }}
-          style={{
-            backgroundImage: `url(${currentSlide.image})`,
-            willChange: "transform, opacity",
-          }}
-          className="absolute inset-0 bg-cover bg-center"
-        />
-      </AnimatePresence>
+    <section className="relative overflow-hidden bg-[#faf8f4] dark:bg-[#0c0e13]">
+      {/* ─── Soft ambient warm glow ─── */}
+      <div className="absolute -top-32 right-0 w-[520px] h-[520px] rounded-full bg-[#f3eddf]/60 dark:bg-[#1a1710]/40 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[380px] h-[380px] rounded-full bg-[#e8f0e6]/50 dark:bg-[#0f1a14]/30 blur-3xl pointer-events-none" />
 
-      <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-primary)]/80 via-[var(--color-primary)]/40 to-transparent" />
+      <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 sm:py-20 lg:py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-center">
 
-      {/* Content */}
-      <div className="relative z-10 max-w-4xl px-8 md:px-16 text-white">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentSlide.text}
-            variants={heroContainerVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            className="space-y-6"
-            style={{ willChange: "transform, opacity" }}
-          >
+          {/* ════════════════════════════════════
+              LEFT COLUMN — Copy, CTAs, Trust
+             ════════════════════════════════════ */}
+          <div className="max-w-xl z-10 relative">
+
+            {/* Tagline badge */}
+            <motion.div {...fadeUp(0)} className="mb-8">
+              <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200/80 dark:border-emerald-900/50 bg-emerald-50/70 dark:bg-emerald-950/30 px-4 py-1.5 text-[11px] font-semibold tracking-wide uppercase text-emerald-800 dark:text-emerald-400">
+                <Leaf className="h-3.5 w-3.5" />
+                Verified Farmers · Transparent Trade
+              </span>
+            </motion.div>
+
+            {/* Headline */}
             <motion.h1
-              variants={heroChildVariants}
-              className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-[1.1] drop-shadow-2xl"
+              {...fadeUp(0.08)}
+              className="text-[2.5rem] sm:text-5xl xl:text-[3.4rem] font-bold tracking-tight leading-[1.13] text-slate-900 dark:text-slate-50"
             >
-              {currentSlide.text}
+              Fresh Crops Direct{" "}
+              <br className="hidden sm:block" />
+              From Trusted Farmers
             </motion.h1>
 
+            {/* Supporting copy */}
             <motion.p
-              variants={heroChildVariants}
-              className="text-base sm:text-lg md:text-xl text-white/90 max-w-2xl leading-relaxed"
+              {...fadeUp(0.15)}
+              className="mt-6 text-[1.05rem] leading-relaxed text-slate-600 dark:text-slate-400 max-w-md"
             >
-              {currentSlide.subtext}
+              KrishiLink connects wholesale buyers, retailers, and exporters
+              directly with local growers across Bangladesh — no middlemen,
+              transparent pricing, and secure escrow on every trade.
             </motion.p>
 
-            <motion.div variants={heroChildVariants} className="pt-2">
+            {/* CTA buttons */}
+            <motion.div
+              {...fadeUp(0.22)}
+              className="mt-10 flex flex-col sm:flex-row gap-3.5"
+            >
               <Link
-                to={currentSlide.href}
-                className="inline-flex items-center bg-[var(--color-accent)] text-[var(--color-text)]
-                font-bold text-base sm:text-lg rounded-full px-8 py-3.5 gap-3
-                shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:scale-105 active:scale-95 transition-all"
+                to="/all-crops"
+                className="group inline-flex items-center justify-center rounded-xl bg-emerald-700 px-7 py-3.5 text-[15px] font-semibold text-white shadow-sm hover:bg-emerald-800 dark:bg-emerald-600 dark:hover:bg-emerald-500 active:scale-[0.98] transition-all duration-200 gap-2"
               >
-                {currentSlide.cta}
-                <FaArrowRight className="text-[var(--color-secondary)]" />
+                Explore Marketplace
+                <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+              <Link
+                to="/dashboard/farmer/crops/add"
+                className="inline-flex items-center justify-center rounded-xl border border-slate-300 dark:border-slate-700 px-7 py-3.5 text-[15px] font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100/60 dark:hover:bg-slate-800/50 active:scale-[0.98] transition-all duration-200 gap-2"
+              >
+                Become a Seller
               </Link>
             </motion.div>
-          </motion.div>
-        </AnimatePresence>
 
-        {/* Navigation Dots */}
-        <div className="absolute mt-12 flex gap-4">
-          {heroData.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setSlideIndex(index)}
-              className={`h-1.5 rounded-full transition-all duration-500 ${index === slideIndex
-                ? "w-10 bg-[var(--color-accent)]"
-                : "w-4 bg-white/40 hover:bg-white/70"
-                }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
+            {/* Trust indicators */}
+            <motion.div
+              {...fadeUp(0.3)}
+              className="mt-12 flex flex-wrap items-center gap-x-7 gap-y-3 text-[13px] text-slate-500 dark:text-slate-400"
+            >
+              <span className="inline-flex items-center gap-1.5">
+                <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-500" />
+                Verified local farmers
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-500" />
+                45+ districts covered
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-500" />
+                Secure escrow protection
+              </span>
+            </motion.div>
+          </div>
+
+          {/* ════════════════════════════════════
+              RIGHT COLUMN — Organic Fanning Array
+             ════════════════════════════════════ */}
+          <div className="relative w-full h-[320px] sm:h-[450px] lg:h-[550px] flex items-center justify-center lg:justify-end mt-4 lg:mt-0">
+            <div className="relative flex items-center justify-center scale-[0.55] sm:scale-[0.75] lg:scale-100 origin-center lg:origin-right lg:pr-10">
+              {/* The anchor point for all cards */}
+              <div className="relative w-[400px] md:w- h-[480px]">
+                {cropCards.map((card, index) => (
+                  <motion.div
+                    key={card.id}
+                    initial={{
+                      opacity: 0,
+                      scale: 0.8,
+                      x: 0,
+                      y: 100,
+                      rotate: 0
+                    }}
+                    animate={{
+                      opacity: 1,
+                      scale: 1,
+                      x: card.x,
+                      y: card.y,
+                      rotate: card.rotate
+                    }}
+                    transition={{
+                      delay: 0.2 + (index * 0.1), // Staggered fan out
+                      duration: 0.9,
+                      type: "spring",
+                      stiffness: 45,
+                      damping: 14,
+                      mass: 1.2
+                    }}
+                    style={{ zIndex: card.zIndex }}
+                    className="absolute inset-0 bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-xl shadow-slate-300/40 dark:shadow-black/40 border border-slate-100 dark:border-slate-800 flex flex-col group hover:z-50 hover:scale-[1.05] hover:-translate-y-4 transition-transform duration-300 cursor-pointer"
+                  >
+                    {/* Card Image */}
+                    <div className="h-[65%] w-full relative overflow-hidden bg-slate-100 dark:bg-slate-800">
+                      <img
+                        src={card.image}
+                        alt={card.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out pointer-events-none"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+                    </div>
+
+                    {/* Card Details */}
+                    <div className="h-[35%] w-full p-4 flex flex-col justify-between bg-white dark:bg-slate-900 pointer-events-none">
+                      <div>
+                        <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 truncate">
+                          {card.title}
+                        </h3>
+                        <div className="flex items-center gap-1 mt-0.5 text-[10px] font-medium text-slate-500 dark:text-slate-400">
+                          <MapPin className="h-3 w-3" />
+                          <span className="truncate">{card.location}</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-400">
+                          {card.price}
+                        </span>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
