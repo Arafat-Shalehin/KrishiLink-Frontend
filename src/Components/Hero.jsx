@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router";
 import {
@@ -77,13 +77,62 @@ const cropCards = [
 ];
 
 const Hero = () => {
+  const [hoveredId, setHoveredId] = useState(null);
+
+  /* ─── Dynamic Card Positioning Logic ─── */
+  const getCardProps = (card) => {
+    let targetScale = 1;
+    let targetOpacity = 1;
+    let targetZIndex = card.zIndex;
+    let targetX = card.x;
+    let targetY = card.y;
+    let targetRotate = card.rotate;
+
+    if (hoveredId !== null) {
+      if (hoveredId === card.id) {
+        // Hovered Card: Elevate, straighten, scale, and push outward
+        targetScale = 1.08;
+        targetZIndex = 50;
+        targetRotate = card.rotate * 0.4; // Straighten out for readability
+
+        // Push outward into open space to avoid clipping
+        if (card.x < -20) {
+          targetX = card.x - 25;
+          targetY = card.y - 35;
+        } else if (card.x > 20) {
+          targetX = card.x + 25;
+          targetY = card.y - 35;
+        } else {
+          // Center card pushes straight up
+          targetY = card.y - 45;
+        }
+      } else {
+        // Non-Hovered Cards: Recede, fade, and shift away to yield space
+        targetScale = 0.95;
+        targetOpacity = 0.65;
+
+        const hoveredCard = cropCards.find(c => c.id === hoveredId);
+        if (hoveredCard) {
+          if (card.x < hoveredCard.x) {
+            targetX = card.x - 15; // Shift further left
+          } else if (card.x > hoveredCard.x) {
+            targetX = card.x + 15; // Shift further right
+          }
+          targetY = card.y + 15; // Sink downward slightly
+        }
+      }
+    }
+
+    return { targetScale, targetOpacity, targetZIndex, targetX, targetY, targetRotate };
+  };
+
   return (
     <section className="relative overflow-hidden bg-[#faf8f4] dark:bg-[#0c0e13]">
       {/* ─── Soft ambient warm glow ─── */}
       <div className="absolute -top-32 right-0 w-[520px] h-[520px] rounded-full bg-[#f3eddf]/60 dark:bg-[#1a1710]/40 blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[380px] h-[380px] rounded-full bg-[#e8f0e6]/50 dark:bg-[#0f1a14]/30 blur-3xl pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 sm:py-20 lg:py-10">
+      <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-8 sm:py-16 lg:py-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-14 lg:gap-20 items-center">
 
           {/* ════════════════════════════════════
@@ -162,72 +211,82 @@ const Hero = () => {
           {/* ════════════════════════════════════
               RIGHT COLUMN — Organic Fanning Array
              ════════════════════════════════════ */}
-          <div className="relative w-full h-[320px] sm:h-[450px] lg:h-[550px] flex items-center justify-center lg:justify-end">
-            <div className="relative flex items-center justify-center scale-[0.55] sm:scale-[0.75] lg:scale-100 origin-center lg:origin-right lg:pr-10">
+          <div className="relative w-full h-[250px] sm:h-[450px] lg:h-[550px] flex items-center justify-center lg:justify-end">
+            <div className="relative flex items-center justify-center scale-[0.45] sm:scale-[0.75] lg:scale-100 origin-center lg:origin-right lg:pr-10">
               {/* The anchor point for all cards */}
               <div className="relative w-[350px] h-[430px] lg:w-[400px] lg:h-[480px]">
-                {cropCards.map((card, index) => (
-                  <motion.div
-                    key={card.id}
-                    initial={{
-                      opacity: 0,
-                      scale: 0.8,
-                      x: 0,
-                      y: 100,
-                      rotate: 0
-                    }}
-                    animate={{
-                      opacity: 1,
-                      scale: 1,
-                      x: card.x,
-                      y: card.y,
-                      rotate: card.rotate
-                    }}
-                    transition={{
-                      delay: 0.2 + (index * 0.1), // Staggered fan out
-                      duration: 0.9,
-                      type: "spring",
-                      stiffness: 45,
-                      damping: 14,
-                      mass: 1.2
-                    }}
-                    style={{ zIndex: card.zIndex }}
-                    className="absolute inset-0 bg-white 
-                    dark:bg-slate-900 rounded-2xl overflow-hidden 
-                    shadow-xl shadow-slate-300/40 dark:shadow-black/40 border 
-                    border-slate-100 dark:border-slate-800 flex flex-col group 
-                    hover:z-50 hover:scale-[1.05] hover:-translate-y-4 
-                    transition-transform duration-300 cursor-pointer"
-                  >
-                    {/* Card Image */}
-                    <div className="h-[65%] w-full relative overflow-hidden bg-slate-100 dark:bg-slate-800">
-                      <img
-                        src={card.image}
-                        alt={card.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out pointer-events-none"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
-                    </div>
+                {cropCards.map((card, index) => {
+                  const props = getCardProps(card);
+                  const isHovered = hoveredId === card.id;
 
-                    {/* Card Details */}
-                    <div className="h-[35%] w-full p-4 flex flex-col justify-between bg-white dark:bg-slate-900 pointer-events-none">
-                      <div>
-                        <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 truncate">
-                          {card.title}
-                        </h3>
-                        <div className="flex items-center gap-1 mt-0.5 text-[10px] font-medium text-slate-500 dark:text-slate-400">
-                          <MapPin className="h-3 w-3" />
-                          <span className="truncate">{card.location}</span>
+                  return (
+                    <motion.div
+                      key={card.id}
+                      onMouseEnter={() => setHoveredId(card.id)}
+                      onMouseLeave={() => setHoveredId(null)}
+                      initial={{
+                        opacity: 0,
+                        scale: 0.8,
+                        x: 0,
+                        y: 100,
+                        rotate: 0
+                      }}
+                      animate={{
+                        opacity: props.targetOpacity,
+                        scale: props.targetScale,
+                        x: props.targetX,
+                        y: props.targetY,
+                        rotate: props.targetRotate,
+                        zIndex: props.targetZIndex
+                      }}
+                      transition={{
+                        // Stagger fan out on initial load, but fast & fluid transitions on hover
+                        delay: hoveredId === null && props.targetScale === 1 ? 0.2 + (index * 0.1) : 0,
+                        duration: hoveredId === null ? 0.9 : 0.5,
+                        type: "spring",
+                        stiffness: hoveredId === null ? 45 : 250,
+                        damping: hoveredId === null ? 14 : 28,
+                        mass: 1.2
+                      }}
+                      className="absolute inset-0 bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-xl dark:shadow-black/40 border border-slate-100 dark:border-slate-800 flex flex-col cursor-pointer"
+                      style={{
+                        boxShadow: isHovered
+                          ? '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+                          : '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+                      }}
+                    >
+                      {/* Card Image */}
+                      <div className="h-[65%] w-full relative overflow-hidden bg-slate-100 dark:bg-slate-800">
+                        <motion.img
+                          src={card.image}
+                          alt={card.title}
+                          animate={{ scale: isHovered ? 1.12 : 1 }}
+                          transition={{ duration: 0.6, ease: "easeOut" }}
+                          className="w-full h-full object-cover pointer-events-none"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+                      </div>
+
+                      {/* Card Details */}
+                      <div className="h-[35%] w-full p-4 flex flex-col justify-between bg-white dark:bg-slate-900 pointer-events-none">
+                        <div>
+                          <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 truncate">
+                            {card.title}
+                          </h3>
+                          <div className="flex items-center gap-1 mt-0.5 text-[10px] font-medium text-slate-500 dark:text-slate-400">
+                            <MapPin className="h-3 w-3" />
+                            <span className="truncate">{card.location}</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-400">
+                            {card.price}
+                          </span>
                         </div>
                       </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-400">
-                          {card.price}
-                        </span>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
           </div>
