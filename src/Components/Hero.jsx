@@ -84,7 +84,7 @@ const Hero = () => {
       <div className="absolute bottom-0 left-0 w-[380px] h-[380px] rounded-full bg-[#e8f0e6]/50 dark:bg-[#0f1a14]/30 blur-3xl pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 sm:py-20 lg:py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-14 lg:gap-20 items-center">
 
           {/* ════════════════════════════════════
               LEFT COLUMN — Copy, CTAs, Trust
@@ -162,10 +162,10 @@ const Hero = () => {
           {/* ════════════════════════════════════
               RIGHT COLUMN — Organic Fanning Array
              ════════════════════════════════════ */}
-          <div className="relative w-full h-[320px] sm:h-[450px] lg:h-[550px] flex items-center justify-center lg:justify-end mt-4 lg:mt-0">
+          <div className="relative w-full h-[320px] sm:h-[450px] lg:h-[550px] flex items-center justify-center lg:justify-end">
             <div className="relative flex items-center justify-center scale-[0.55] sm:scale-[0.75] lg:scale-100 origin-center lg:origin-right lg:pr-10">
               {/* The anchor point for all cards */}
-              <div className="relative w-[400px] md:w- h-[480px]">
+              <div className="relative w-[350px] h-[430px] lg:w-[400px] lg:h-[480px]">
                 {cropCards.map((card, index) => (
                   <motion.div
                     key={card.id}
@@ -192,7 +192,12 @@ const Hero = () => {
                       mass: 1.2
                     }}
                     style={{ zIndex: card.zIndex }}
-                    className="absolute inset-0 bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-xl shadow-slate-300/40 dark:shadow-black/40 border border-slate-100 dark:border-slate-800 flex flex-col group hover:z-50 hover:scale-[1.05] hover:-translate-y-4 transition-transform duration-300 cursor-pointer"
+                    className="absolute inset-0 bg-white 
+                    dark:bg-slate-900 rounded-2xl overflow-hidden 
+                    shadow-xl shadow-slate-300/40 dark:shadow-black/40 border 
+                    border-slate-100 dark:border-slate-800 flex flex-col group 
+                    hover:z-50 hover:scale-[1.05] hover:-translate-y-4 
+                    transition-transform duration-300 cursor-pointer"
                   >
                     {/* Card Image */}
                     <div className="h-[65%] w-full relative overflow-hidden bg-slate-100 dark:bg-slate-800">
