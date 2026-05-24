@@ -133,7 +133,7 @@ const Hero = () => {
       <div className="absolute bottom-0 left-0 w-[380px] h-[380px] rounded-full bg-[#e8f0e6]/50 dark:bg-[#0f1a14]/30 blur-3xl pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-8 sm:py-16 lg:py-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-14 lg:gap-20 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 md:gap-14 lg:gap-20 items-center">
 
           {/* ════════════════════════════════════
               LEFT COLUMN — Copy, CTAs, Trust
@@ -212,7 +212,8 @@ const Hero = () => {
               RIGHT COLUMN — Organic Fanning Array
              ════════════════════════════════════ */}
           <div className="relative w-full h-[250px] sm:h-[450px] lg:h-[550px] flex items-center justify-center lg:justify-end">
-            <div className="relative flex items-center justify-center scale-[0.45] sm:scale-[0.75] lg:scale-100 origin-center lg:origin-right lg:pr-10">
+            <div className="relative flex items-center justify-center scale-[0.45] 
+            sm:scale-[0.75] lg:scale-100 origin-center lg:origin-right lg:pr-10">
               {/* The anchor point for all cards */}
               <div className="relative w-[350px] h-[430px] lg:w-[400px] lg:h-[480px]">
                 {cropCards.map((card, index) => {
@@ -248,7 +249,8 @@ const Hero = () => {
                         damping: hoveredId === null ? 14 : 28,
                         mass: 1.2
                       }}
-                      className="absolute inset-0 bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-xl dark:shadow-black/40 border border-slate-100 dark:border-slate-800 flex flex-col cursor-pointer"
+                      className="absolute inset-0 bg-white dark:bg-slate-900 rounded-2xl overflow-hidden 
+                      shadow-xl dark:shadow-black/40 border border-slate-100 dark:border-slate-800 flex flex-col cursor-pointer"
                       style={{
                         boxShadow: isHovered
                           ? '0 25px 50px -12px rgba(0, 0, 0, 0.25)'

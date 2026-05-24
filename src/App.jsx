@@ -13,27 +13,44 @@ function App() {
   /* ─── Track window scroll ─── */
   const { scrollY } = useScroll();
 
-  /* ─── Responsive Slide Distance State ─── */
-  const [slideDistance, setSlideDistance] = useState(800); // default fallback
+  /* ─── Responsive Slide Distance & Timing ─── */
+  const [slideDistance, setSlideDistance] = useState(800);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
-      // Mobile (< 768px): transition over 50vh for a lighter feel
-      // Desktop (>= 768px): transition over full 100vh for cinematic feel
-      const isMobile = window.innerWidth < 768;
-      setSlideDistance(isMobile ? window.innerHeight * 0.5 : window.innerHeight);
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      // Always use full viewport height — guarantees content layer
+      // slides entirely from bottom to top before normal scroll resumes
+      setSlideDistance(window.innerHeight);
     };
 
-    // Initial calculation
     handleResize();
-
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  /* Hero fades out and scales down smoothly across the dynamically calculated slide distance */
-  const heroOpacity = useTransform(scrollY, [0, slideDistance], [1, 0]);
-  const heroScale = useTransform(scrollY, [0, slideDistance], [1, 0.95]);
+  /* Hero fade uses delayed 3-point keyframes so it stays visible
+     until the content layer has physically covered most of it.
+     Mobile: stays at 100% opacity until 70% covered, then fades.
+     Desktop: starts a gentle fade at 50%, completes at 100%. */
+  const heroOpacity = useTransform(
+    scrollY,
+    isMobile
+      ? [0, slideDistance * 0.7, slideDistance]
+      : [0, slideDistance * 0.5, slideDistance],
+    isMobile
+      ? [1, 1, 0]
+      : [1, 0.8, 0]
+  );
+
+  /* Subtler scale on mobile for controlled, restrained motion */
+  const heroScale = useTransform(
+    scrollY,
+    [0, slideDistance],
+    isMobile ? [1, 0.98] : [1, 0.95]
+  );
 
   return (
     <Suspense fallback={<Loader />}>
@@ -53,15 +70,15 @@ function App() {
             <Hero />
           </motion.div>
 
-          {/* Spacer forces the user to scroll while the Hero remains pinned.
-              Mobile: 50vh scroll | Desktop: 100vh scroll */}
-          <div className="h-[50vh] md:h-[100vh]" aria-hidden="true" />
+          {/* Spacer: always 100dvh — guarantees the content layer
+              traverses the full viewport before sticky pinning ends. */}
+          <div className="h-[100dvh]" aria-hidden="true" />
         </div>
 
         {/* ═══════════════════════════════════════
             CONTENT LAYER — slides up over the hero
            ═══════════════════════════════════════ */}
-        <div className="relative z-10 -mt-[50vh] md:-mt-[100vh]">
+        <div className="relative z-10 -mt-[100dvh]">
           {/* Rounded-top panel with subtle shadow for layered depth */}
           <div
             className="rounded-t-[2rem] sm:rounded-t-[2.5rem] shadow-[0_-8px_30px_rgba(0,0,0,0.06)] dark:shadow-[0_-8px_30px_rgba(0,0,0,0.25)] bg-[var(--color-bg,#ffffff)] dark:bg-[#0c0e13] overflow-hidden"
