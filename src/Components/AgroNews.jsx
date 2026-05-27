@@ -8,7 +8,7 @@ const news = [
     category: "Sustainability",
     date: "Oct 25, 2025",
     desc: "More farmers are adopting eco-friendly methods to protect soil and ensure long-term yield.",
-    img: "https://images.pexels.com/photos/296230/pexels-photo-296230.jpeg",
+    img: "https://res.cloudinary.com/dvancaddh/image/upload/q_auto/f_auto/v1779877173/pexels-photo-296230_ftpmzz.jpg",
   },
   {
     id: 2,
@@ -16,7 +16,7 @@ const news = [
     category: "Innovation",
     date: "Oct 20, 2025",
     desc: "Modern IoT-based systems are helping farmers save water and improve efficiency.",
-    img: "https://images.pexels.com/photos/256514/pexels-photo-256514.jpeg",
+    img: "https://res.cloudinary.com/dvancaddh/image/upload/q_auto/f_auto/v1779877204/pexels-photo-256514_q2suhe.jpg",
   },
   {
     id: 3,
@@ -24,7 +24,7 @@ const news = [
     category: "Economy",
     date: "Oct 10, 2025",
     desc: "Direct sales channels are helping rural farmers get fair prices for their produce.",
-    img: "https://images.pexels.com/photos/3531895/pexels-photo-3531895.jpeg",
+    img: "https://res.cloudinary.com/dvancaddh/image/upload/q_auto/f_auto/v1779877218/pexels-photo-3531895_wwrb8a.jpg",
   },
   {
     id: 4,
@@ -32,7 +32,7 @@ const news = [
     category: "Community",
     date: "Oct 6, 2025",
     desc: "Rural women are embracing agri-tech startups and transforming the farming landscape.",
-    img: "https://images.pexels.com/photos/7299964/pexels-photo-7299964.jpeg",
+    img: "https://res.cloudinary.com/dvancaddh/image/upload/q_auto/f_auto/v1779877232/pexels-photo-7299964_zoagsn.jpg",
   },
   {
     id: 5,
@@ -40,7 +40,7 @@ const news = [
     category: "Lifestyle",
     date: "Sep 30, 2025",
     desc: "Younger generations are seeing farming as a modern, tech-powered career choice.",
-    img: "https://images.pexels.com/photos/5529950/pexels-photo-5529950.jpeg",
+    img: "https://res.cloudinary.com/dvancaddh/image/upload/q_auto/f_auto/v1779877258/pexels-photo-5529950_svaxxo.jpg",
   },
   {
     id: 6,
@@ -48,7 +48,7 @@ const news = [
     category: "Innovation",
     date: "Sep 20, 2025",
     desc: "Controlled farming is enabling off-season crops and steady income for growers.",
-    img: "https://images.pexels.com/photos/5877988/pexels-photo-5877988.jpeg",
+    img: "https://res.cloudinary.com/dvancaddh/image/upload/q_auto/f_auto/v1779877268/pexels-photo-5877988_exxc2a.jpg",
   },
 ];
 
@@ -82,12 +82,13 @@ const AgroNews = () => {
               viewport={{ once: true }}
               className="group rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 bg-[var(--color-surface)] border border-[var(--color-border)] flex flex-col"
             >
-              <div className="relative h-56 overflow-hidden">
+              <div className="relative aspect-[4/3] overflow-hidden">
                 <img
                   src={article.img}
                   alt={article.title}
                   loading="lazy"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  decoding="async"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 <span className="absolute top-3 left-3 bg-[var(--color-primary)] text-white text-xs px-3 py-1 rounded-full">
                   {article.category}
