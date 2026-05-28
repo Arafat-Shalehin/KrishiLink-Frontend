@@ -5,42 +5,42 @@ import "swiper/css/pagination";
 
 const steps = [
   {
-    img: "https://images.pexels.com/photos/8287365/pexels-photo-8287365.jpeg",
+    img: "https://res.cloudinary.com/dvancaddh/image/upload/q_auto/f_auto/v1779996245/pexels-photo-8287365_hj5sat.jpg",
     title: "Post Your Crops",
     desc: "Farmers upload crop details like name, price, and location to showcase what they grow.",
   },
   {
-    img: "https://images.pexels.com/photos/1416783/pexels-photo-1416783.jpeg",
+    img: "https://res.cloudinary.com/dvancaddh/image/upload/q_auto/f_auto/v1779996268/pexels-photo-1416783_l7uxp6.jpg",
     title: "Explore All Crops",
     desc: "Users browse through hundreds of fresh produce posts uploaded by farmers nationwide.",
   },
   {
-    img: "https://images.pexels.com/photos/3771107/pexels-photo-3771107.jpeg",
+    img: "https://res.cloudinary.com/dvancaddh/image/upload/q_auto/f_auto/v1779996282/pexels-photo-3771107_kzvzxg.jpg",
     title: "Filter & Search",
     desc: "Use smart filters to quickly find the type of crops you're interested in buying or collaborating on.",
   },
   {
-    img: "https://images.pexels.com/photos/13826860/pexels-photo-13826860.jpeg",
+    img: "https://res.cloudinary.com/dvancaddh/image/upload/q_auto/f_auto/v1779996294/pexels-photo-13826860_f9iuiv.jpg",
     title: "Show Interest",
     desc: "Send a request directly to the farmer, specifying your preferred quantity and message.",
   },
   {
-    img: "https://images.pexels.com/photos/8112172/pexels-photo-8112172.jpeg",
+    img: "https://res.cloudinary.com/dvancaddh/image/upload/q_auto/f_auto/v1779996312/pexels-photo-8112172_bszkhc.jpg",
     title: "Negotiate & Connect",
     desc: "Communicate easily within the platform to finalize deals and build long-term partnerships.",
   },
   {
-    img: "https://images.pexels.com/photos/5185155/pexels-photo-5185155.jpeg",
+    img: "https://res.cloudinary.com/dvancaddh/image/upload/q_auto/f_auto/v1779996331/pexels-photo-5185155_mp1tbx.jpg",
     title: "Manage Your Posts",
     desc: "Farmers can update crop details, monitor interests, and manage their listings anytime.",
   },
   {
-    img: "https://images.pexels.com/photos/34609782/pexels-photo-34609782.jpeg",
+    img: "https://res.cloudinary.com/dvancaddh/image/upload/q_auto/f_auto/v1779996342/pexels-photo-34609782_wbzknu.webp",
     title: "Track Interests",
     desc: "Users can keep track of the status of their interests — pending, accepted, or rejected.",
   },
   {
-    img: "https://images.pexels.com/photos/7728316/pexels-photo-7728316.jpeg",
+    img: "https://res.cloudinary.com/dvancaddh/image/upload/q_auto/f_auto/v1779996359/pexels-photo-7728316_nf2lem.jpg",
     title: "Grow Together",
     desc: "Build meaningful agro connections that empower growth for both farmers and buyers.",
   },
@@ -90,6 +90,7 @@ const HowItWorks = () => {
                     src={step.img}
                     alt={step.title}
                     loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
                   />
                 </div>
