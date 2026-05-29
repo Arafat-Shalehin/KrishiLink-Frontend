@@ -8,8 +8,6 @@ import {
   MapPin
 } from "lucide-react";
 
-import heroMangoes from "../Assets/hero-mangoes.png";
-
 /* ─── Animation helpers ─── */
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 18 },
@@ -24,7 +22,7 @@ const cropCards = [
     title: "Miniket Rice",
     price: "৳68 / kg",
     location: "Dinajpur",
-    image: "https://images.unsplash.com/photo-1586201375761-83865001e8ac?q=80&w=400&auto=format&fit=crop",
+    image: "https://res.cloudinary.com/dvancaddh/image/upload/q_auto/f_auto/v1780078926/miniket-rice-standard-boiled-50-gm-5-kg_nwfny0.jpg",
     rotate: -20,
     x: -125,
     y: 40,
@@ -35,7 +33,7 @@ const cropCards = [
     title: "Fresh Tomatoes",
     price: "৳45 / kg",
     location: "Rangpur",
-    image: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?q=80&w=400&auto=format&fit=crop",
+    image: "https://res.cloudinary.com/dvancaddh/image/upload/q_auto/f_auto/v1780079022/tomatoes-1296x728-feature_c7wowx.jpg",
     rotate: -10,
     x: -62,
     y: 15,
@@ -46,7 +44,7 @@ const cropCards = [
     title: "Rajshahi Mangoes",
     price: "৳62 / kg",
     location: "Shibganj",
-    image: heroMangoes,
+    image: "https://res.cloudinary.com/dvancaddh/image/upload/q_auto/f_auto/v1780079224/hero-mangoes_lvq7ml.jpg",
     rotate: 0,
     x: 0,
     y: 0,
@@ -57,7 +55,7 @@ const cropCards = [
     title: "Bogura Potatoes",
     price: "৳35 / kg",
     location: "Bogura",
-    image: "https://images.unsplash.com/photo-1518977673343-a4e0f40d2a93?q=80&w=400&auto=format&fit=crop",
+    image: "https://res.cloudinary.com/dvancaddh/image/upload/q_auto/f_auto/v1780079062/observerbd.com_1616168542_bcv3yb.jpg",
     rotate: 10,
     x: 62,
     y: 15,
@@ -68,7 +66,7 @@ const cropCards = [
     title: "Red Chilies",
     price: "৳210 / kg",
     location: "Panchagarh",
-    image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=400&auto=format&fit=crop",
+    image: "https://res.cloudinary.com/dvancaddh/image/upload/q_auto/f_auto/v1780079119/red-hot-chile-peppers_bnslov.jpg",
     rotate: 20,
     x: 125,
     y: 40,
