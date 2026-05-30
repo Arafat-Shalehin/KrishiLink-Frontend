@@ -65,7 +65,7 @@ const OurMissionImpact = () => {
           className="lg:w-1/2 flex justify-center"
         >
           <img
-            src="https://images.pexels.com/photos/18710221/pexels-photo-18710221.jpeg"
+            src="https://res.cloudinary.com/dvancaddh/image/upload/q_auto/f_auto/v1780078626/pexels-photo-18710221_esjzyd.jpg"
             alt="Farmers working in a field"
             className="rounded-2xl shadow-xl w-full max-w-md object-cover border border-[var(--color-border)]"
           />
