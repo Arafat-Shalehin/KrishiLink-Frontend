@@ -31,7 +31,7 @@ const About = () => {
         transition={{ duration: 0.7 }}
       >
         <img
-          src="https://images.pexels.com/photos/2176712/pexels-photo-2176712.jpeg"
+          src="https://res.cloudinary.com/dvancaddh/image/upload/q_auto/f_auto/v1780078687/pexels-photo-2176712_xm0b2x.jpg"
           alt="Farmers working"
           className="rounded-2xl shadow-lg w-full h-80 object-cover border border-(--color-border)"
         />
@@ -123,7 +123,7 @@ const About = () => {
           </p>
         </div>
         <img
-          src="https://images.pexels.com/photos/943700/pexels-photo-943700.jpeg"
+          src="https://res.cloudinary.com/dvancaddh/image/upload/q_auto/f_auto/v1780078730/pexels-photo-943700_d6xvap.jpg"
           alt="Agriculture field"
           className="rounded-2xl shadow-lg w-full h-80 object-cover border border-(--color-border)"
         />
