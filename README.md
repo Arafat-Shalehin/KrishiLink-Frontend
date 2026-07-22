@@ -53,7 +53,7 @@ _The gateway for farmers and buyers to connect._
 
 |              🏠 Landing Page               |               🔍 Advanced Search               |             📦 Crop Details(50% ZoomOut)             |
 | :----------------------------------------: | :--------------------------------------------: | :--------------------------------------------------: |
-| ![Home Page Placeholder](/public/Home.png) | ![All Crops Placeholder](/public/AllCrops.png) | ![Crop Details Placeholder](/public/CropDetails.png) |
+| ![Home Page Placeholder](/public/HomePageImage.png) | ![All Crops Placeholder](/public/AllCrops.png) | ![Crop Details Placeholder](/public/CropDetails.png) |
 
 ### 🌾 Farmer's Workspace
 
