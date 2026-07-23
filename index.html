@@ -4,8 +4,199 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Krishilink Platform</title>
+
+    <!-- Synchronous theme setup to prevent light-theme flash on initial render -->
+    <script>
+      (function() {
+        const savedTheme = localStorage.getItem('krishilink-theme');
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = savedTheme === 'dark' || (savedTheme !== 'light' && prefersDark) ? 'dark' : 'light';
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+          document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+
+        // Prevent splash screen showing on subsequent reloads/visits in the same session
+        if (sessionStorage.getItem('krishilink-splash-shown') === 'true') {
+          const style = document.createElement('style');
+          style.innerHTML = '#splash-screen { display: none !important; }';
+          document.head.appendChild(style);
+        }
+      })();
+    </script>
+
+    <!-- Splash Screen Styles -->
+    <style>
+      /* Base Container */
+      #splash-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 999999;
+        background-color: #faf8f4; /* Matches Navbar light theme */
+        transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.5s ease;
+        font-family: system-ui, -apple-system, sans-serif;
+      }
+
+      /* Dark mode override */
+      html.dark #splash-screen {
+        background-color: #0c0e13; /* Matches App/Navbar dark theme bg */
+      }
+
+      .splash-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 1.25rem;
+      }
+
+      /* Animated SVG Logo Wrapper */
+      .splash-logo-container {
+        width: 96px;
+        height: 96px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: splash-pulse 2s infinite ease-in-out;
+      }
+
+      .splash-logo {
+        width: 100%;
+        height: 100%;
+      }
+
+      /* Title Branding */
+      .splash-title {
+        font-size: 2rem;
+        font-weight: 800;
+        margin: 0;
+        letter-spacing: -0.025em;
+      }
+
+      .splash-title-emerald {
+        color: #047857; /* emerald-700 */
+      }
+      html.dark .splash-title-emerald {
+        color: #10b981; /* emerald-500 */
+      }
+
+      .splash-title-slate {
+        color: #1e293b; /* slate-800 */
+      }
+      html.dark .splash-title-slate {
+        color: #f8fafc; /* slate-50 */
+      }
+
+      /* Subtitle */
+      .splash-subtitle {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #64748b; /* slate-500 */
+        margin: -0.5rem 0 0.5rem 0;
+      }
+      html.dark .splash-subtitle {
+        color: #94a3b8; /* slate-400 */
+      }
+
+      /* Infinite Loader Bar */
+      .splash-loader-bar {
+        width: 140px;
+        height: 4px;
+        background-color: rgba(16, 185, 129, 0.15);
+        border-radius: 9999px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .splash-loader-progress {
+        position: absolute;
+        height: 100%;
+        width: 50%;
+        background-color: #10b981; /* emerald-500 */
+        border-radius: 9999px;
+        animation: splash-loading 1.4s infinite ease-in-out;
+      }
+
+      /* Animations */
+      @keyframes splash-pulse {
+        0%, 100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.05);
+          opacity: 0.95;
+        }
+      }
+
+      @keyframes splash-loading {
+        0% {
+          left: -50%;
+        }
+        100% {
+          left: 100%;
+        }
+      }
+    </style>
   </head>
   <body>
+    <!-- Instant Splash Screen -->
+    <div id="splash-screen">
+      <div class="splash-content">
+        <div class="splash-logo-container">
+          <!-- Custom organic sprout/leaf SVG -->
+          <svg viewBox="0 0 100 100" class="splash-logo">
+            <circle cx="50" cy="50" r="45" fill="rgba(16, 185, 129, 0.1)" />
+            <!-- Sprout shape -->
+            <path d="M50 78 C50 60, 45 45, 30 35 C45 35, 48 48, 50 60 C52 48, 55 35, 70 35 C55 45, 50 60, 50 78 Z" fill="#10b981" />
+            <path d="M50 78 L50 25" stroke="#10b981" stroke-width="4" stroke-linecap="round" />
+            <path d="M50 50 Q60 40 75 45 Q65 55 50 50 Z" fill="#059669" />
+            <path d="M50 60 Q40 50 25 55 Q35 65 50 60 Z" fill="#059669" />
+          </svg>
+        </div>
+        <h1 class="splash-title">
+          <span class="splash-title-emerald">Krishi</span><span class="splash-title-slate">Link</span>
+        </h1>
+        <p class="splash-subtitle">Connecting Farmers & Buyers</p>
+        <div class="splash-loader-bar">
+          <div class="splash-loader-progress"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dismissal logic script -->
+    <script>
+      window.hideSplashScreen = function() {
+        const splash = document.getElementById('splash-screen');
+        if (splash) {
+          splash.style.opacity = '0';
+          splash.style.visibility = 'hidden';
+          // Mark as shown in this browser session to bypass on reload
+          sessionStorage.setItem('krishilink-splash-shown', 'true');
+          // Remove from DOM after transition completes to release memory
+          setTimeout(() => {
+            splash.remove();
+          }, 500);
+        }
+      };
+
+      // Safety timeout: automatically dismiss splash screen after 6 seconds in case of application error
+      setTimeout(() => {
+        if (typeof window.hideSplashScreen === 'function') {
+          window.hideSplashScreen();
+        }
+      }, 6000);
+    </script>
+
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
