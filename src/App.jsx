@@ -1,6 +1,7 @@
 import React, { lazy, Suspense, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Loader from "./Components/Loader";
+import SplashDismiss from "./Components/SplashDismiss";
 
 const Hero = lazy(() => import("./Components/Hero"));
 const LatestCrop = lazy(() => import("./Components/LatestCrop"));
@@ -92,6 +93,7 @@ function App() {
             </div>
           </div>
         </div>
+        <SplashDismiss />
       </div>
     </Suspense>
   );
