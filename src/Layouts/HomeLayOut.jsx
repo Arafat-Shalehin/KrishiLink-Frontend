@@ -4,6 +4,7 @@ import Footer from "../Components/Footer";
 import { Outlet, useNavigation } from "react-router";
 import Loader from "../Components/Loader";
 import ScrollToTop from "../Components/ScrollToTop";
+import SplashDismiss from "../Components/SplashDismiss";
 
 const HomeLayOut = () => {
   const navigation = useNavigation();
@@ -15,7 +16,14 @@ const HomeLayOut = () => {
       </nav>
       <main>
         <Suspense fallback={<Loader />}>
-          {navigation.state === "loading" ? <Loader /> : <Outlet />}
+          {navigation.state === "loading" ? (
+            <Loader />
+          ) : (
+            <>
+              <Outlet />
+              <SplashDismiss />
+            </>
+          )}
         </Suspense>
       </main>
       <footer>
