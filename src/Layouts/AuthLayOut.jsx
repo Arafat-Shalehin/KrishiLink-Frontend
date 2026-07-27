@@ -4,6 +4,7 @@ import Navbar from "../Components/Navbar";
 import Loader from "../Components/Loader";
 import Footer from "../Components/Footer";
 import ScrollToTop from "../Components/ScrollToTop";
+import SplashDismiss from "../Components/SplashDismiss";
 
 const AuthLayout = () => {
   const navigation = useNavigation();
@@ -14,7 +15,14 @@ const AuthLayout = () => {
         <Navbar />
       </header>
       <main>
-        {navigation.state === "loading" ? <Loader /> : <Outlet></Outlet>}
+        {navigation.state === "loading" ? (
+          <Loader />
+        ) : (
+          <>
+            <Outlet />
+            <SplashDismiss />
+          </>
+        )}
       </main>
       <footer>
         <Footer></Footer>

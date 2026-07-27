@@ -3,6 +3,7 @@ import { Outlet } from "react-router";
 import useAuthProfile from "../Hooks/useAuthProfile";
 import { useContext } from "react";
 import { AuthContext } from "../Context/AuthProvider";
+import SplashDismiss from "../Components/SplashDismiss";
 
 function DashboardLayout() {
   const { user } = useContext(AuthContext);
@@ -51,6 +52,7 @@ function DashboardLayout() {
           {/* Page content here */}
           <div className="p-4">
             <Outlet />
+            <SplashDismiss />
           </div>
         </div>
 
