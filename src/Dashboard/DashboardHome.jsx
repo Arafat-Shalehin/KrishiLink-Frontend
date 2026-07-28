@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router";
 import {
   BarChart,
   Bar,
@@ -168,7 +169,7 @@ function FarmerDashboard({ query }) {
               </div>
             </div>
              <Button className="w-full mt-4 bg-orange-500 hover:bg-orange-600 text-white" variant="default" asChild>
-                <a href="/dashboard/my-crops">Manage Crops <ArrowRight className="w-4 h-4 ml-2"/></a>
+                <Link to="/dashboard/farmer/crops">Manage Crops <ArrowRight className="w-4 h-4 ml-2"/></Link>
              </Button>
           </CardContent>
         </Card>
@@ -256,7 +257,7 @@ function BuyerDashboard({ query }) {
                     <p className="text-white/80">Explore thousands of fresh listings directly from farmers.</p>
                 </div>
                 <Button variant="secondary" size="lg" className="w-full font-bold shadow-xl" asChild>
-                    <a href="/all-crops">Browse Marketplace</a>
+                    <Link to="/all-crops">Browse Marketplace</Link>
                 </Button>
             </CardContent>
         </Card>
@@ -319,16 +320,16 @@ function AdminDashboard({ enabled }) {
         {/* Admin Quick Links */}
         <div className="grid grid-cols-1 gap-4">
              <Button variant="outline" className="h-full flex flex-col items-center justify-center gap-2 p-6 hover:bg-base-200 dark:hover:bg-base-300 dark:hover:text-black " asChild>
-                <a href="/dashboard/admin/users">
+                <Link to="/dashboard/admin/users">
                     <Users className="w-8 h-8 opacity-50" />
                     <span className="text-lg font-semibold">Manage Users</span>
-                </a>
+                </Link>
              </Button>
              <Button variant="outline" className="h-full flex flex-col items-center justify-center gap-2 p-6 hover:bg-base-200 dark:hover:bg-base-300 dark:hover:text-black" asChild>
-                <a href="/dashboard/admin/crops">
+                <Link to="/dashboard/admin/crops">
                     <Leaf className="w-8 h-8 opacity-50" />
                     <span className="text-lg font-semibold">Moderate Crops</span>
-                </a>
+                </Link>
              </Button>
         </div>
       </div>
