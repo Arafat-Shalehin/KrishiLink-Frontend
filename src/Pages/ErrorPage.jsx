@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 
 const ErrorPage = () => {
   return (
@@ -13,12 +14,12 @@ const ErrorPage = () => {
       </p>
 
       {/* Back to home button */}
-      <a
-        href="/"
+      <Link
+        to="/"
         className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition-colors duration-300"
       >
         Go Back Home
-      </a>
+      </Link>
 
       {/* Optional extra visual */}
       <div className="mt-12 flex space-x-4">

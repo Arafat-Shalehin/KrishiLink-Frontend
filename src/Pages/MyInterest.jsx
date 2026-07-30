@@ -4,10 +4,12 @@ import { usePayment } from "../Hooks/payments/usePayment";
 import { useMyInterests } from "../Hooks/interests/useMyInterests";
 import { toast } from "react-toastify";
 import MyInterestSkeleton from "../Components/Skeleton/MyInterestSkeleton";
-import { CreditCard, CheckCircle, Clock, XCircle, Loader2 } from "lucide-react";
+import { CreditCard, CheckCircle, Clock, XCircle, Loader2, Lock, RefreshCw } from "lucide-react";
+import { useNavigate } from "react-router";
 
 const MyInterest = () => {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const { initiatePayment, isLoading: paymentLoading } = usePayment();
   const { data: interests = [], isLoading: loading } = useMyInterests();
   const [payingInterestId, setPayingInterestId] = useState(null);
