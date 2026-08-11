@@ -33,8 +33,8 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
         {/* Brand + CTA */}
         <section className="grid gap-3 mb-6">
-          <a
-            href="/"
+          <Link
+            to="/"
             aria-label="KrishiLink home"
             className="inline-flex items-center gap-3 w-fit no-underline"
           >
@@ -59,21 +59,21 @@ export default function Footer() {
             <span className="font-extrabold text-xl tracking-tight">
               KrishiLink
             </span>
-          </a>
+          </Link>
 
           <p className="text-[var(--color-muted)]">
             Farmer’s Growth & Connection Platform
           </p>
 
           <div className="flex flex-wrap gap-2">
-            <a
-              href="/all-crops"
+            <Link
+              to="/all-crops"
               className="bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)]
               text-white lg:px-6 px-4 py-2 rounded font-semibold
               hover:brightness-95 hover:scale-105 hover:shadow-lg transition-all duration-300"
             >
               Explore Crops
-            </a>
+            </Link>
 
             <Link
               to={user && user?.email ? "/add-crops" : "/auth/login"}
@@ -131,20 +131,20 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a
-                  href="/faq"
+                <Link
+                  to="/faq"
                   className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
                 >
                   FAQs
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/guidelines"
+                <Link
+                  to="/guidelines"
                   className="hover:underline underline-offset-4 decoration-[var(--color-primary)]"
                 >
                   Community Guidelines
-                </a>
+                </Link>
               </li>
               <li>
                 <span className="text-[var(--color-muted)] cursor-not-allowed">
