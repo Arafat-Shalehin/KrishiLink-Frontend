@@ -124,18 +124,18 @@ const Navbar = () => {
                   <Bell className="h-4.5 w-4.5" />
                   <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-rose-500 rounded-full border border-white dark:border-slate-900" />
                 </button> */}
-                <Link
+                <NavLink
                   to="/dashboard"
-                  className="text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition-colors p-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
+                  className={navLinkClass}
                   title="Dashboard"
                 >
                   <LayoutDashboard className="h-4.5 w-4.5" />
-                </Link>
+                </NavLink>
 
                 <div className="dropdown dropdown-end">
                   <button
                     tabIndex={0}
-                    className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-1 dark:focus:ring-offset-slate-900"
+                    className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-1 dark:focus:ring-offset-900"
                     aria-label="Open profile menu"
                   >
                     <img
