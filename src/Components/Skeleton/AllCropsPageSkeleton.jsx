@@ -19,62 +19,46 @@ const SkeletonBlock = ({ className = "" }) => (
 
 const CropCardSkeleton = () => (
   <div
-    className="flex flex-col md:flex-row items-center justify-center gap-5 lg:gap-5
-      rounded-2xl overflow-hidden shadow-md border border-[var(--color-border)]
-      bg-[var(--color-surface)] p-4 md:p-6"
+    className="flex flex-col rounded-2xl overflow-hidden shadow-md border border-[var(--color-border)]
+      bg-[var(--color-surface)] h-full"
   >
-    {/* image */}
-    <SkeletonBlock className="h-40 w-full md:h-28 md:w-40 rounded-lg" />
+    {/* image container */}
+    <div className="relative w-full aspect-[4/3]">
+      <SkeletonBlock className="h-full w-full rounded-none" />
+    </div>
 
-    {/* text */}
-    <div className="w-full space-y-3">
-      <SkeletonBlock className="h-6 w-2/3" />
-      <SkeletonBlock className="h-5 w-1/2" />
-      <SkeletonBlock className="h-5 w-1/3" />
-      <SkeletonBlock className="h-10 w-40 rounded" />
+    {/* text container */}
+    <div className="flex flex-col flex-1 p-4 sm:p-5">
+      <SkeletonBlock className="h-6 w-3/4 rounded mb-4" />
+      
+      <div className="space-y-2 mb-6">
+        <SkeletonBlock className="h-4 w-1/2 rounded" />
+        <SkeletonBlock className="h-4 w-1/3 rounded" />
+      </div>
+      
+      <div className="mt-auto w-full">
+        <SkeletonBlock className="h-8 w-full rounded-lg" />
+      </div>
     </div>
   </div>
 );
 
-const AllCropsPageSkeleton = ({ cards = 9 }) => {
+const AllCropsPageSkeleton = ({ cards = 12 }) => {
   return (
-    <section className="py-10 bg-[var(--color-bg)]">
-      <div className="px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-        {/* Header skeleton */}
-        {/* <div className="text-center">
-          <SkeletonBlock className="mx-auto h-10 w-56 rounded-lg" />
-          <SkeletonBlock className="mx-auto mt-3 h-4 w-[min(520px,90%)] rounded" />
-        </div>
+    <div className="mt-8 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+      {Array.from({ length: cards }).map((_, i) => (
+        <CropCardSkeleton key={i} />
+      ))}
 
-        // Top bar skeleton 
-        <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <SkeletonBlock className="h-5 w-44 rounded" />
+      <span className="sr-only">Loading crops...</span>
 
-          <div className="w-full sm:w-[320px]">
-            <div className="flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2 shadow-sm">
-              <SkeletonBlock className="h-5 w-5 rounded" />
-              <SkeletonBlock className="h-4 w-full rounded" />
-            </div>
-          </div>
-        </div> */}
-
-        {/* Grid skeleton */}
-        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-          {Array.from({ length: cards }).map((_, i) => (
-            <CropCardSkeleton key={i} />
-          ))}
-        </div>
-
-        <span className="sr-only">Loading crops...</span>
-
-        {/* Keyframes for shimmer */}
-        <style>{`
-          @keyframes shimmer {
-            100% { transform: translateX(100%); }
-          }
-        `}</style>
-      </div>
-    </section>
+      {/* Keyframes for shimmer */}
+      <style>{`
+        @keyframes shimmer {
+          100% { transform: translateX(100%); }
+        }
+      `}</style>
+    </div>
   );
 };
 
