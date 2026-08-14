@@ -6,11 +6,11 @@ const SkeletonBlock = ({ className = "" }) => (
     aria-hidden="true"
     className={[
       "relative overflow-hidden rounded-md",
-      "bg-muted/10",
-      "dark:bg-muted/10",
+      "bg-[color-mix(in_srgb,var(--color-muted)_18%,transparent)]",
+      "dark:bg-[color-mix(in_srgb,var(--color-muted)_24%,transparent)]",
       "before:absolute before:inset-0",
       "before:-translate-x-full before:animate-[shimmer_1.6s_infinite]",
-      "before:bg-linear-to-r before:from-transparent before:via-white/10 before:to-transparent",
+      "before:bg-linear-to-r before:from-transparent before:via-white/25 before:to-transparent",
       "dark:before:via-white/5",
       className,
     ].join(" ")}
@@ -35,10 +35,10 @@ const ChartSkeleton = () => (
   <div className="rounded-xl border border-border bg-card shadow-sm h-[400px] p-6 flex flex-col">
     <SkeletonBlock className="h-6 w-48 rounded mb-6" />
     <div className="flex-1 flex items-end gap-4 px-4 pb-2">
-       {/* Fake bars */}
-       {[...Array(7)].map((_, i) => (
-          <SkeletonBlock key={i} className={`w-full rounded-t-lg h-[${Math.floor(Math.random() * 60 + 30)}%]`} />
-       ))}
+      {/* Fake bars */}
+      {[...Array(7)].map((_, i) => (
+        <SkeletonBlock key={i} className={`w-full rounded-t-lg h-[${Math.floor(Math.random() * 60 + 30)}%]`} />
+      ))}
     </div>
   </div>
 );
@@ -62,16 +62,16 @@ const DashboardHomeSkeleton = ({ cards = 3 }) => {
 
         {/* Chart Area */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-             <div className="lg:col-span-2">
-                <ChartSkeleton />
-             </div>
-             <div className="hidden lg:block">
-                 <div className="rounded-xl border border-border bg-card shadow-sm h-[200px] p-6 mb-6 flex flex-col justify-center space-y-4">
-                     <SkeletonBlock className="h-12 w-12 rounded-full mx-auto" />
-                     <SkeletonBlock className="h-6 w-32 rounded mx-auto" />
-                     <SkeletonBlock className="h-10 w-full rounded-lg" />
-                 </div>
-             </div>
+          <div className="lg:col-span-2">
+            <ChartSkeleton />
+          </div>
+          <div className="hidden lg:block">
+            <div className="rounded-xl border border-border bg-card shadow-sm h-[200px] p-6 mb-6 flex flex-col justify-center space-y-4">
+              <SkeletonBlock className="h-12 w-12 rounded-full mx-auto" />
+              <SkeletonBlock className="h-6 w-32 rounded mx-auto" />
+              <SkeletonBlock className="h-10 w-full rounded-lg" />
+            </div>
+          </div>
         </div>
       </div>
 
