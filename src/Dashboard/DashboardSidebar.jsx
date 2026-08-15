@@ -18,6 +18,7 @@ import {
   Users as UsersIcon,
   ClipboardList,
   Sprout,
+  RefreshCw,
 } from "lucide-react";
 
 const SidebarItem = ({ to, icon: Icon, label, end = false }) => {
@@ -68,14 +69,7 @@ const DashboardSidebar = () => {
 
         {/* Dashboard Section */}
         <div className="flex flex-col gap-2 dark:*:text-white">
-          <NavLink
-            to="/dashboard"
-            className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold text-base-content hover:bg-primary/10 transition"
-            data-tip="Overview"
-          >
-            <LayoutDashboard className="h-4 w-4" />
-            <span className="is-drawer-close:hidden">Overview</span>
-          </NavLink>
+          <SidebarItem to="/dashboard" icon={LayoutDashboard} label="Overview" end />
 
           <SidebarItem to="/dashboard/profile" icon={User} label="Profile" />
 
@@ -146,6 +140,11 @@ const DashboardSidebar = () => {
                 to="/dashboard/admin/crops"
                 icon={Sprout}
                 label="Crops"
+              />
+              <SidebarItem
+                to="/dashboard/admin/re-attempts"
+                icon={RefreshCw}
+                label="Re-attempt Requests"
               />
             </>
           )}
