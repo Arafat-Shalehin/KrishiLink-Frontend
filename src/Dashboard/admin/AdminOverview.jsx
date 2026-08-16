@@ -130,11 +130,14 @@ const AdminOverview = () => {
     }
   };
 
-  if (profileLoading) return <AdminOverviewSkeleton />;
-  if (isLoading) return <AdminOverviewSkeleton />;
+  // Prevent double loading/glitching: Wait until the profile is loaded AND the query has resolved (succeeded or failed)
+  const showSkeleton = profileLoading || (isAdmin && !data && !isError);
+
+  if (showSkeleton) return <AdminOverviewSkeleton />;
+
   if (isError)
     return (
-      <p className="text-sm text-(--color-muted)">
+      <p className="text-sm text-(--color-muted) p-6 text-center">
         Failed to load admin overview.
       </p>
     );
