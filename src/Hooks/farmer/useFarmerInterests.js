@@ -31,8 +31,13 @@ export const useFarmerInterests = (userEmail) => {
               quantity: interest.quantity,
               message: interest.message,
               status: interest.status,
+              paymentStatus: interest.paymentStatus ?? null,
               interestId: interest._id,
               cropQuantity: crop.quantity,
+              // Repeat-purchase enrichment fields from backend
+              isRepeatBuyer: interest.isRepeatBuyer ?? false,
+              completedPurchaseCount: interest.completedPurchaseCount ?? 0,
+              failedCycleCount: interest.failedCycleCount ?? 0,
             }));
           } catch {
             // If a crop has no interests or request fails, return empty
