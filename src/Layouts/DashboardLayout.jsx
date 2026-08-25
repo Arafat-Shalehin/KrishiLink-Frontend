@@ -4,6 +4,7 @@ import useAuthProfile from "../Hooks/useAuthProfile";
 import { useContext } from "react";
 import { AuthContext } from "../Context/AuthProvider";
 import SplashDismiss from "../Components/SplashDismiss";
+import ReAttemptNotification from "../Components/ReAttemptNotification";
 
 function DashboardLayout() {
   const { user } = useContext(AuthContext);
@@ -53,6 +54,7 @@ function DashboardLayout() {
           <div className="p-4">
             <Outlet />
             <SplashDismiss />
+            <ReAttemptNotification />
           </div>
         </div>
 
