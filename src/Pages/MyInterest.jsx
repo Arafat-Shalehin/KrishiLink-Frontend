@@ -148,32 +148,45 @@ const MyInterest = () => {
                     <p className="text-sm italic text-(--color-muted) mb-3">"{interest.message}"</p>
                   )}
                   
-                  {/* Pay Button for accepted interests awaiting payment */}
-                  {interest.status === "accepted" && interest.paymentStatus === "awaiting_payment" && (
-                     interest.attemptCount >= 3 ? (
+                  {/* Pay / Lock / Buy Again actions for mobile */}
+                  {interest.permanentlyLocked ? (
+                    <div className="w-full px-4 py-3 bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300 text-sm font-semibold rounded-xl text-center border border-red-200 dark:border-red-800 flex items-center justify-center gap-2">
+                      <Lock className="w-4 h-4" />
+                      Permanently Locked · {interest.failedCycleCount}/3 cycles failed
+                    </div>
+                  ) : interest.status === "accepted" && interest.paymentStatus === "awaiting_payment" ? (
+                    interest.attemptCount >= 3 ? (
                       <div className="w-full px-4 py-3 bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300 text-sm font-semibold rounded-xl text-center border border-red-200 dark:border-red-800">
                         Max attempts reached. <br/> Contact Support.
                       </div>
                     ) : (
-                    <button
-                      onClick={() => handlePayment(interest)}
-                      disabled={paymentLoading && payingInterestId === interest._id}
-                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-emerald-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {paymentLoading && payingInterestId === interest._id ? (
-                        <>
-                          <Loader2 className="w-5 h-5 animate-spin" />
-                          Processing...
-                        </>
-                      ) : (
-                        <>
-                          <CreditCard className="w-5 h-5" />
-                          Pay ৳{(interest.quantity * interest.cropPrice).toLocaleString()}
-                        </>
-                      )}
-                    </button>
+                      <button
+                        onClick={() => handlePayment(interest)}
+                        disabled={paymentLoading && payingInterestId === interest._id}
+                        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-emerald-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {paymentLoading && payingInterestId === interest._id ? (
+                          <>
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                            Processing...
+                          </>
+                        ) : (
+                          <>
+                            <CreditCard className="w-5 h-5" />
+                            Pay ৳{(interest.quantity * interest.cropPrice).toLocaleString()}
+                          </>
+                        )}
+                      </button>
                     )
-                  )}
+                  ) : interest.canReInterest ? (
+                    <button
+                      onClick={() => navigate(`/crops-details/${interest.cropId}/${interest.cropType || "general"}`)}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-linear-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg"
+                    >
+                      <RefreshCw className="w-5 h-5" />
+                      Buy Again
+                    </button>
+                  ) : null}
                 </div>
               </div>
             ))
@@ -265,30 +278,46 @@ const MyInterest = () => {
                     </td>
 
                     <td className="py-3 px-4 text-center">
-                      {interest.status === "accepted" && interest.paymentStatus === "awaiting_payment" ? (
+                      {interest.permanentlyLocked ? (
+                        <span
+                          className="inline-flex items-center gap-1.5 text-xs font-bold text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 px-2.5 py-1.5 rounded-lg"
+                          title={`Permanently locked after ${interest.failedCycleCount} failed payment cycles`}
+                        >
+                          <Lock className="w-3.5 h-3.5" />
+                          Locked · {interest.failedCycleCount}/3 cycles
+                        </span>
+                      ) : interest.status === "accepted" && interest.paymentStatus === "awaiting_payment" ? (
                         interest.attemptCount >= 3 ? (
                           <span className="text-xs font-bold text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded-md cursor-help" title="Maximum payment attempts reached. Please contact support to reset.">
                             Contact Support
                           </span>
                         ) : (
-                        <button
-                          onClick={() => handlePayment(interest)}
-                          disabled={paymentLoading && payingInterestId === interest._id}
-                          className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white text-sm font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          {paymentLoading && payingInterestId === interest._id ? (
-                            <>
-                              <Loader2 className="w-4 h-4 animate-spin" />
-                              Processing...
-                            </>
-                          ) : (
-                            <>
-                              <CreditCard className="w-4 h-4" />
-                              Pay Now
-                            </>
-                          )}
-                        </button>
+                          <button
+                            onClick={() => handlePayment(interest)}
+                            disabled={paymentLoading && payingInterestId === interest._id}
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white text-sm font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {paymentLoading && payingInterestId === interest._id ? (
+                              <>
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                                Processing...
+                              </>
+                            ) : (
+                              <>
+                                <CreditCard className="w-4 h-4" />
+                                Pay Now
+                              </>
+                            )}
+                          </button>
                         )
+                      ) : interest.canReInterest ? (
+                        <button
+                          onClick={() => navigate(`/crops-details/${interest.cropId}/${interest.cropType || "general"}`)}
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white text-sm font-semibold rounded-lg transition-all duration-300 shadow-md"
+                        >
+                          <RefreshCw className="w-4 h-4" />
+                          Buy Again
+                        </button>
                       ) : interest.paymentStatus === "paid" ? (
                         <span className="inline-flex items-center gap-1 text-green-600 dark:text-green-400">
                           <CheckCircle className="w-4 h-4" />
