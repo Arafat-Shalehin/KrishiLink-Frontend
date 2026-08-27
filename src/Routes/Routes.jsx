@@ -42,6 +42,7 @@ const AdminOverview = lazy(() => import("../Dashboard/admin/AdminOverview"));
 const AdminUsers = lazy(() => import("../Dashboard/admin/AdminUsers"));
 const AdminRequests = lazy(() => import("../Dashboard/admin/AdminRequests"));
 const AdminCrops = lazy(() => import("../Dashboard/admin/AdminCrops"));
+const AdminReAttempts = lazy(() => import("../Dashboard/admin/AdminReAttempts"));
 
 // Payment Pages
 const PaymentSuccess = lazy(() => import("../Pages/Payment/PaymentSuccess"));
@@ -198,6 +199,14 @@ const router = createBrowserRouter([
         element: (
           <RoleRoute allowed={["admin"]}>
             <AdminCrops />
+          </RoleRoute>
+        ),
+      },
+      {
+        path: "admin/re-attempts",
+        element: (
+          <RoleRoute allowed={["admin"]}>
+            <AdminReAttempts />
           </RoleRoute>
         ),
       },
